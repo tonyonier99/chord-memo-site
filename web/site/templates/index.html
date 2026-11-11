@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>藝人範本｜和弦備忘錄</title><meta name="description" content="合作藝人用和弦備忘錄做的歌，免費下載當範本。"><meta name="color-scheme" content="light dark"><script>document.documentElement.classList.add('js')</script><link rel="icon" href="../assets/app-icon.png"><style>
+:root { color-scheme:light dark;
+  --accent:#007AFF; --accent-ink:#0063D1; --accent-soft:rgba(0,122,255,0.12); --on-accent:#FFFFFF;
+  --record:#FF3B30; --bg:#F2F2F7; --card:#FFFFFF; --fill:rgba(118,118,128,0.12);
+  --ink:#000000; --sub:#5E5E63; --line:rgba(60,60,67,0.18); --shadow:0 12px 30px rgba(0,30,80,0.08);
+  --hero:radial-gradient(1100px 520px at 85% 0%, rgba(0,122,255,0.16), rgba(0,122,255,0) 62%); }
+@media (prefers-color-scheme:dark) {
+  :root { --accent:#0A84FF; --accent-ink:#409CFF; --accent-soft:rgba(10,132,255,0.18); --record:#FF453A;
+    --bg:#000000; --card:#1C1C1E; --fill:rgba(118,118,128,0.24); --ink:#FFFFFF; --sub:#AEAEB2;
+    --line:rgba(84,84,88,0.65); --shadow:0 12px 30px rgba(0,0,0,0.5);
+    --hero:radial-gradient(1100px 520px at 85% 0%, rgba(10,132,255,0.28), rgba(10,132,255,0) 62%); }
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body { background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",
+  "Helvetica Neue",Arial,sans-serif; line-height:1.75; overflow-x:hidden; }
+img { max-width:100%; display:block; }
+a { color:var(--accent-ink); text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:focus-visible, button:focus-visible { outline:3px solid var(--accent); outline-offset:3px; border-radius:8px; }
+.wrap { max-width:1120px; margin:0 auto; padding:0 16px; }
+@media (min-width:700px) { .wrap { padding:0 1.25rem; } }
+header.site { position:sticky; top:0; z-index:20; background:var(--bg); background:color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(14px); backdrop-filter:saturate(180%) blur(14px); border-bottom:1px solid var(--line); }
+header.site .wrap { display:flex; align-items:center; flex-wrap:wrap; gap:0.4rem 1rem; min-height:60px; padding-top:0.5rem; padding-bottom:0.5rem; }
+.logo { display:flex; align-items:center; gap:0.55rem; color:var(--ink); font-weight:800; font-size:1.08rem; }
+.logo:hover { text-decoration:none; }
+.logo img { width:32px; height:32px; border-radius:8px; }
+.site-nav { display:flex; gap:1.3rem; margin-left:auto; }
+.site-nav a { color:var(--sub); font-weight:600; font-size:0.95rem; }
+.site-nav a.on, .site-nav a:hover { color:var(--ink); text-decoration:none; }
+.nav-cta { background:var(--accent); color:var(--on-accent); font-weight:700; font-size:0.9rem; padding:0.42rem 1rem;
+  border-radius:999px; white-space:nowrap; }
+.nav-cta:hover { text-decoration:none; filter:brightness(1.08); }
+@media (max-width:700px) {
+  .nav-cta { margin-left:auto; order:1; }
+  .site-nav { order:2; width:100%; margin-left:0; gap:1.1rem; }
+}
+main { min-height:60vh; }
+footer.site { margin-top:3rem; border-top:1px solid var(--line); padding:2rem 0 2.6rem; color:var(--sub); font-size:0.9rem; }
+footer.site .wrap { display:flex; flex-wrap:wrap; gap:0.8rem 1.4rem; align-items:center; }
+footer.site nav { display:flex; flex-wrap:wrap; gap:0.6rem 1.2rem; }
+footer.site a { color:var(--sub); }
+footer.site .foot-name { font-weight:700; color:var(--ink); margin-right:auto; }
+.btn { display:inline-flex; align-items:center; justify-content:center; min-height:50px; padding:0 1.5rem; border-radius:999px;
+  background:var(--accent); color:var(--on-accent); font-weight:700; font-size:1.02rem; border:2px solid var(--accent);
+  transition:transform .2s, filter .2s; }
+.btn:hover { text-decoration:none; transform:translateY(-2px); filter:brightness(1.06); }
+.btn:active { transform:scale(0.97); }
+.btn.ghost { background:transparent; color:var(--accent-ink); }
+.btn.placeholder { background:var(--fill); border-color:var(--line); color:var(--sub); cursor:default; }
+.btn.placeholder:hover { transform:none; filter:none; }
+.card { background:var(--card); border-radius:16px; border:1px solid var(--line); }
+.pending { color:var(--record); font-weight:700; }
+
+.snd-toggle { border:0; background:none; color:var(--sub); font-size:1.3rem; line-height:0; padding:0.35rem; margin-left:0.6rem;
+  border-radius:999px; cursor:pointer; display:inline-flex; }
+.snd-toggle:hover { color:var(--ink); } .snd-toggle .snd-off, .snd-toggle[aria-pressed="false"] .snd-on { display:none; }
+.snd-toggle[aria-pressed="false"] .snd-off { display:inline-flex; }
+@media (max-width:700px) { .snd-toggle { order:1; margin-left:auto; } .snd-toggle + .nav-cta { margin-left:0.4rem; } }
+
+html.js [data-reveal] { opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+html.js [data-reveal].in { opacity:1; transform:none; }
+.marquee { overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--card);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); }
+.marquee-track { display:flex; width:max-content; animation:marquee 38s linear infinite; }
+.marquee-track span { padding:0.95rem 1.4rem; font-weight:700; color:var(--sub); white-space:nowrap; position:relative; }
+.marquee-track span::after { content:""; position:absolute; right:-3px; top:50%; width:6px; height:6px; margin-top:-3px;
+  border-radius:50%; background:var(--accent); opacity:.55; }
+@keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+@media (prefers-reduced-motion:reduce) {
+  html.js [data-reveal] { opacity:1; transform:none; transition:none; }
+  .marquee-track { animation:none; flex-wrap:wrap; width:auto; }
+  .marquee-track span[aria-hidden] { display:none; }
+}
+
+.sc-in { max-width:1120px; margin:0 auto; padding:0 16px; }
+@media (min-width:700px) { .sc-in { padding:0 1.25rem; } }
+.sc-split { display:grid; grid-template-columns:minmax(0,1fr); gap:2.4rem; align-items:center; }
+@media (min-width:900px) { .sc-split { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:3.5rem; }
+  .sc-split.flip > :last-child { order:-1; } }
+.sc-hero { padding:3.2rem 0 3.6rem; background:var(--hero); }
+.sc-hero-icon { width:84px; height:84px; border-radius:20px; box-shadow:var(--shadow); }
+.sc-eyebrow { font-size:0.92rem; font-weight:800; color:var(--accent-ink); letter-spacing:0.04em; margin-top:1.1rem; }
+.sc-copy h1 { font-size:clamp(2.2rem,5.4vw,3.4rem); line-height:1.2; font-weight:800; margin-top:0.35rem; }
+.sc-copy h2 { font-size:clamp(1.6rem,3.6vw,2.3rem); line-height:1.3; font-weight:800; margin-top:0.35rem; }
+.sc-lead { color:var(--sub); font-size:1.08rem; line-height:1.9; margin-top:1rem; max-width:34rem; }
+.sc-actions { display:flex; flex-wrap:wrap; gap:0.7rem; margin-top:1.6rem; }
+.sc-band { padding:4.2rem 0; }
+.sc-band.tint { background:var(--card); }
+.sc-sec-head { text-align:center; max-width:42rem; margin:0 auto; }
+.sc-sec-head h2 { font-size:clamp(1.6rem,3.6vw,2.3rem); font-weight:800; line-height:1.3; }
+.sc-sec-head p { color:var(--sub); margin-top:0.6rem; font-size:1.04rem; }
+.bento { display:grid; grid-template-columns:minmax(0,1fr); gap:0.9rem; margin-top:2.2rem; }
+@media (min-width:700px) { .bento { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:1000px) { .bento { grid-template-columns:repeat(4,minmax(0,1fr)); } .bento .wide { grid-column:span 2; } }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:1.3rem 1.35rem; display:flex;
+  flex-direction:column; gap:0.45rem; color:var(--ink); transition:transform .25s, box-shadow .25s, border-color .25s; }
+a.tile:hover { text-decoration:none; transform:translateY(-4px); box-shadow:var(--shadow); border-color:var(--accent); }
+.sc-band.tint .tile { background:var(--bg); }
+.sc-hero .ph-card { background:transparent; border:0; padding:0.5rem 0 0; }
+.tile .t-eyebrow { font-size:0.8rem; font-weight:800; color:var(--accent-ink); letter-spacing:0.05em; }
+.tile h3 { font-size:1.12rem; line-height:1.45; }
+.tile p { color:var(--sub); font-size:0.94rem; line-height:1.7; }
+.tile ul { list-style:none; display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.3rem; }
+.tile li { background:var(--accent-soft); color:var(--accent-ink); font-weight:700; font-size:0.86rem; padding:0.25rem 0.7rem; border-radius:999px; }
+.tile .t-more { margin-top:auto; padding-top:0.4rem; font-size:0.86rem; font-weight:800; color:var(--accent-ink); }
+.sc-promise { max-width:46rem; margin:0 auto; text-align:center; }
+.sc-promise p { font-size:clamp(1.15rem,2.6vw,1.45rem); font-weight:700; line-height:1.7; }
+.sc-promise a { display:inline-block; margin-top:0.9rem; font-weight:700; }
+.sc-final { text-align:center; background:var(--card); border:1px solid var(--line); border-radius:32px; margin:2.4rem 16px 1rem;
+  padding:3.6rem 1.25rem; background-image:var(--hero); }
+.sc-final .sc-actions { justify-content:center; }
+.sc-final .center { margin-left:auto; margin-right:auto; }
+.sc-final img { width:72px; height:72px; border-radius:17px; margin:0 auto 1rem; }
+@media (min-width:1152px) { .sc-final { max-width:1120px; margin:2.4rem auto 1rem; } }
+
+.cmp { width:100%; border-collapse:collapse; margin-top:0.8rem; font-size:0.93rem; table-layout:fixed; }
+.cmp th, .cmp td { text-align:left; padding:0.62rem 0.5rem; border-bottom:1px solid var(--line); vertical-align:top; line-height:1.6; }
+.cmp thead th { color:var(--sub); font-size:0.82rem; font-weight:700; }
+.cmp thead th:last-child { color:var(--accent); }
+.cmp tbody th { font-weight:700; width:28%; }
+.cmp td { color:var(--sub); } .cmp td:last-child { color:var(--ink); }
+@media (max-width:560px) { .cmp { font-size:0.84rem; } .cmp th, .cmp td { padding:0.55rem 0.3rem; } }
+
+.pg-head { padding:3rem 0 1.4rem; text-align:center; background:var(--hero); }
+.pg-head h1 { font-size:clamp(1.9rem,4.4vw,2.7rem); font-weight:800; line-height:1.3; }
+.pg-head p { color:var(--sub); margin:0.6rem auto 0; max-width:38rem; font-size:1.05rem; }
+.jump { display:flex; flex-wrap:wrap; justify-content:center; gap:0.45rem; margin-top:1.3rem; }
+.jump a { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:0.35rem 1rem; font-weight:700;
+  font-size:0.9rem; color:var(--ink); min-height:40px; display:inline-flex; align-items:center; }
+.jump a:hover { text-decoration:none; border-color:var(--accent); }
+.points { list-style:none; margin-top:1.2rem; display:grid; gap:0.6rem; }
+.points li { padding-left:1.5rem; position:relative; font-size:1.02rem; line-height:1.7; }
+.points li::before { content:""; position:absolute; left:0.1rem; top:0.58em; width:0.62rem; height:0.62rem; border-radius:50%;
+  background:var(--accent-soft); box-shadow:inset 0 0 0 3px var(--accent); }
+section[id] { scroll-margin-top:84px; }
+.pro-box { max-width:880px; margin:2rem auto 0; padding:1.6rem 1.5rem; }
+.pro-box h3 { font-size:1.05rem; margin-top:1.2rem; }
+.pro-box h3:first-child { margin-top:0; }
+.pro-box p, .pro-box dd { color:var(--sub); }
+.pro-box dl { display:grid; gap:0.8rem; margin-top:0.6rem; }
+.pro-box dt { font-weight:700; }
+.price-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:0.7rem; margin-top:0.8rem; }
+.price-row div { background:var(--bg); border:1px solid var(--line); border-radius:14px; padding:0.8rem 0.9rem; }
+.price-row b { display:block; font-size:0.9rem; } .price-row strong { display:block; font-size:1.35rem; margin-top:0.2rem; }
+.price-row small { color:var(--sub); font-size:0.82rem; }
+.dl-card { max-width:560px; margin:2rem auto 0; padding:2rem 1.5rem; text-align:center; }
+.dl-card img { width:112px; height:112px; border-radius:26px; margin:0 auto 1rem; box-shadow:var(--shadow); }
+.dl-card h2 { font-size:1.5rem; }
+.dl-card .sc-actions { justify-content:center; }
+.dl-meta { margin-top:1.4rem; display:grid; gap:0.35rem; color:var(--sub); font-size:0.94rem; }
+.nf { text-align:center; padding:5rem 16px 3rem; }
+.nf h1 { font-size:clamp(1.8rem,4vw,2.4rem); }
+.nf p { color:var(--sub); margin-top:0.6rem; }
+.nf .sc-actions { justify-content:center; }
+
+.ic { width:1em; height:1em; display:inline-block; vertical-align:-0.125em; flex:none; }
+
+.ph { --a-bg:#F2F2F7; --a-card:#FFFFFF; --a-elevated:#FFFFFF; --a-scrim:rgba(0,0,0,0.25); --a-fill:rgba(118,118,128,0.12); --a-label:#000; --a-sub:rgba(60,60,67,0.6);
+  --a-accent:#007AFF; --a-accent-fill:rgba(0,122,255,0.15); --a-red:#FF3B30; --a-green:#34C759; --a-hair:rgba(60,60,67,0.29);
+  position:relative; z-index:1; width:min(300px,84vw); height:600px; border-radius:46px; background:#1C1C1E; padding:10px;
+  box-shadow:0 24px 50px rgba(0,30,80,0.22), inset 0 0 0 2px #3A3A3C; flex:none; }
+@media (prefers-color-scheme:dark) {
+  .ph { --a-bg:#000; --a-card:#1C1C1E; --a-elevated:#2C2C2E; --a-scrim:rgba(0,0,0,0.55); --a-fill:rgba(118,118,128,0.24); --a-label:#FFF; --a-sub:rgba(235,235,245,0.6);
+    --a-accent:#0A84FF; --a-accent-fill:rgba(10,132,255,0.2); --a-red:#FF453A; --a-green:#30D158; --a-hair:rgba(84,84,88,0.6); }
+}
+.ph-screen { position:relative; width:100%; height:100%; border-radius:37px; background:var(--a-bg); overflow:hidden; overflow:clip;
+  display:flex; flex-direction:column; color:var(--a-label); font-size:14px; line-height:1.4; text-align:left; }
+:where(.ph) button { font-family:inherit; color:inherit; }
+.ph-status { height:34px; flex:none; padding:11px 26px 0; font-size:12px; font-weight:700; }
+.ph-stack { position:relative; flex:1; overflow:hidden; overflow:clip; }
+.ph-view { position:absolute; inset:0; display:flex; flex-direction:column; background:var(--a-bg);
+  transform:translateX(105%); transition:transform .45s cubic-bezier(.2,.8,.2,1); }
+.ph-view.on { transform:none; } .ph-view.on.under { transform:translateX(-28%); }
+.ph-scroll { flex:1; overflow-y:auto; overflow-x:hidden; padding:4px 14px 14px; scrollbar-width:none; position:relative; }
+.ph-scroll::-webkit-scrollbar { display:none; }
+.ph-nav { flex:none; display:flex; align-items:center; gap:8px; padding:2px 12px 6px; }
+.ph-nav b { flex:1; text-align:center; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ph-circle { width:32px; height:32px; border-radius:50%; border:0; background:var(--a-card); font-size:18px; line-height:32px;
+  padding:0; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.08); flex:none; }
+.ph-large { font-size:26px; font-weight:800; margin:2px 2px 8px; }
+.ph-tabs { flex:none; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin:0 12px 14px; padding:4px;
+  border-radius:999px; background:var(--a-card); box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+.ph-tabs button { border:0; background:none; border-radius:999px; padding:9px 0; font-size:11.5px; font-weight:700; color:var(--a-sub); cursor:pointer; }
+.ph-tabs button.on { background:var(--a-fill); color:var(--a-accent); }
+.ph-pane { display:none; flex:1; min-height:0; flex-direction:column; } .ph-pane.on { display:flex; }
+.a-card { background:var(--a-card); border-radius:16px; }
+.a-sec { font-size:11px; font-weight:700; color:var(--a-sub); letter-spacing:1px; margin:12px 4px 6px; }
+.a-search { display:block; width:100%; border:0; border-radius:10px; background:var(--a-fill); color:var(--a-sub); padding:8px 10px; font-size:13px; margin-bottom:10px; text-align:left; }
+.a-row { display:flex; align-items:center; gap:10px; width:100%; border:0; padding:10px; text-align:left; cursor:pointer; }
+.a-row .ico { width:36px; height:36px; border-radius:10px; background:var(--a-fill); flex:none; }
+.a-row .ico.fill { background:var(--a-accent); }
+.a-row small { display:block; font-size:11px; color:var(--a-sub); }
+.a-row span { display:block; font-size:13.5px; }
+.a-row .muted { color:var(--a-sub); }
+.a-row .chev { margin-left:auto; color:var(--a-sub); font-size:16px; }
+.a-stack { display:grid; gap:8px; }
+.a-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.a-songcard { border:0; padding:0; text-align:left; cursor:pointer; background:none; }
+.a-songcard .cover { aspect-ratio:1; border-radius:14px; background:var(--a-fill); }
+.a-songcard strong { display:block; font-size:13px; margin-top:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.a-songcard em { font-style:normal; font-size:10.5px; color:var(--a-sub); font-weight:700; }
+.a-pill { display:inline-block; font-size:10.5px; font-weight:700; padding:1px 7px; border-radius:999px; background:var(--a-fill); color:var(--a-sub); }
+.a-pro { display:inline-block; font-size:10px; font-weight:800; padding:1px 6px; border-radius:999px; background:var(--a-accent); color:#fff; }
+.a-seg { display:grid; grid-template-columns:1fr 1fr; background:var(--a-fill); border-radius:9px; padding:2px; margin:8px 0; }
+.a-seg button { border:0; background:none; border-radius:7px; padding:5px 0; font-size:12px; font-weight:600; cursor:pointer; }
+.a-seg button.on { background:var(--a-card); box-shadow:0 1px 3px rgba(0,0,0,0.12); }
+.a-chip { border:0; border-radius:999px; background:var(--a-fill); color:var(--a-sub); font-size:11.5px; font-weight:700; padding:4px 10px; cursor:pointer; }
+.a-btn { border:0; border-radius:999px; background:var(--a-accent); color:#fff; font-weight:700; font-size:14px; padding:12px 0; width:100%; cursor:pointer; }
+.a-btn.soft { background:var(--a-accent-fill); color:var(--a-accent); }
+.a-link { border:0; background:none; color:var(--a-accent); font-weight:700; font-size:13px; padding:0; cursor:pointer; }
+.a-toast { position:absolute; left:50%; bottom:76px; transform:translate(-50%,10px); background:rgba(40,40,40,0.92); color:#fff;
+  font-size:12px; font-weight:700; padding:7px 14px; border-radius:999px; opacity:0; transition:opacity .3s, transform .3s; pointer-events:none; white-space:nowrap; z-index:6; }
+.a-toast.on { opacity:1; transform:translate(-50%,0); }
+.a-menu { position:absolute; z-index:7; min-width:160px; background:var(--a-card); border-radius:14px; padding:4px 0;
+  box-shadow:0 10px 30px rgba(0,0,0,0.22); display:none; }
+.a-menu.on { display:block; animation:popIn .2s ease-out; }
+.a-menu button { display:block; width:100%; border:0; background:none; text-align:left; padding:9px 14px; font-size:13.5px; cursor:pointer; }
+.a-menu button + button { border-top:0.5px solid var(--a-hair); }
+.a-menu .danger { color:var(--a-red); }
+.a-menu .off { color:var(--a-sub); cursor:default; }
+.a-sheet { position:absolute; inset:46px 0 0; z-index:8; background:var(--a-bg); border-radius:16px 16px 0 0; display:flex; flex-direction:column;
+  transform:translateY(110%); visibility:hidden; transition:transform .4s cubic-bezier(.2,.8,.2,1), visibility 0s linear .4s;
+  box-shadow:0 -6px 24px rgba(0,0,0,0.2); }
+.a-sheet.on { transform:none; visibility:visible; transition:transform .4s cubic-bezier(.2,.8,.2,1), visibility 0s; }
+.a-sheet-bar { display:flex; align-items:center; padding:12px 14px 6px; }
+.a-sheet-bar b { flex:1; text-align:center; font-size:14px; }
+.a-sheet-bar .a-link { width:44px; text-align:left; } .a-sheet-bar .a-link + b + .a-link { text-align:right; }
+.tap { position:absolute; z-index:9; width:38px; height:38px; margin:-19px 0 0 -19px; border-radius:50%;
+  background:rgba(0,122,255,.28); border:2px solid rgba(0,122,255,.85); pointer-events:none; animation:tap .65s ease-out forwards; }
+@keyframes tap { from { transform:scale(.4); opacity:1; } to { transform:scale(1.5); opacity:0; } }
+@keyframes popIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+.ph-stage { display:flex; flex-direction:column; align-items:center; }
+.ph-card { background:var(--hero), var(--card); border:1px solid var(--line); border-radius:28px; padding:2rem 1rem 1.2rem; width:100%;
+  display:flex; flex-direction:column; align-items:center; }
+.ph-note { font-size:0.8rem; color:var(--sub); margin-top:0.8rem; text-align:center; }
+@media (max-width:360px) { .ph { height:560px; } }
+@media (prefers-reduced-motion:reduce) { .ph-view, .a-sheet, .a-toast { transition:none; } .tap { animation:none; display:none; } }
+
+.rec-panel { text-align:center; padding:6px 0 4px; }
+.rec-status { font-size:12.5px; color:var(--a-sub); min-height:18px; }
+.rec-row { display:flex; align-items:center; justify-content:center; gap:14px; margin:8px 0 4px; }
+.rec-side { width:50px; height:50px; border-radius:50%; border:0; background:var(--a-fill); color:var(--a-sub); font-size:10.5px; font-weight:700; cursor:pointer; }
+.rec-side.on { background:var(--a-accent); color:#fff; } .rec-side.blank { background:none; cursor:default; }
+.rec-btn { position:relative; width:104px; height:104px; border-radius:50%; border:0; cursor:pointer; background:color-mix(in srgb, var(--a-red) 16%, transparent); }
+.rec-btn i { position:absolute; left:50%; top:50%; width:26px; height:26px; margin:-13px; border-radius:50%; background:var(--a-red); transition:all .25s; }
+.rec-btn.on { background:var(--a-red); animation:halo 1.1s ease-in-out infinite; }
+.rec-btn.on i { width:24px; height:24px; margin:-12px; border-radius:5px; background:#fff; }
+@keyframes halo { 50% { box-shadow:0 0 0 10px color-mix(in srgb, var(--a-red) 18%, transparent); } }
+.rec-time { font:600 26px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--a-sub); }
+.rec-time.on { color:var(--a-red); }
+.rec-cap { font-size:11.5px; color:var(--a-sub); min-height:16px; }
+.take { display:flex; align-items:center; gap:8px; padding:9px 10px; }
+.take + .take { border-top:0.5px solid var(--a-hair); }
+.take.new { animation:popIn .4s ease-out; }
+.take .play { width:30px; height:30px; border-radius:50%; border:0; background:var(--a-accent); color:#fff; display:flex; align-items:center; justify-content:center; padding-left:2px; flex:none; }
+.take div { flex:1; min-width:0; } .take strong { display:block; font-size:13.5px; } .take small { font-size:11px; color:var(--a-sub); }
+.take .star { border:0; background:none; padding:4px; cursor:pointer; line-height:0; }
+.take .more { color:var(--a-sub); font-size:16px; padding:0 2px; }
+.ar-transport { display:flex; align-items:center; gap:10px; padding:8px 10px; margin-bottom:8px; }
+.ar-play { width:34px; height:34px; border-radius:50%; border:0; background:var(--a-accent); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+.ar-time { font:600 13px ui-monospace,SFMono-Regular,Menlo,monospace; }
+.lanes { position:relative; overflow:hidden; }
+.lane { display:grid; grid-template-columns:92px 1fr; align-items:center; min-height:52px; }
+.lane + .lane { border-top:0.5px solid var(--a-hair); }
+.lane-head { padding:6px 8px; } .lane-head strong { display:block; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lane-head small { font-size:9.5px; color:var(--a-sub); }
+.lane-btns { display:flex; gap:4px; margin-top:3px; }
+.lane-btns button { border:0; border-radius:6px; background:var(--a-fill); font-size:10px; font-weight:800; padding:2px 6px; cursor:pointer; color:var(--a-sub); }
+.lane-btns button.on { background:var(--a-accent); color:#fff; } .lane-btns button.mute.on { background:var(--a-red); }
+.lane-clip { height:34px; margin-right:8px; border-radius:6px; background:color-mix(in srgb, var(--a-accent) 30%, transparent); transition:opacity .25s; }
+.lane-clip.empty { background:none; border:1px dashed var(--a-hair); }
+.lane.dim .lane-clip { opacity:.25; }
+.playhead { position:absolute; top:0; bottom:0; left:92px; width:2px; background:var(--a-accent); pointer-events:none; }
+.add-card { padding:11px 12px; margin-top:8px; }
+.add-head { display:flex; align-items:center; gap:6px; } .add-head small { margin-left:auto; font-size:11px; color:var(--a-sub); }
+.add-card p { font-size:11.5px; color:var(--a-sub); margin-top:6px; }
+.sec { margin-bottom:12px; }
+.sec-head { display:flex; align-items:center; gap:6px; padding:2px 4px 6px; }
+.sec-head b { font-size:13px; color:var(--a-sub); } .sec-head .a-link { margin-left:auto; font-size:12px; }
+.sec-head .more { border:0; background:none; color:var(--a-accent); font-size:16px; padding:0 4px; cursor:pointer; }
+.bars { display:grid; grid-template-columns:repeat(4,1fr); }
+.bar { border:0; background:none; height:38px; font-weight:800; font-size:15px; cursor:pointer; position:relative; }
+.bar + .bar::before { content:""; position:absolute; left:0; top:9px; height:20px; width:1px; background:var(--a-hair); }
+.bar.empty { color:var(--a-sub); font-weight:700; font-size:13px; }
+.bar.sel { background:var(--a-accent-fill); border-radius:6px; }
+.bar.now { color:var(--a-accent); box-shadow:inset 0 -3px 0 var(--a-accent); }
+.pb-play { border:0; background:none; padding:0; cursor:pointer; }
+.lyric { font-size:12.5px; padding:2px 6px 8px; border-bottom:0.5px solid var(--a-hair); margin-bottom:6px; }
+.lyric.ph-empty { color:var(--a-sub); }
+.sec-chips { display:flex; gap:6px; padding:0 4px; }
+.chart-add { margin:6px 0 10px; }
+.playbar { flex:none; display:flex; align-items:center; gap:8px; margin:0 12px 8px; padding:6px 10px; border-radius:14px; background:var(--a-card); font-size:11.5px; color:var(--a-sub); }
+.playbar .ar-play { width:28px; height:28px; }
+.fret-card { padding:12px; margin-bottom:10px; }
+.fret-card small { font-size:11px; color:var(--a-sub); } .fret-card p { font-size:12.5px; margin-top:4px; }
+.fret-pos { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:8px; }
+.fret-pos button { width:28px; height:28px; border-radius:50%; border:0; background:var(--a-accent-fill); color:var(--a-accent); font-weight:800; cursor:pointer; }
+.fret-pos button:disabled { background:var(--a-fill); color:var(--a-sub); cursor:default; }
+.fret-pos div { text-align:center; min-width:62px; } .fret-pos b { display:block; font-size:12.5px; } .fret-pos span { font-size:9.5px; color:var(--a-sub); }
+.fret-row { display:flex; align-items:center; gap:4px; margin:3px 0; }
+.fret-row > b { width:14px; font-size:11px; color:var(--a-sub); text-align:center; }
+.fret-row i { width:1px; height:22px; background:var(--a-hair); }
+.fc { width:26px; height:26px; border-radius:50%; border:0; background:var(--a-fill); color:var(--a-sub); font-size:11.5px; cursor:pointer; padding:0; }
+.fc.on { background:var(--a-accent); color:#fff; font-weight:800; }
+.fret-pills { display:flex; gap:6px; justify-content:center; margin-top:8px; }
+.preset-chips { display:flex; flex-wrap:wrap; gap:6px; padding:4px 2px 10px; }
+.preset-chips button.on { background:var(--a-accent); color:#fff; }
+
+.ph-circle { display:inline-flex; align-items:center; justify-content:center; color:var(--a-label); font-size:18px; }
+.ph-tabs button { display:flex; flex-direction:column; align-items:center; gap:1px; padding:5px 0 4px; }
+.ph-tabs button .ic { font-size:19px; }
+.a-search { display:flex; align-items:center; gap:6px; } .a-search .ic { font-size:14px; }
+.a-row .tint, .name-row .tint { color:var(--a-accent); font-size:17px; line-height:0; }
+.a-row .chev { line-height:0; font-size:12px; }
+.a-row .ico { display:flex; align-items:center; justify-content:center; color:var(--a-sub); font-size:16px; }
+.a-songcard .cover { position:relative; display:flex; align-items:center; justify-content:center; aspect-ratio:auto; height:96px;
+  font-size:26px; color:color-mix(in srgb, var(--a-sub) 50%, transparent); }
+.card-star { position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%; background:var(--a-card);
+  display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--a-sub); }
+.a-songcard em.a-pill { margin-top:3px; }
+.fab-new { position:absolute; right:16px; bottom:18px; width:44px; height:44px; border-radius:50%; background:var(--a-card);
+  display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--a-accent); box-shadow:0 2px 10px rgba(0,0,0,0.12); }
+.name-row { display:flex; align-items:center; gap:8px; padding:12px 14px; font-weight:700; }
+.name-row .tint { font-size:13px; }
+.seed-text { padding:12px 14px; } .seed-head { display:flex; align-items:center; }
+.seed-head small { font-size:11px; color:var(--a-sub); } .seed-head .more { margin-left:auto; color:var(--a-sub); font-size:16px; line-height:0; }
+.seed-text p { font-size:14.5px; margin-top:4px; }
+.a-menu button { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.a-menu button .ic { font-size:15px; }
+.a-dialog { position:absolute; inset:0; z-index:20; display:none; flex-direction:column; justify-content:flex-end; padding:0 8px 18px;
+  background:var(--a-scrim); }
+.a-dialog.on { display:flex; animation:fadeIn .2s ease-out; }
+.a-dialog-box { animation:sheetUp .28s cubic-bezier(.2,.8,.2,1); }
+.a-dialog-group, .a-dialog-cancel { background:var(--a-elevated); border-radius:14px; box-shadow:0 4px 18px rgba(0,0,0,0.18); }
+.a-dialog-group { overflow:hidden; margin-bottom:8px; }
+.a-dialog button { display:block; width:100%; border:0; background:var(--a-elevated); color:var(--a-accent); font-size:16px; padding:13px 0; text-align:center; cursor:pointer; }
+.a-dialog-group button + button { border-top:0.5px solid var(--a-hair); }
+.a-dialog-cancel { font-weight:700; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes sheetUp { from { transform:translateY(40px); opacity:0; } to { transform:none; opacity:1; } }
+.rec-side { display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:20px; color:var(--a-label); background:var(--a-card); }
+.rec-side small { font-size:9.5px; font-weight:800; line-height:1; }
+.rec-side.on { background:var(--a-accent); color:#fff; }
+.rec-btn { display:flex; align-items:center; justify-content:center; }
+.rec-btn .rec-ic { font-size:32px; line-height:0; color:var(--a-red); position:relative; z-index:1; }
+.rec-btn .busy { display:none; color:#fff; } .rec-btn.on .busy { display:block; } .rec-btn.on .idle { display:none; }
+.take .play { background:none; color:var(--a-accent); font-size:28px; padding:0; width:auto; height:auto; line-height:0; }
+.take .star { color:var(--a-sub); font-size:17px; } .take .star.on { color:var(--a-accent); }
+.take .arr { color:var(--a-accent); font-size:17px; line-height:0; } .take .more { line-height:0; }
+.ar-transport { gap:4px; }
+.tr-btn { border:0; background:none; color:var(--a-accent); font-size:19px; line-height:0; padding:6px 3px; cursor:pointer; }
+.tr-btn.rec { color:var(--a-red); font-size:24px; }
+.tr-play { border:0; background:none; color:var(--a-accent); font-size:34px; line-height:0; padding:0; cursor:pointer; }
+.tr-play .p-off, .tr-play.playing .p-on { display:none; } .tr-play.playing .p-off { display:inline; }
+.ar-time { margin-right:auto; white-space:nowrap; font-size:12px; }
+.lane-head strong .ic { font-size:9px; color:var(--a-sub); margin-left:3px; }
+.lane-btns { align-items:center; }
+.lane-btns .mute { background:none; padding:0 2px; font-size:13px; color:var(--a-accent); line-height:0; }
+.lane-btns .mute.on { background:none; color:var(--a-sub); }
+.lane-btns .solo { width:20px; height:20px; border-radius:50%; padding:0; }
+.lane-btns .lmore { color:var(--a-sub); font-size:13px; line-height:0; margin-left:auto; padding:0 4px; }
+.add-main { display:inline-flex; align-items:center; gap:4px; font-size:14px; } .add-main .ic { font-size:16px; }
+.add-import { display:inline-flex; align-items:center; gap:3px; font-size:11.5px; margin-left:4px; }
+.sec-head .chev { color:var(--a-sub); font-size:9px; line-height:0; }
+.sec-head .a-link { display:inline-flex; align-items:center; gap:3px; }
+.sec-head .more { line-height:0; }
+.bar.empty .ic { font-size:11px; }
+.a-chip .ic { font-size:10px; margin-right:2px; }
+.chart-add { display:flex; align-items:center; justify-content:center; gap:6px; }
+.playbar { gap:6px; } .pb-play { color:var(--a-accent); font-size:28px; line-height:0; }
+.pb-dim { color:var(--a-sub); font-size:15px; line-height:0; } .pb-cap { flex:1; }
+.fret-card small { display:flex; align-items:center; gap:4px; }
+.fret-pos button { display:flex; align-items:center; justify-content:center; font-size:15px; }
+.fret-pills .a-chip { display:inline-flex; align-items:center; gap:4px; }
+.fret-guess .fg-head { font-size:11px; color:var(--a-sub); display:flex; align-items:center; gap:4px; }
+.fret-guess .fg-chips { display:flex; gap:6px; margin-top:6px; }
+.fret-guess .fg-chips span { font-weight:700; font-size:13px; color:var(--a-accent); background:var(--a-accent-fill); border-radius:8px; padding:4px 10px; }
+.fret-guess .fg-none { font-size:12px; color:var(--a-sub); margin-top:4px; }
+.fret-clear { display:inline-flex; align-items:center; gap:4px; margin-top:10px; font-size:12px; color:var(--a-sub); }
+.a-sheet-bar .a-link:disabled { color:var(--a-sub); cursor:default; }
+
+.sk-sheet { inset:0; border-radius:0; z-index:9; }
+.sk-paper { position:relative; flex:1; margin:0 10px; border-radius:12px; overflow:hidden; background:#FFF; }
+@media (prefers-color-scheme:dark) { .sk-paper { background:#000; box-shadow:inset 0 0 0 1px var(--a-hair); } }
+.studio .sk-paper { background:#000; box-shadow:inset 0 0 0 1px var(--a-hair); }
+.sk-canvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
+.sk-floats { position:absolute; top:8px; right:8px; display:flex; gap:4px; }
+.sk-float { width:30px; height:26px; border:0; border-radius:8px; background:var(--a-card); color:var(--a-label); font-size:14px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.15); }
+.sk-float:disabled { color:var(--a-sub); opacity:.5; cursor:default; }
+.sk-tools { flex:none; display:flex; justify-content:center; gap:14px; padding:10px 0 16px; }
+.sk-tool { width:40px; height:40px; border-radius:12px; border:0; background:var(--a-card); color:var(--a-label); font-size:20px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.sk-tool[data-tool="marker"] { color:#FFCC00; }
+.sk-tool.on { background:var(--a-accent); color:#fff; }
+.tx-area { display:block; width:100%; border:0; padding:12px; font:15px/1.6 inherit; font-family:inherit; color:var(--a-label); resize:none; }
+.tx-area:focus { outline:2px solid var(--a-accent); }
+.pp-note { font-size:11.5px; color:var(--a-sub); margin:4px 2px 10px; }
+.pp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
+.pp-tile { aspect-ratio:1; border:0; border-radius:4px; cursor:pointer; }
+.vs-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+.seed-media { padding:12px 14px; }
+.seed-media img { display:block; width:100%; max-height:150px; object-fit:contain; border-radius:12px; margin-top:6px; }
+.seed-photo { position:relative; height:120px; border-radius:12px; margin-top:6px; display:flex; align-items:flex-end; justify-content:flex-end; }
+.seed-photo em { font-style:normal; font-size:10.5px; font-weight:700; color:#fff; background:rgba(0,0,0,0.35); border-radius:999px; padding:2px 8px; margin:8px; }
+.seed-voice .ico { background:var(--a-accent); color:#fff; }
+.a-dialog-title { padding:12px 14px; text-align:center; font-size:12.5px; color:var(--a-sub); border-bottom:0.5px solid var(--a-hair); }
+.a-dialog-title b { display:block; font-size:13px; color:var(--a-sub); margin-bottom:2px; }
+.a-dialog .danger { color:var(--a-red); }
+.sk-sheet + .a-dialog, .a-dialog { z-index:21; }
+
+.tn-head { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.tn-inst .ic { font-size:10px; }
+.tn-listen, .mt-play { display:flex; align-items:center; justify-content:center; gap:8px; }
+.mt-top .ic { vertical-align:-2px; }
+.mt-bpm button { display:flex; align-items:center; justify-content:center; }
+.tn-inst { font-size:12.5px; font-weight:700; color:var(--a-accent); background:var(--a-accent-fill); border-radius:10px; padding:6px 10px; }
+.tn-a4 { margin-left:auto; font-size:11px; font-weight:700; color:var(--a-sub); background:var(--a-fill); border-radius:999px; padding:5px 9px; }
+.tn-note { text-align:center; height:82px; font:700 64px/82px ui-rounded,-apple-system,sans-serif; transition:color .2s; }
+.tn-note sub { font-size:22px; color:var(--a-sub); vertical-align:baseline; margin-left:2px; }
+.tn-note.ok { color:var(--a-green); }
+.tn-meter { position:relative; height:26px; margin:6px 4px; }
+.tn-meter::before { content:""; position:absolute; left:0; right:0; top:8px; height:10px; border-radius:999px; background:var(--a-fill); }
+.tn-meter::after { content:""; position:absolute; left:50%; top:2px; width:2px; height:22px; margin-left:-1px; background:var(--a-sub); }
+.tn-needle { position:absolute; top:0; width:5px; height:26px; margin-left:-2.5px; border-radius:999px; background:var(--a-accent); transition:left .3s ease-out; display:none; }
+.tn-needle.ok { background:var(--a-green); }
+.tn-cap { display:flex; justify-content:space-between; font-size:11px; color:var(--a-sub); margin:4px 2px 12px; }
+.tn-cap span:nth-child(2) { font-variant-numeric:tabular-nums; }
+.tn-strings { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; margin-bottom:12px; }
+.tn-strings button { border:2px solid transparent; border-radius:10px; background:var(--a-card); min-height:40px; font-weight:700; font-size:15px; cursor:pointer; }
+.tn-strings button.lock { border-color:var(--a-accent); } .tn-strings button.hit { color:var(--a-accent); } .tn-strings button.hit.ok { color:var(--a-green); }
+.tn-seg { grid-template-columns:repeat(3,1fr); }
+.tn-foot { padding:12px 14px; margin-top:12px; } .tn-foot small { font-size:10.5px; font-weight:700; color:var(--a-sub); letter-spacing:1px; }
+.tn-foot b { display:block; font-size:16px; margin-top:4px; } .tn-foot span { font-size:11px; color:var(--a-sub); }
+.mt-card { padding:14px; }
+.mt-top { display:flex; align-items:center; justify-content:space-between; font-size:13px; color:var(--a-sub); }
+.mt-bpm { display:flex; align-items:center; justify-content:space-between; margin:10px 0; }
+.mt-bpm button { width:42px; height:42px; border-radius:50%; border:0; background:var(--a-accent-fill); color:var(--a-accent); font-size:20px; font-weight:700; cursor:pointer; }
+.mt-bpm div { font:700 46px/1 ui-rounded,-apple-system,sans-serif; font-variant-numeric:tabular-nums; }
+.mt-bpm small { font-size:14px; color:var(--a-sub); margin-left:4px; font-weight:600; }
+.mt-slider { width:100%; accent-color:var(--a-accent); margin:4px 0 12px; }
+.mt-beats { display:flex; justify-content:center; gap:10px; margin-bottom:12px; }
+.mt-beats i { width:16px; height:16px; border-radius:50%; background:var(--a-fill); transition:background .08s, transform .08s; }
+.mt-beats i.accent { width:22px; height:22px; } .mt-beats i.hit { background:var(--a-accent); transform:scale(1.15); }
+.mt-tap { border:0; width:100%; border-radius:999px; background:var(--a-accent-fill); color:var(--a-accent); font-weight:700; font-size:15px; padding:11px 0; margin-bottom:8px; cursor:pointer; }
+.mt-tap.pulse { background:var(--a-accent); color:#fff; }
+.mt-play { display:flex; align-items:center; justify-content:center; gap:8px; font-size:16px; padding:14px 0; }
+.mt-opts { padding:2px 14px; margin-top:12px; }
+.mt-opts div { display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-size:13.5px; }
+.mt-opts div + div { border-top:0.5px solid var(--a-hair); } .mt-opts small { display:block; font-size:11px; color:var(--a-sub); }
+
+.points { list-style:none; margin-top:1.2rem; display:grid; gap:0.6rem; }
+.points li { padding-left:1.5rem; position:relative; font-size:1.02rem; line-height:1.7; }
+.points li::before { content:""; position:absolute; left:0.1rem; top:0.58em; width:0.62rem; height:0.62rem; border-radius:50%;
+  background:var(--accent-soft); box-shadow:inset 0 0 0 3px var(--accent); }
+section[id] { scroll-margin-top:84px; }
+
+.tp-body { padding:4px 14px 14px; display:grid; gap:10px; }
+.tp-nav { display:flex; align-items:center; gap:6px; padding:2px 12px 6px; font-weight:700; font-size:15px; }
+.tp-nav .ic { color:var(--a-accent); font-size:18px; }
+.tp-cover { width:118px; height:118px; margin:0 auto; border-radius:16px; background:var(--a-card); display:flex; align-items:center; justify-content:center;
+  font-size:44px; color:var(--a-sub); }
+.tp-title strong { display:block; font-size:17px; } .tp-title span { font-size:13px; color:var(--a-sub); }
+.tp-play { display:flex; align-items:center; gap:10px; width:100%; border:0; padding:10px; border-radius:12px; background:var(--a-card);
+  color:var(--a-label); text-align:left; cursor:pointer; }
+.tp-play .ic { font-size:30px; color:var(--a-accent); } .tp-play b { display:block; font-size:13.5px; }
+.tp-play small { font-size:11px; color:var(--a-sub); } .tp-play em { margin-left:auto; font-style:normal; font-size:12px; color:var(--a-sub); }
+.tp-tags { display:flex; flex-wrap:wrap; gap:6px; } .tp-tags span { font-size:11.5px; padding:3px 9px; border-radius:999px; background:var(--a-fill); color:var(--a-sub); }
+.tp-dl { border:0; border-radius:12px; background:var(--a-accent); color:#fff; font-weight:700; font-size:13.5px; padding:11px 8px; }
+.tp-foot { font-size:11px; color:var(--a-sub); text-align:center; }
+.tp-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.tp-cell { width:100%; align-content:start; display:grid; gap:2px; border:0; background:none; padding:0; text-align:left; color:var(--a-label); cursor:pointer; font:inherit; }
+.tp-cell.dim { opacity:.45; cursor:default; }
+.tp-thumb { aspect-ratio:1; border-radius:12px; background:var(--a-card); display:flex; align-items:center; justify-content:center; font-size:30px; color:var(--a-sub); margin-bottom:4px; }
+.tp-cell strong { font-size:13px; } .tp-cell span:not(.tp-thumb) { font-size:11px; color:var(--a-sub); } .tp-cell .a-pill { justify-self:start; margin-top:2px; }
+.tp-back { border:0; background:none; color:var(--a-label); cursor:pointer; font:inherit; font-weight:700; font-size:15px; }
+
+.cr-form { margin-top:1.2rem; padding:1.4rem 1.2rem; background:var(--card); border:1px solid var(--line); border-radius:18px; display:grid; gap:0.95rem; }
+.cr-form h3 { font-size:1.1rem; }
+.cr-form label { display:grid; gap:0.35rem; font-weight:700; font-size:0.95rem; }
+.cr-form label small { font-weight:400; color:var(--sub); }
+.cr-form input[type=text], .cr-form input[type=email], .cr-form input[type=url], .cr-form textarea {
+  width:100%; font:inherit; font-weight:400; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:0.6rem 0.75rem; }
+.cr-form textarea { min-height:6rem; resize:vertical; }
+.cr-form input:focus, .cr-form textarea:focus { outline:2px solid var(--accent); outline-offset:1px; }
+.cr-form .cr-check { display:flex; align-items:center; gap:0.5rem; font-weight:600; }
+.cr-form .cr-err { color:var(--record); font-weight:600; font-size:0.85rem; min-height:1em; }
+.cr-form .cr-note { color:var(--sub); font-size:0.85rem; line-height:1.7; }
+.cr-form button { justify-self:start; }
+
+.cr-wrap { max-width:880px; margin:0 auto; padding:0 16px 2rem; }
+.cr-sec { padding:2.4rem 0 0.6rem; }
+.cr-sec h2 { font-size:clamp(1.35rem,3vw,1.7rem); font-weight:800; margin-bottom:0.7rem; }
+.cr-sec p { color:var(--sub); line-height:1.8; margin-top:0.5rem; }
+.cr-steps { list-style:none; counter-reset:s; display:grid; gap:0.7rem; margin-top:0.9rem; }
+.cr-steps li { counter-increment:s; padding:0.9rem 1rem 0.9rem 3rem; position:relative; background:var(--card); border:1px solid var(--line); border-radius:14px; line-height:1.7; }
+.cr-steps li::before { content:counter(s); position:absolute; left:1rem; top:0.85rem; width:1.4rem; height:1.4rem; border-radius:50%;
+  background:var(--accent); color:var(--on-accent); font-weight:800; font-size:0.8rem; display:flex; align-items:center; justify-content:center; }
+.cr-split { display:grid; grid-template-columns:minmax(0,1fr); gap:1.6rem; align-items:start; }
+@media (min-width:860px) { .cr-split { grid-template-columns:minmax(0,1fr) 320px; } }
+
+.ts-wall { --ts-card:var(--card); --ts-sub:var(--sub); --ts-ink:var(--ink); --ts-acc:var(--accent); --ts-line:var(--line); }
+.ts-app { --ts-card:var(--a-card); --ts-sub:var(--a-sub); --ts-ink:var(--a-label); --ts-acc:var(--a-accent); --ts-line:var(--a-fill);
+  padding:4px 14px 16px; }
+.ts-app-title { font-size:26px; font-weight:800; padding-top:6px; }
+.ts-sub { color:var(--ts-sub); margin:0.3rem 0 1rem; line-height:1.6; }
+.ts-app .ts-sub { font-size:12.5px; margin:2px 0 10px; }
+.ts-feat, .ts-card { border:0; background:none; padding:0; font:inherit; color:var(--ts-ink); text-align:left; cursor:pointer; }
+.ts-feat { position:relative; display:block; width:100%; max-width:520px; border-radius:14px; overflow:hidden; }
+.ts-feat .ts-cv { width:100%; aspect-ratio:1; display:block; object-fit:cover; }
+.ts-glass { position:absolute; left:0; right:0; bottom:0; padding:0.9rem 1rem; display:grid; gap:0.15rem; justify-items:start;
+  background:rgba(30,30,30,.55); -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); color:#fff; }
+.ts-glass small { font-size:0.75rem; opacity:.8; } .ts-glass strong { font-size:1.35rem; line-height:1.25; }
+.ts-glass > span:not(.ts-badge) { opacity:.85; font-size:0.9rem; }
+.ts-app .ts-glass { padding:8px 10px; } .ts-app .ts-glass strong { font-size:16px; } .ts-app .ts-glass > span:not(.ts-badge) { font-size:11.5px; }
+.ts-badge { display:inline-block; font-size:0.7rem; font-weight:600; padding:0.1rem 0.5rem; border-radius:999px; margin-top:0.2rem;
+  color:var(--ts-acc); background:color-mix(in srgb, var(--ts-acc) 16%, transparent); }
+.ts-glass .ts-badge { color:#fff; background:rgba(255,255,255,.2); }
+.ts-more h3 { font-size:1.35rem; font-weight:800; margin:1.4rem 0 0.6rem; }
+.ts-app .ts-more h3 { font-size:17px; margin:14px 0 8px; }
+.ts-row { display:flex; gap:0.9rem; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:0.6rem; }
+.ts-card { flex:none; width:176px; display:grid; gap:0.1rem; justify-items:start; scroll-snap-align:start; }
+.ts-app .ts-card { width:118px; }
+.ts-card .ts-cv { width:100%; aspect-ratio:1; border-radius:10px; object-fit:cover; margin-bottom:0.35rem; }
+.ts-card strong { font-size:0.92rem; font-weight:600; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ts-card > span:not(.ts-badge) { font-size:0.8rem; color:var(--ts-sub); }
+.ts-app .ts-card strong { font-size:12.5px; } .ts-app .ts-card > span:not(.ts-badge) { font-size:11px; }
+.ts-ph { display:flex; align-items:center; justify-content:center; background:var(--ts-card); color:var(--ts-sub); font-size:2rem;
+  box-shadow:inset 0 0 0 0.5px var(--ts-line); }
+.ts-feat .ts-ph { font-size:3.5rem; } .ts-card > span.ts-ph { font-size:2.6rem; color:var(--ts-sub); }
+.ts-app .ts-card > span.ts-ph { font-size:1.8rem; }
+.ts-dlg { margin:auto; border:0; padding:0 20px 1.6rem; width:min(560px, 100vw); max-height:92vh; border-radius:20px;
+  background:var(--card); color:var(--ink); }
+.ts-dlg::backdrop { background:rgba(0,0,0,.55); }
+.ts-close { flex:none; border:0; background:var(--fill); color:var(--ink); width:2rem; height:2rem; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-size:1.1rem; cursor:pointer; }
+.ts-detail { display:grid; gap:0.35rem; } .ts-detail[hidden], .ts-err[hidden] { display:none; }
+.ts-big { width:min(360px, 78%); aspect-ratio:1; border-radius:12px; object-fit:cover; box-shadow:0 10px 30px rgba(0,0,0,.35);
+  margin:0.4rem 0 0.8rem; font-size:4rem; --ts-card:var(--fill); --ts-sub:var(--sub); --ts-line:var(--line); }
+.ts-detail h3 { font-size:1.5rem; font-weight:800; line-height:1.3; }
+.ts-artist { color:var(--accent); font-size:1.15rem; font-weight:600; }
+.ts-fine { color:var(--sub); font-size:0.82rem; line-height:1.6; } .ts-dim { opacity:.7; }
+.ts-btns { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin:0.7rem 0 0.2rem; }
+.ts-play, .ts-dl { display:flex; align-items:center; justify-content:center; gap:0.4rem; border-radius:12px; padding:0.7rem 0.5rem;
+  font:inherit; font-weight:700; font-size:0.95rem; cursor:pointer; text-decoration:none; }
+.ts-play { border:1px solid var(--line); background:var(--fill); color:var(--accent); }
+.ts-play:disabled { opacity:.45; cursor:default; }
+.ts-dl { border:0; background:var(--accent); color:var(--on-accent); }
+.ts-err { color:#FF453A; font-size:0.82rem; }
+.ts-blk { margin-top:1rem; } .ts-blk h4 { font-size:1.1rem; font-weight:800; margin-bottom:0.5rem; }
+.ts-tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
+.ts-tags span { font-size:0.8rem; padding:0.25rem 0.7rem; border-radius:999px; background:var(--fill); color:var(--ink); }
+.ts-link { display:flex; justify-content:space-between; align-items:center; padding:0.7rem 0; border-bottom:1px solid var(--line);
+  color:var(--ink); text-decoration:none; font-weight:600; } .ts-link .ic { color:var(--sub); }
+.ts-blk .ts-fine { margin-top:0.5rem; }
+@media (max-width:600px) { .ts-dlg { width:100vw; max-width:100vw; max-height:94vh; margin:auto 0 0; border-radius:20px 20px 0 0; }
+  .ts-card { width:150px; } }
+
+.ts-hd { --cv:min(360px, calc((min(560px, 100vw) - 40px) / 1.328)); position:relative; width:calc(var(--cv) * 1.328);
+  max-width:100%; height:var(--cv); margin:0.4rem auto 0.9rem; }
+.ts-hd .ts-big { position:absolute; left:0; top:0; width:var(--cv); height:var(--cv); margin:0; box-shadow:0 10px 18px rgba(0,0,0,.2); }
+.ts-disc { position:absolute; left:calc(var(--cv) * .05); top:calc(var(--cv) * .05); width:calc(var(--cv) * .9); height:calc(var(--cv) * .9);
+  border-radius:50%; filter:drop-shadow(0 3px 6px rgba(0,0,0,.18)); transition:transform .55s cubic-bezier(.25,.8,.25,1); }
+[data-ts-disc="out"] .ts-disc, [data-ts-disc="spin"] .ts-disc { transform:translateX(calc(var(--cv) * .9 * .42)); }
+.ts-disc-spin, .ts-disc::before, .ts-disc::after { position:absolute; inset:0; border-radius:50%; -webkit-mask:radial-gradient(circle closest-side, transparent 13%, #000 calc(13% + 0.5px)); mask:radial-gradient(circle closest-side, transparent 13%, #000 calc(13% + 0.5px)); }
+.ts-disc-spin { background-size:cover; background-position:center; animation:ts-spin 8s linear infinite; animation-play-state:paused; }
+[data-ts-disc="spin"] .ts-disc-spin { animation-play-state:running; }
+.ts-disc::before { content:""; mix-blend-mode:plus-lighter; pointer-events:none;
+  background:conic-gradient(rgba(255,255,255,0), rgba(255,255,255,.22), rgba(255,255,255,0), rgba(255,255,255,.14), rgba(255,255,255,0)); }
+.ts-disc::after { content:""; pointer-events:none; box-shadow:inset 0 0 0 0.5px rgba(128,128,128,.3);
+  background:radial-gradient(circle closest-side, transparent calc(34% - 0.6px), rgba(255,255,255,.35) calc(34% - 0.6px), rgba(255,255,255,.35) 34%, transparent 34%),
+    radial-gradient(circle closest-side, transparent 13.4%, rgba(255,255,255,.35) 13.4%, rgba(255,255,255,.35) calc(13.4% + 0.6px), transparent calc(13.4% + 0.6px)); }
+@keyframes ts-spin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ts-disc-spin { animation:none; } }
+.ts-top { position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:0.6rem;
+  margin:0 -20px; padding:0.7rem 20px; background:var(--card); }
+.ts-toptitle { font-weight:700; opacity:0; transition:opacity .35s ease-in-out; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ts-toptitle.on { opacity:1; }
+
+.tp-cta { margin:2.6rem 0 0.5rem; padding:1.6rem 1.3rem; border-radius:20px; background:var(--card); border:1px solid var(--line); text-align:center; }
+.tp-cta h2 { font-size:clamp(1.3rem,3vw,1.6rem); font-weight:800; }
+.tp-cta p { color:var(--sub); margin:0.5rem auto 1.1rem; max-width:32rem; line-height:1.8; }
+</style></head>
+<body>
+<header class="site"><div class="wrap"><a class="logo" href="../"><img src="../assets/app-icon.png" alt="" width="32" height="32">和弦備忘錄</a><nav class="site-nav" aria-label="主選單"><a href="../features/" class="">功能</a><a href="../templates/" class="on">範本</a><a href="../creator/" class="">創作者</a><a href="../download/" class="">下載</a><a href="../support/" class="">支援</a></nav><button type="button" class="snd-toggle" data-sound aria-pressed="true" aria-label="聲音" title="聲音開關"><span class="snd-on"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M160,32.25V223.69a8.29,8.29,0,0,1-3.91,7.18,8,8,0,0,1-9-.56l-65.57-51A4,4,0,0,1,80,176.16V79.84a4,4,0,0,1,1.55-3.15l65.57-51a8,8,0,0,1,10,.16A8.27,8.27,0,0,1,160,32.25ZM60,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H60a4,4,0,0,0,4-4V84A4,4,0,0,0,60,80Zm126.77,20.84a8,8,0,0,0-.72,11.3,24,24,0,0,1,0,31.72,8,8,0,1,0,12,10.58,40,40,0,0,0,0-52.88A8,8,0,0,0,186.74,100.84Zm40.89-26.17a8,8,0,1,0-11.92,10.66,64,64,0,0,1,0,85.34,8,8,0,1,0,11.92,10.66,80,80,0,0,0,0-106.66Z"/></svg></span><span class="snd-off"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.92,210.62a8,8,0,1,1-11.84,10.76L160,175.09v48.6a8.29,8.29,0,0,1-3.91,7.18,8,8,0,0,1-9-.56l-65.55-51A4,4,0,0,1,80,176.18V87.09L42.08,45.38A8,8,0,1,1,53.92,34.62Zm-27.21-55.46a8,8,0,0,0,11.29-.7,40,40,0,0,0,0-52.88,8,8,0,1,0-12,10.57,24,24,0,0,1,0,31.72A8,8,0,0,0,186.71,155.16Zm40.92-80.49a8,8,0,1,0-11.92,10.66,64,64,0,0,1,0,85.34,8,8,0,1,0,11.92,10.66,80,80,0,0,0,0-106.66ZM153,119.87a4,4,0,0,0,7-2.7V32.25a8.27,8.27,0,0,0-2.88-6.4,8,8,0,0,0-10-.16L103.83,59.33a4,4,0,0,0-.5,5.85ZM60,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H60a4,4,0,0,0,4-4V84A4,4,0,0,0,60,80Z"/></svg></span></button><a class="nav-cta" href="../download/">下載 App</a></div></header><main><section class="pg-head"><div class="sc-in"><h1>藝人範本</h1><p>合作藝人用和弦備忘錄做的歌，下載下來就是一份完整的範本。範本庫即將推出。</p></div></section><div class="cr-wrap"><section class="cr-sec ts-wall" id="wall" data-reveal><p class="ts-sub">合作藝人用和弦備忘錄做的歌，下載來看看怎麼做</p><button type="button" class="ts-feat" data-ts-open="theres-nothing"><img class="ts-cv" src="../assets/templates/theres-nothing.jpg" alt="there&#x27;s nothing...、呀沙係" loading="lazy"><span class="ts-glass"><small>精選範本</small><strong>there&#x27;s nothing...</strong><span>呀沙係</span><span class="ts-badge">合作藝人</span></span></button><div class="ts-more"><h3>更多範本</h3></div><div class="ts-row" tabindex="0" aria-label="更多範本"><button type="button" class="ts-card" data-ts-open="fake-01"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>晚班公車</strong><span>北窗（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-02"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>山的另一邊</strong><span>阿柑（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-03"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>海岸線</strong><span>林間小樹（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-04"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>粉紅雜訊</strong><span>霓虹風箏（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-05"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>慢慢來</strong><span>銅色午後（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-06"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>夜裡的草</strong><span>小藍（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-07"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>灰色的光</strong><span>雨傘工廠（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-08"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>石頭與海</strong><span>陳小島（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-09"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>紅岩</strong><span>退潮（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-10"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>繞圈圈</strong><span>紫色迴紋針（示意）</span><span class="ts-badge">合作藝人</span></button></div></section><section class="cr-sec" data-reveal><h2>範本裡有什麼</h2><div class="cr-split"><div><ul class="points"><li>打開就看得到一首歌的全過程：靈感、錄音、編曲、和弦譜。</li><li>免費下載，而且不算進免費版的 6 首。</li><li>免費版也能播放範本裡的疊錄與效果器：能聽，不能改 Pro 的設定。</li><li>下載前可以先試聽藝人用和弦備忘錄做的 demo；歌正式發行後，也會放上發行版。</li></ul></div><div class="ph-stage"><div class="ph-card"><div class="ph" data-store-phone><div class="ph-screen"><div class="ph-status">9:41</div><div class="ph-view on" style="position:relative"><div class="ph-scroll ts-app"><div class="ts-app-title">藝人範本</div><p class="ts-sub">合作藝人用和弦備忘錄做的歌，下載來看看怎麼做</p><button type="button" class="ts-feat" data-ts-open="theres-nothing"><img class="ts-cv" src="../assets/templates/theres-nothing.jpg" alt="there&#x27;s nothing...、呀沙係" loading="lazy"><span class="ts-glass"><small>精選範本</small><strong>there&#x27;s nothing...</strong><span>呀沙係</span><span class="ts-badge">合作藝人</span></span></button><div class="ts-more"><h3>更多範本</h3></div><div class="ts-row" tabindex="0" aria-label="更多範本"><button type="button" class="ts-card" data-ts-open="fake-01"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>晚班公車</strong><span>北窗（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-02"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>山的另一邊</strong><span>阿柑（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-03"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>海岸線</strong><span>林間小樹（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-04"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>粉紅雜訊</strong><span>霓虹風箏（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-05"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>慢慢來</strong><span>銅色午後（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-06"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>夜裡的草</strong><span>小藍（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-07"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>灰色的光</strong><span>雨傘工廠（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-08"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>石頭與海</strong><span>陳小島（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-09"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>紅岩</strong><span>退潮（示意）</span><span class="ts-badge">合作藝人</span></button><button type="button" class="ts-card" data-ts-open="fake-10"><span class="ts-cv ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><strong>繞圈圈</strong><span>紫色迴紋針（示意）</span><span class="ts-badge">合作藝人</span></button></div></div></div><div class="a-toast" role="status"></div></div></div><p class="ph-note">範本庫示意・照 App 範本庫的畫面</p></div></div></div></section><section class="tp-cta" data-reveal><h2>你是音樂人？</h2><p>用和弦備忘錄做一首完整的歌，放上範本庫，給所有使用者下載當範本。</p><a class="btn" href="../creator/">申請成為創作者</a></section></div><dialog class="ts-dlg" data-ts-dlg aria-label="藝人範本"><div class="ts-top"><span class="ts-toptitle" data-ts-toptitle aria-hidden="true"></span><button type="button" class="ts-close" data-ts-close aria-label="關閉"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg></button></div><article class="ts-detail" data-ts-detail="theres-nothing" hidden><div class="ts-hd" data-ts-disc="tucked"><div class="ts-disc" aria-hidden="true"><div class="ts-disc-spin" style="background-image:url('../assets/templates/theres-nothing.jpg')"></div></div><img class="ts-big" src="../assets/templates/theres-nothing.jpg" alt="there&#x27;s nothing...、呀沙係" loading="lazy"></div><h3>there&#x27;s nothing...</h3><p class="ts-artist">呀沙係</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・0:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play data-src="../assets/templates/theres-nothing-preview.m4a"><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>錄音</span></div></div><div class="ts-blk"><h4>發行版</h4><a class="ts-link" href="https://music.apple.com/tw/album/theres-nothing-single/1833314170" target="_blank" rel="noopener">Apple Music<svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg></a><a class="ts-link" href="https://open.spotify.com/album/1G1rSUbjzsaSyCDulooRDl" target="_blank" rel="noopener">Spotify<svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg></a><a class="ts-link" href="https://www.youtube.com/watch?v=9ih7RZkDj_o" target="_blank" rel="noopener">YouTube<svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg></a><p class="ts-fine">2025 年 8 月 11 日發行</p></div><p class="ts-fine">詞曲、編曲、演出：呀沙係</p><p class="ts-fine ts-dim">呀沙係 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-01" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>晚班公車</h3><p class="ts-artist">北窗（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：北窗｜編曲：北窗</p><p class="ts-fine ts-dim">北窗（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-02" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>山的另一邊</h3><p class="ts-artist">阿柑（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：阿柑｜編曲：阿柑</p><p class="ts-fine ts-dim">阿柑（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-03" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>海岸線</h3><p class="ts-artist">林間小樹（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：林間小樹｜編曲：林間小樹</p><p class="ts-fine ts-dim">林間小樹（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-04" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>粉紅雜訊</h3><p class="ts-artist">霓虹風箏（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：霓虹風箏｜編曲：霓虹風箏</p><p class="ts-fine ts-dim">霓虹風箏（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-05" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>慢慢來</h3><p class="ts-artist">銅色午後（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：銅色午後｜編曲：銅色午後</p><p class="ts-fine ts-dim">銅色午後（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-06" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>夜裡的草</h3><p class="ts-artist">小藍（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：小藍｜編曲：小藍</p><p class="ts-fine ts-dim">小藍（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-07" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>灰色的光</h3><p class="ts-artist">雨傘工廠（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：雨傘工廠｜編曲：雨傘工廠</p><p class="ts-fine ts-dim">雨傘工廠（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-08" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>石頭與海</h3><p class="ts-artist">陳小島（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：陳小島｜編曲：陳小島</p><p class="ts-fine ts-dim">陳小島（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-09" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>紅岩</h3><p class="ts-artist">退潮（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：退潮｜編曲：退潮</p><p class="ts-fine ts-dim">退潮（示意） 是和弦備忘錄的合作藝人</p></article><article class="ts-detail" data-ts-detail="fake-10" hidden><span class="ts-big ts-ph"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z"/></svg></span><h3>繞圈圈</h3><p class="ts-artist">紫色迴紋針（示意）</p><p class="ts-fine">合作藝人・用和弦備忘錄做的 demo・1:30</p><div class="ts-btns"><button type="button" class="ts-play" data-ts-play disabled><span data-ts-ic><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></span><span data-ts-label>試聽 Demo 版</span></button><a class="ts-dl" href="../download/"><svg class="ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M50.34,117.66a8,8,0,0,1,11.32-11.32L120,164.69V32a8,8,0,0,1,16,0V164.69l58.34-58.35a8,8,0,0,1,11.32,11.32l-72,72a8,8,0,0,1-11.32,0ZM216,208H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>下載範本</a></div><p class="ts-err" data-ts-err hidden>試聽載入失敗，再按一次重試。</p><div class="ts-blk"><h4>這首用到</h4><div class="ts-tags"><span>疊錄 4 軌</span><span>效果器</span><span>錄音重點</span><span>和弦譜</span></div></div><p class="ts-fine">詞曲、演唱：紫色迴紋針｜編曲：紫色迴紋針</p><p class="ts-fine ts-dim">紫色迴紋針（示意） 是和弦備忘錄的合作藝人</p></article></dialog></main><footer class="site"><div class="wrap"><span class="foot-name">和弦備忘錄</span><nav aria-label="頁尾"><a href="../privacy/">隱私政策</a><a href="../terms/">使用條款</a><a href="../support/">支援</a></nav></div></footer><script>
+window.CMAudio = (function () {
+  var M = { played: [] }, ctx = null, master = null, on = true, quiet = 0, cache = {}, buffers = {}, live = [];
+  var OPEN = [40, 45, 50, 55, 59, 64], MIX = 0.6, CHORD = { vel: 92, dur: 1.1 }, STAGGER = 0.04;
+  var CLICK = { strong: [1760, 0.7], medium: [1320, 0.45], weak: [1320, 0.28] };
+  try { on = localStorage.getItem('cm-sound') !== 'off'; } catch (e) { on = true; }
+  function unlock(e) {
+    if (!e.isTrusted) return;
+    if (!ctx) {
+      var C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+      try { ctx = new C(); } catch (err) { ctx = null; return; }
+      // 主音量照 App 0.6；後面接一顆壓縮器，六弦同時響或多軌疊加時不爆音
+      var limit = ctx.createDynamicsCompressor(); limit.threshold.value = -6; limit.ratio.value = 12; limit.connect(ctx.destination);
+      master = ctx.createGain(); master.gain.value = on ? MIX : 0; master.connect(limit);
+    }
+    if (ctx.state === 'suspended') ctx.resume().catch(function () { return null; });
+  }
+  // iOS Safari 要在 touchend／click 裡才解鎖聲音，所以四種手勢都接（重複呼叫無妨）
+  ['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (t) { document.addEventListener(t, unlock, true); });
+  M.allowed = function () { return !!ctx && on && quiet === 0; };   // 這一下點擊可以出聲（不是自動示範）
+  M.live = function () { return !!ctx && on; };                       // 已開始的播放（節拍器、從頭播）繼續出聲
+  M.isQuiet = function () { return quiet > 0; };
+  M.quietly = function (fn) { quiet++; try { fn(); } finally { quiet--; } };
+  M.now = function () { return ctx ? ctx.currentTime : 0; };
+  M.hz = function (midi) { return 440 * Math.pow(2, (midi - 69) / 12); };
+  M.midis = function (frets) { var out = []; frets.forEach(function (f, s) { if (f >= 0) out.push(OPEN[s] + f); }); return out; };
+  function track(src) { live.push(src); src.onended = function () { live = live.filter(function (x) { return x !== src; }); }; return src; }
+  M.stopAll = function () { live.forEach(function (s) { try { s.stop(); } catch (e) { return; } }); live = []; };
+  function pluck(midi) {  // Karplus-Strong：一個週期的雜訊在延遲線裡反覆低通平均；用 playbackRate 補小數延遲，音高準到 Hz
+    if (cache[midi]) return cache[midi];
+    var sr = ctx.sampleRate, f = M.hz(midi), n = Math.max(2, Math.floor(sr / f)), len = Math.ceil(sr * 2.2);
+    var buf = ctx.createBuffer(1, len, sr), d = buf.getChannelData(0), prev = 0, i;
+    for (i = 0; i < n; i++) { prev = 0.5 * (prev + Math.random() * 2 - 1); d[i] = prev; }
+    d[n] = 0.996 * 0.5 * d[0];
+    for (i = n + 1; i < len; i++) d[i] = 0.996 * 0.5 * (d[i - n] + d[i - n - 1]);
+    cache[midi] = { buf: buf, rate: f * (n + 0.5) / sr }; return cache[midi];
+  }
+  M.note = function (midi, at, vel, dur) {
+    if (!M.live()) return;
+    var p = pluck(midi), src = ctx.createBufferSource(), g = ctx.createGain(), t = Math.max(at || 0, ctx.currentTime);
+    src.buffer = p.buf; src.playbackRate.value = p.rate;
+    g.gain.setValueAtTime(Math.pow((vel || CHORD.vel) / 127, 2), t); g.gain.setTargetAtTime(0, t + (dur || CHORD.dur), 0.06);
+    src.connect(g); g.connect(master); track(src).start(t); src.stop(t + (dur || CHORD.dur) + 0.4);
+    M.played = M.played.concat([{ midi: midi, hz: +M.hz(midi).toFixed(2) }]).slice(-60);
+  };
+  // 整彈（stagger 0）或一弦一弦往下刷；midis 低→高，反過來傳就是上刷
+  M.strum = function (midis, o) {
+    var opt = o || {}, t = opt.at || M.now(), gap = opt.stagger == null ? STAGGER : opt.stagger;
+    midis.forEach(function (m, i) { M.note(m, t + i * gap, opt.vel, opt.dur); });
+  };
+  M.frets = function (frets, o) { M.strum(M.midis(frets), o); };
+  M.open = function (s) { return OPEN[s]; };
+  M.click = function (level, at) {
+    if (!M.live()) return;
+    var v = CLICK[level] || CLICK.medium, o = ctx.createOscillator(), g = ctx.createGain(), t = Math.max(at || 0, ctx.currentTime);
+    o.frequency.value = v[0]; g.gain.setValueAtTime(v[1], t); g.gain.setTargetAtTime(0, t, 1 / 140);
+    o.connect(g); g.connect(master); track(o).start(t); o.stop(t + 0.03);
+  };
+  M.tone = function (hz) {  // 調音器參考音
+    if (!M.allowed()) return;
+    var t = ctx.currentTime, harm = hz < 200 ? [1, 0.6, 0.4] : [1], sum = harm.reduce(function (a, b) { return a + b; }, 0);
+    var g = ctx.createGain(); g.connect(master);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.02); g.gain.setValueAtTime(0.3, t + 1.75); g.gain.linearRampToValueAtTime(0, t + 2);
+    harm.forEach(function (a, k) {
+      var o = ctx.createOscillator(), h = ctx.createGain(); o.frequency.value = hz * (k + 1); h.gain.value = a / sum;
+      o.connect(h); h.connect(g); track(o).start(t); o.stop(t + 2.05);
+    });
+    M.played = M.played.concat([{ tone: +hz.toFixed(2) }]).slice(-60);
+  };
+  M.load = function (url) {  // 示範歌的真實錄音（m4a），解碼一次就留著
+    if (!buffers[url]) buffers[url] = fetch(url).then(function (r) { if (!r.ok) throw new Error(url + ' ' + r.status); return r.arrayBuffer(); })
+      .then(function (raw) { return new Promise(function (ok, bad) { ctx.decodeAudioData(raw, ok, bad); }); })
+      .catch(function (err) { delete buffers[url]; throw err; });  // 失敗不快取，下次點還會重試
+    return buffers[url];
+  };
+  M.play = function (buffer, offset, gainNode) {
+    var src = ctx.createBufferSource(); src.buffer = buffer; src.connect(gainNode || master);
+    track(src).start(ctx.currentTime + 0.02, Math.max(0, Math.min(offset || 0, buffer.duration))); return src;
+  };
+  M.gain = function (value) { var g = ctx.createGain(); g.gain.value = value; g.connect(master); return g; };
+  M.url = function (rel) { return (window.CMAudioBase || '') + rel; };
+  function paint(btn) { btn.setAttribute('aria-pressed', on ? 'true' : 'false'); btn.setAttribute('aria-label', on ? '聲音：開' : '聲音：關'); }
+  M.setOn = function (v) {
+    on = !!v; try { localStorage.setItem('cm-sound', on ? 'on' : 'off'); } catch (e) { on = !!v; }
+    if (master) master.gain.setValueAtTime(on ? MIX : 0, ctx.currentTime);
+    if (!on) M.stopAll();
+    document.querySelectorAll('[data-sound]').forEach(paint);
+    document.dispatchEvent(new CustomEvent('cmsound', { detail: { on: on } }));
+  };
+  document.querySelectorAll('[data-sound]').forEach(function (btn) { paint(btn); btn.addEventListener('click', function () { M.setOn(!on); }); });
+  return M;
+})();
+</script><script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('[data-reveal]');
+  if (!('IntersectionObserver' in window) || reduce) {
+    items.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script><script>(function () {
+  var L = {"play": "試聽 Demo 版", "stop": "停止試聽", "loading": "載入中…"}, IC = {"play": "<svg class=\"ic\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z\"/></svg>", "stop": "<svg class=\"ic\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M216,56V200a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40H200A16,16,0,0,1,216,56Z\"/></svg>"};
+
+  var dlg = document.querySelector('[data-ts-dlg]'), S = window.CMAudio; if (!dlg) return;
+  var cur = null, token = 0;
+  function paint(btn, state) {
+    btn.querySelector('[data-ts-ic]').innerHTML = state === 'play' ? IC.play : IC.stop;
+    btn.querySelector('[data-ts-label]').textContent = L[state]; btn.setAttribute('aria-pressed', state === 'play' ? 'false' : 'true');
+    disc(btn, state);
+  }
+  function stop() {
+    token++; if (!cur) return;
+    if (cur.src) { try { cur.src.stop(); } catch (e) { cur.src = null; } }
+    paint(cur.btn, 'play'); cur = null;
+  }
+  function play(btn) {
+    var err = btn.closest('[data-ts-detail]').querySelector('[data-ts-err]'), mine = ++token;
+    err.hidden = true; paint(btn, 'loading'); cur = { btn: btn, src: null };
+    S.load(btn.dataset.src).then(function (buf) {
+      if (mine !== token) return;
+      if (!S.live()) { stop(); return; }
+      var src = S.play(buf, 0); cur = { btn: btn, src: src }; paint(btn, 'stop');
+      src.addEventListener('ended', function () { if (cur && cur.src === src) { cur = null; paint(btn, 'play'); } });
+    }).catch(function () { if (mine === token) { stop(); err.hidden = false; } });
+  }
+  dlg.querySelectorAll('[data-ts-play]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (cur && cur.btn === btn) { stop(); return; }
+      if (!S || !S.allowed()) return;
+      stop(); play(btn);
+    });
+  });
+  function open(id) {
+    dlg.querySelectorAll('[data-ts-detail]').forEach(function (d) { d.hidden = d.dataset.tsDetail !== id; });
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    dlg.scrollTop = 0;
+    var d = dlg.querySelector('[data-ts-detail="' + id + '"]');
+    topTitle.textContent = d.querySelector('h3').textContent; topTitle.classList.remove('on');
+  }
+  document.querySelectorAll('[data-ts-open]').forEach(function (b) { b.addEventListener('click', function () { open(b.dataset.tsOpen); }); });
+  dlg.querySelector('[data-ts-close]').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', stop);
+  document.addEventListener('cmsound', function (e) { if (!e.detail.on) stop(); });
+
+  function disc(btn, state) {
+    var hd = btn.closest('[data-ts-detail]').querySelector('[data-ts-disc]'); if (!hd) return;
+    hd.dataset.tsDisc = state === 'play' ? 'tucked' : (state === 'loading' ? 'out' : 'spin');
+  }
+  var topTitle = dlg.querySelector('[data-ts-toptitle]'), top = dlg.querySelector('.ts-top');
+  function reveal() {
+    var d = dlg.querySelector('[data-ts-detail]:not([hidden])'); if (!d) return;
+    var cover = d.querySelector('.ts-big').getBoundingClientRect();
+    topTitle.classList.toggle('on', cover.top + cover.height * 0.6 < top.getBoundingClientRect().bottom);
+  }
+  dlg.addEventListener('scroll', reveal, { passive: true });
+})();</script>
+</body></html>

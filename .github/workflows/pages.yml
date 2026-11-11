@@ -1,0 +1,33 @@
+# 官網部署：把本機產生好的 web/site 原樣放上 GitHub Pages（不在 GitHub 上重新產生，因為素材要從本機 App 專案取）。
+# 更新網站：本機 `cd web && python3 build_site.py`，commit web/site 後推到 main。
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths: ["web/site/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/site
+      - id: deployment
+        uses: actions/deploy-pages@v4
