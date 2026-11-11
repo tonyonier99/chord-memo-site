@@ -10,7 +10,7 @@
 from site_app_data import demo_songs
 from site_app_screens import song_json, stage
 from site_bands import demo_phone
-from site_content import APP_NAME, FEATURES, INTRO, PRIVACY_PROMISE, TAGLINE, TOOL_BANDS
+from site_content import APP_NAME, FEATURES, HERO_EYEBROW, INTRO, PRIVACY_PROMISE, TOOL_BANDS
 from site_showcase import bento, final_cta, store_actions
 from site_icons import icon
 from site_store_home import welcome_card
@@ -31,7 +31,7 @@ def song_meta(song: dict) -> str:
 def hero(song: dict) -> str:
     return (
         '<section class="st-hero"><div class="sc-in st-hero-grid">'
-        f'<div class="st-copy"><p class="st-eyebrow">{esc(TAGLINE)}</p><h1>{esc(APP_NAME)}</h1>'
+        f'<div class="st-copy"><p class="st-eyebrow">{esc(HERO_EYEBROW)}</p><h1>{esc(APP_NAME)}</h1>'
         f'<p class="st-lead">{esc(INTRO)}</p>{store_actions("")}</div>'
         f'<div class="st-chords" data-hero-chords data-song="{song_json(song)}">'
         f'<p class="st-mono st-meta">{esc(song_meta(song))}</p><p class="st-cap">{esc(CHART_CAPTION)}</p>'

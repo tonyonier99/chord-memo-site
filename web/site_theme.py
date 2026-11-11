@@ -7,6 +7,7 @@
 """
 from html import escape
 
+from site_apple_style import APPLE_CSS
 from site_audio_js import AUDIO_JS, SOUND_CSS, sound_toggle
 from site_content import APP_NAME, SITE_URL, TAGLINE
 from site_favicon import FAVICON_SIZES, favicon_name
@@ -118,6 +119,6 @@ def page(title: str, description: str, body: str, *, root: str, path: str | None
         f'{seo_head(path)}<meta name="color-scheme" content="light dark">'
         "<script>document.documentElement.classList.add('js')</script>"
         f'{icon_links(root)}'
-        f'<style>{THEME_CSS}{SOUND_CSS}{extra_css}</style></head>\n<body>\n'
+        f'<style>{THEME_CSS}{SOUND_CSS}{extra_css}{APPLE_CSS}</style></head>\n<body>\n'
         f'{header_html(root, section)}<main>{body}</main>{footer_html(root)}{AUDIO_JS}{tail}\n</body></html>\n'
     )

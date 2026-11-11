@@ -1,7 +1,7 @@
 """首頁的深色工作室外觀＋首屏和弦按法。
 
 - 色彩一律用 App 的系統色深色值（Theme.swift：systemBlue #0A84FF、systemRed #FF453A、
-  systemGroupedBackground、secondarySystemGroupedBackground）；首頁固定深色，其他頁照舊跟著系統。
+  systemGroupedBackground、secondarySystemGroupedBackground）；首頁原本固定深色，站長 2026-11-12 改成跟其他頁一樣跟著系統深淺（示範手機維持深色）。
 - 和弦名稱、BPM、步驟編號用等寬字（tabular 數字），呈現錄音介面與和弦譜的質感。
 - 不放裝飾圖（和弦大師資料夾沒有可用的氛圍素材；建議 AI 生圖的位置列在回報）。
 - 首屏指板照 FretboardEditorView.swift 的排法：最高弦在上、✕ 悶弦、○ 空弦、分隔線、視窗 5 格品（第 1 品起）；
@@ -9,10 +9,7 @@
 """
 
 HOME_CSS = """
-:root:has(.studio) { color-scheme:dark; --accent:#0A84FF; --accent-ink:#409CFF; --accent-soft:rgba(10,132,255,0.18); --on-accent:#FFF;
-  --record:#FF453A; --bg:#0B0B0D; --card:#1C1C1E; --fill:rgba(118,118,128,0.24); --ink:#F5F5F7; --sub:#AEAEB2;
-  --line:rgba(84,84,88,0.6); --shadow:0 14px 34px rgba(0,0,0,0.5); --hero:none;
-  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace; }
+:root { --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace; }
 .studio .ph { --a-bg:#000; --a-card:#1C1C1E; --a-elevated:#2C2C2E; --a-scrim:rgba(0,0,0,0.55); --a-fill:rgba(118,118,128,0.24);
   --a-label:#FFF; --a-sub:rgba(235,235,245,0.6); --a-accent:#0A84FF; --a-accent-fill:rgba(10,132,255,0.2); --a-red:#FF453A;
   --a-green:#30D158; --a-hair:rgba(84,84,88,0.6); box-shadow:0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 2px #3A3A3C; }

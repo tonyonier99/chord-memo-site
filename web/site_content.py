@@ -15,8 +15,9 @@ PRO_NAME = "和弦備忘錄 Pro"
 # chord-memo-site/_config.yml 的 description
 TAGLINE = "寫歌用的吉他和弦備忘錄"
 # chord-memo-site/index.md 首段
-INTRO = ("和弦備忘錄是一款 iPhone 上的寫歌備忘錄：靈感來了一鍵錄下哼唱，用文字、照片、塗鴉記下起點，"
-         "再整理成有錄音、歌詞與吉他和弦譜的 demo。")
+# 站長 2026-11-12：App 裡的說明文字不適合當網站文案 → 以下標「站長 11-12 改寫」的句子是改寫版（事實照 App 與隱私政策）
+HERO_EYEBROW = "寫歌的人，口袋裡的錄音室"  # 站長 11-12 改寫（首屏小標；TAGLINE 仍給網頁描述用）
+INTRO = "靈感來了，先錄下來。之後再慢慢把它變成一首有歌詞、有和弦、有編曲的 demo。"  # 站長 11-12 改寫
 
 # App Store 連結：App 原始碼、文件與官網都找不到 → 留空，頁面顯示占位字
 APP_STORE_URL = os.environ.get("CHORD_APP_STORE_URL", "")
@@ -43,26 +44,25 @@ FEATURES = [
     {
         "anchor": "inspiration", "eyebrow": "靈感", "demo": "inspiration",
         "title": "加一則靈感",  # HomeCaptureChoice.swift buttonLabel
-        "lead": "想到一句話、錄一段、拍一張或畫一筆，先放這裡。",  # InspirationInboxView.swift 靈感匣空狀態
+        "lead": "一句歌詞、一段哼唱、一張照片、一筆塗鴉，先丟進來，不用想怎麼整理。",  # 站長 11-12 改寫
         "points": ["錄一段聲音", "寫一句話", "加一張照片", "畫一筆"],  # HomeCaptureChoice.swift
     },
     {
         "anchor": "record", "eyebrow": "錄音", "demo": "record",
         "title": "立刻錄音",  # AppShortcuts.swift shortTitle
-        # native/project.yml NSMicrophoneUsageDescription
-        "lead": "用於哼唱錄音與調音器音高偵測；錄音保存在你的裝置，並在啟用 iCloud 時同步到你的私人 iCloud 空間。",
-        "points": ["鎖定螢幕或切到背景時可以繼續錄音"],  # privacy.md 系統權限表「麥克風」列
+        "lead": "按一下就開始錄。鎖住螢幕、切到別的 App，錄音都不會斷。",  # 站長 11-12 改寫（privacy.md 麥克風列）
+        "points": ["錄音只存在你的手機和你自己的 iCloud"],  # 站長 11-12 改寫（麥克風權限說明、privacy.md）
     },
     {
         "anchor": "arrange", "eyebrow": "編曲", "demo": "arrange",
-        "title": "編曲",  # WorkspaceTab.label
+        "title": "一軌一軌疊上去",  # 站長 11-12 改寫（WorkspaceTab「編曲」）
         "lead": "主錄音是編曲的第一軌。錄好之後回到這裡，就能一軌一軌疊上去。",  # ArrangeTabView.swift
-        "points": ["可以匯入 m4a、wav、mp3。"],  # ArrangeTabView.swift 匯入失敗說明
+        "points": ["也能匯入電腦做好的 m4a、wav、mp3"],  # 站長 11-12 改寫（ArrangeTabView.swift 匯入格式）
     },
     {
         "anchor": "chart", "eyebrow": "和弦", "demo": "chart",
-        "title": "這首歌的獨特和弦 · 照著按就彈得出來",  # ChartExport.swift／ChordPickerSheet.swift
-        "lead": "點一下小節 → 下方點和弦連續填 · 點一下歌詞列寫詞 · 段名旁「歌詞」整段貼上 · 底部「加入段落」開主歌副歌",  # ChartTabView.swift
+        "title": "和弦譜，照著就彈得出來",  # 站長 11-12 改寫
+        "lead": "點小節填和弦、點歌詞列寫詞，主歌副歌一段一段排好，整份譜一眼看完。",  # 站長 11-12 改寫（ChartTabView.swift 操作）
         "points": ["彈到喜歡的聲音，按出來存進這首歌",  # ChordsTabView.swift
                    "猜不出名字也沒關係，一樣存得起來"],  # FretboardEditorView.swift
     },
@@ -75,11 +75,11 @@ TOOL_BANDS = [
      "lead": "",
      "points": ["分享整份譜（圖片）", "分享 ChordPro 文字", "複製為 ChordPro"]},  # OthersView.swift 分享子選單
     {"anchor": "tuner", "eyebrow": "工具", "demo": "tuner", "title": "調音器",  # OthersView.swift 工具
-     "lead": "音準偵測（調音器）使用裝置麥克風，以自相關估算音高，不會錄音或上傳。",  # SettingsDetailViews.swift
+     "lead": "彈一下就知道準不準。只聽、不錄、不上傳。",  # 站長 11-12 改寫（SettingsDetailViews.swift：不錄音、不上傳）
      "points": ["自動", "手動", "半音"]},  # TunerLogic.swift TunerMode
     {"anchor": "metronome", "eyebrow": "工具", "demo": "metronome", "title": "節拍器",  # OthersView.swift 工具
      "lead": "錄音時跟著歌的速度打拍子，先響 1 小節預備拍",  # RecordClickViews.swift
-     "points": ["Tap", "預備拍", "按播放先數一小節"]},  # RhythmView.swift
+     "points": ["點拍子抓速度", "錄音前先數一小節"]},  # 站長 11-12 改寫（RhythmView.swift Tap、預備拍）
 ]
 
 # 其他功能卡（首頁 bento、功能頁「還有這些」）：(標題, 說明, 出處)
@@ -87,7 +87,7 @@ EXTRAS = [
     ("回來聽聽你的歌", "挑一首暫放的靈感，回來聽 30 秒就好。", "SettingsView.swift 本機提醒文案"),
     ("最近刪除", "不小心刪掉作品怎麼辦？到首頁右上角的「…」選單 >「最近刪除」可以復原。", "support.md 常見問題"),
     ("iCloud 同步（可選）", "你的作品只同步到你自己的 iCloud 私人空間，由 Apple 保管，開發者無法讀取。", "privacy.md"),
-    ("靈感匣", "靈感匣不限數量，之後升級或空出位置再整理成歌", "PaywallView.swift"),
+    ("靈感匣", "靈感不限數量，想到就存，之後再挑來寫成歌。", "站長 11-12 改寫（PaywallView.swift）"),
 ]
 
 # 跑馬燈：App 內的功能名稱（HomeCaptureChoice、WorkspaceTab、OthersView、ChartTabView 分享選單、PaywallView、SettingsView）
