@@ -13,17 +13,11 @@ from site_content import APP_NAME, SITE_URL, TAGLINE
 from site_favicon import FAVICON_SIZES, favicon_name
 
 THEME_CSS = """
-:root { color-scheme:light dark;
+:root { color-scheme:light;  /* 站長 2026-11-12：網站一律淺色（像 Apple 官網），示範手機照 App 跟系統 */
   --accent:#007AFF; --accent-ink:#0063D1; --accent-soft:rgba(0,122,255,0.12); --on-accent:#FFFFFF;
   --record:#FF3B30; --bg:#F2F2F7; --card:#FFFFFF; --fill:rgba(118,118,128,0.12);
   --ink:#000000; --sub:#5E5E63; --line:rgba(60,60,67,0.18); --shadow:0 12px 30px rgba(0,30,80,0.08);
   --hero:radial-gradient(1100px 520px at 85% 0%, rgba(0,122,255,0.16), rgba(0,122,255,0) 62%); }
-@media (prefers-color-scheme:dark) {
-  :root { --accent:#0A84FF; --accent-ink:#409CFF; --accent-soft:rgba(10,132,255,0.18); --record:#FF453A;
-    --bg:#000000; --card:#1C1C1E; --fill:rgba(118,118,128,0.24); --ink:#FFFFFF; --sub:#AEAEB2;
-    --line:rgba(84,84,88,0.65); --shadow:0 12px 30px rgba(0,0,0,0.5);
-    --hero:radial-gradient(1100px 520px at 85% 0%, rgba(10,132,255,0.28), rgba(10,132,255,0) 62%); }
-}
 * { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 body { background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",
@@ -116,7 +110,7 @@ def page(title: str, description: str, body: str, *, root: str, path: str | None
         '<!doctype html>\n<html lang="zh-Hant"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f'<title>{esc(full_title)}</title><meta name="description" content="{esc(description or TAGLINE)}">'
-        f'{seo_head(path)}<meta name="color-scheme" content="light dark">'
+        f'{seo_head(path)}<meta name="color-scheme" content="light">'
         "<script>document.documentElement.classList.add('js')</script>"
         f'{icon_links(root)}'
         f'<style>{THEME_CSS}{SOUND_CSS}{extra_css}{APPLE_CSS}</style></head>\n<body>\n'
