@@ -1,7 +1,7 @@
 """首頁的深色工作室外觀＋首屏和弦按法。
 
 - 色彩一律用 App 的系統色深色值（Theme.swift：systemBlue #0A84FF、systemRed #FF453A、
-  systemGroupedBackground、secondarySystemGroupedBackground）；首頁原本固定深色，站長 2026-11-12 改成跟其他頁一樣跟著系統深淺（示範手機維持深色）。
+  systemGroupedBackground、secondarySystemGroupedBackground）；站長 2026-11-12：全站固定淺色，示範手機與首屏指板也是淺色。
 - 和弦名稱、BPM、步驟編號用等寬字（tabular 數字），呈現錄音介面與和弦譜的質感。
 - 不放裝飾圖（和弦大師資料夾沒有可用的氛圍素材；建議 AI 生圖的位置列在回報）。
 - 首屏指板照 FretboardEditorView.swift 的排法：最高弦在上、✕ 悶弦、○ 空弦、分隔線、視窗 5 格品（第 1 品起）；
@@ -10,9 +10,6 @@
 
 HOME_CSS = """
 :root { --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace; }
-.studio .ph { --a-bg:#000; --a-card:#1C1C1E; --a-elevated:#2C2C2E; --a-scrim:rgba(0,0,0,0.55); --a-fill:rgba(118,118,128,0.24);
-  --a-label:#FFF; --a-sub:rgba(235,235,245,0.6); --a-accent:#0A84FF; --a-accent-fill:rgba(10,132,255,0.2); --a-red:#FF453A;
-  --a-green:#30D158; --a-hair:rgba(84,84,88,0.6); box-shadow:0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 2px #3A3A3C; }
 .st-mono { font-family:var(--mono); font-variant-numeric:tabular-nums; }
 .st-eyebrow { font-size:0.88rem; font-weight:700; color:var(--accent-ink); letter-spacing:0.04em; }
 .st-copy h1 { font-size:clamp(2.4rem,6vw,3.8rem); line-height:1.15; font-weight:800; margin-top:0.4rem; }
@@ -31,13 +28,13 @@ HOME_CSS = """
 .st-chord-row button:hover { border-color:var(--accent); }
 .st-chord-row button:active { transform:scale(0.96); }
 .st-chord-row button[aria-selected="true"] { background:var(--accent); color:#fff; }
-.st-board { background:#000; border-radius:16px; padding:0.9rem 0.6rem 0.8rem; }
+.st-board { background:var(--bg); border-radius:16px; padding:0.9rem 0.6rem 0.8rem; }
 .st-board-title { font-size:0.85rem; color:var(--sub); margin:0 0.4rem 0.6rem; }
 .st-board-grid { display:grid; gap:5px; justify-content:center; }
 .st-row { display:flex; align-items:center; gap:5px; }
 .st-row b { width:16px; text-align:center; font:700 0.78rem var(--mono); color:var(--sub); }
 .st-row i { width:1px; height:24px; background:var(--line); }
-.st-cell { width:30px; height:30px; border-radius:50%; border:0; padding:0; cursor:pointer; background:rgba(118,118,128,0.24); color:rgba(235,235,245,0.6);
+.st-cell { width:30px; height:30px; border-radius:50%; border:0; padding:0; cursor:pointer; background:var(--fill); color:var(--sub);
   display:flex; align-items:center; justify-content:center; font:0.8rem var(--mono); transition:background .2s, color .2s, transform .1s; }
 .st-cell:active { transform:scale(0.9); }
 .st-guess { margin-top:0.9rem; }

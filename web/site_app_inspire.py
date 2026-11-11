@@ -67,8 +67,6 @@ def inspire_sheets() -> str:
 INSPIRE_CSS = """
 .sk-sheet { inset:0; border-radius:0; z-index:9; }
 .sk-paper { position:relative; flex:1; margin:0 10px; border-radius:12px; overflow:hidden; background:#FFF; }
-@media (prefers-color-scheme:dark) { .sk-paper { background:#000; box-shadow:inset 0 0 0 1px var(--a-hair); } }
-.studio .sk-paper { background:#000; box-shadow:inset 0 0 0 1px var(--a-hair); }
 .sk-canvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
 .sk-floats { position:absolute; top:8px; right:8px; display:flex; gap:4px; }
 .sk-float { width:30px; height:26px; border:0; border-radius:8px; background:var(--a-card); color:var(--a-label); font-size:14px;

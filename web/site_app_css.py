@@ -11,10 +11,7 @@ APP_CSS = """
   --a-accent:#007AFF; --a-accent-fill:rgba(0,122,255,0.15); --a-red:#FF3B30; --a-green:#34C759; --a-hair:rgba(60,60,67,0.29);
   position:relative; z-index:1; width:min(300px,84vw); height:600px; border-radius:46px; background:#1C1C1E; padding:10px;
   box-shadow:0 24px 50px rgba(0,30,80,0.22), inset 0 0 0 2px #3A3A3C; flex:none; }
-@media (prefers-color-scheme:dark) {
-  .ph { --a-bg:#000; --a-card:#1C1C1E; --a-elevated:#2C2C2E; --a-scrim:rgba(0,0,0,0.55); --a-fill:rgba(118,118,128,0.24); --a-label:#FFF; --a-sub:rgba(235,235,245,0.6);
-    --a-accent:#0A84FF; --a-accent-fill:rgba(10,132,255,0.2); --a-red:#FF453A; --a-green:#30D158; --a-hair:rgba(84,84,88,0.6); }
-}
+/* 站長 2026-11-12：網站固定淺色，示範手機也只用 App 的淺色外觀 */
 .ph-screen { position:relative; width:100%; height:100%; border-radius:37px; background:var(--a-bg); overflow:hidden; overflow:clip;
   display:flex; flex-direction:column; color:var(--a-label); font-size:14px; line-height:1.4; text-align:left; }
 :where(.ph) button { font-family:inherit; color:inherit; }
