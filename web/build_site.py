@@ -28,7 +28,6 @@ import sys
 from pathlib import Path
 
 from site_app_data import engine_path
-from site_audio import export_demo_audio
 from site_bands import BANDS_CSS, app_scripts
 from site_creator import CREATOR_CSS, CREATOR_JS, creator_body
 from site_store import store_js
@@ -39,7 +38,12 @@ from site_legal import LEGAL_CSS, legal_body, read_markdown
 from site_motion import MOTION_CSS, MOTION_JS
 from site_pages import PAGES_CSS, download_body, features_body, not_found_body
 from site_home import home_body
+from site_home_pro import HOME_PRO_CSS
+from site_home_steps import STEPS_CSS
+from site_home_steps_js import STEPS_JS
 from site_home_style import HOME_CSS, HOME_JS
+from site_song import audio_files
+from site_tool_cards import TOOL_CARDS_CSS, TOOL_CARDS_JS
 from site_favicon import write_favicons
 from site_seo import write_crawl_files
 from site_showcase import SHOWCASE_CSS
@@ -60,14 +64,14 @@ def write(rel: str, html: str) -> Path:
 
 
 def build_home() -> Path:
-    html = page(APP_NAME, INTRO, home_body(), root="", path="", section="home", extra_css=COMMON_CSS + BANDS_CSS + HOME_CSS + WELCOME_CSS,
-                tail=MOTION_JS + app_scripts("") + HOME_JS)
+    html = page(APP_NAME, INTRO, home_body(), root="", path="", section="home", extra_css=COMMON_CSS + BANDS_CSS + HOME_CSS + WELCOME_CSS + TOOL_CARDS_CSS + STEPS_CSS + HOME_PRO_CSS,
+                tail=MOTION_JS + app_scripts("") + HOME_JS + TOOL_CARDS_JS + STEPS_JS)
     return write("index.html", html)
 
 
 def build_features() -> Path:
     html = page("功能", f"{TAGLINE}：靈感、錄音、編曲、和弦與 {PRO_NAME}。", features_body("../"), root="../", path="features/",
-                section="features", extra_css=COMMON_CSS + PAGES_CSS + BANDS_CSS, tail=MOTION_JS + app_scripts("../"))
+                section="features", extra_css=COMMON_CSS + PAGES_CSS, tail=MOTION_JS)
     return write("features/index.html", html)
 
 
@@ -114,10 +118,11 @@ def copy_assets() -> list[Path]:
     targets += [(f, OUT / "assets" / "templates" / f.name) for f in store]
     verify = sorted((WEB / "assets" / "verify").glob("*.html"))  # Google Search Console 驗證檔：放網站根、不可移除
     targets += [(f, OUT / f.name) for f in verify]
+    targets += [(src, OUT / "assets" / "audio" / rel) for src, rel in audio_files()]  # 示範歌 there's nothing…（site_song.py）
     for src, target in targets:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, target)
-    return [target for _, target in targets] + write_favicons(icon, OUT / "assets") + export_demo_audio(OUT)
+    return [target for _, target in targets] + write_favicons(icon, OUT / "assets")
 
 
 def main() -> int:

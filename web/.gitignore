@@ -1,2 +1,6 @@
 __pycache__/
 .DS_Store
+# 完整 3 分鐘分軌只留本機（公開 repo 不放整首歌的分軌）；網站只用 clip/ 的 30 秒片段
+assets/theres-nothing-stems/*.m4a
+# 改版草稿只留本機
+drafts/

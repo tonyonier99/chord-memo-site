@@ -28,7 +28,8 @@ def phone(inner: str, *, attrs: str = "", status: str = "9:41") -> str:
 
 
 def stage(phone_html: str, note: str = DEMO_NOTE) -> str:
-    return f'<div class="ph-stage"><div class="ph-card">{phone_html}<p class="ph-note">{esc(note)}</p></div></div>'
+    note_html = f'<p class="ph-note">{esc(note)}</p>' if note else ""  # 空字串＝不放（同一區多支手機時只在區塊標一次）
+    return f'<div class="ph-stage"><div class="ph-card">{phone_html}{note_html}</div></div>'
 
 
 def song_json(song: dict) -> str:

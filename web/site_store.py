@@ -10,7 +10,7 @@ import json
 
 from site_app_screens import phone, stage
 from site_icons import icon
-from site_store_data import TEMPLATES
+from site_store_data import OPEN_SLOTS, TEMPLATES
 from site_store_motion import MOTION_CSS, MOTION_JS, disc_header
 from site_store_style import BASE_CSS
 from site_theme import esc
@@ -50,17 +50,43 @@ def _card(t: dict, root: str) -> str:
             f'<strong>{esc(t["title"])}</strong><span>{esc(t["artist"])}</span>{_badge()}</button>')
 
 
+def _featured_carousel(root: str) -> str:
+    """站長 2026-11-12：精選只放一首對其他藝人不公平 → 所有範本輪流當精選（6 秒換一張，可點圓點切換）；只有一首就不輪播。"""
+    picks = _picks()
+    slides = "".join(_featured(t, root).replace('class="ts-feat"', f'class="ts-feat{" on" if i == 0 else ""}"', 1)
+                     for i, t in enumerate(picks))
+    if len(picks) < 2:
+        return slides
+    dots = "".join(f'<button type="button" data-ts-dot="{i}" aria-label="第 {i + 1} 首"{" aria-current=true" if i == 0 else ""}></button>'
+                   for i in range(len(picks)))
+    return f'<div class="ts-carousel" data-ts-carousel>{slides}<div class="ts-dots">{dots}</div></div>'
+
+
+def _slot(root: str) -> str:
+    """站長 2026-11-12：範本庫空位寫「徵集中」，點了去申請成為創作者。"""
+    return (f'<a class="ts-card ts-slot" href="{root}creator/"><span class="ts-cv ts-ph">{icon("music.note")}</span>'
+            '<strong>徵集中</strong><span>申請成為創作者 ›</span></a>')
+
+
+def _picks() -> list[dict]:
+    """精選＝有封面的範本（真的範本）；示意範本沒封面，只放「更多範本」。"""
+    return [t for t in TEMPLATES if t["cover"]] or TEMPLATES[:1]
+
+
 def _shelf(root: str) -> str:
-    first, rest = TEMPLATES[0], TEMPLATES[1:]
-    row = "".join(_card(t, root) for t in rest)
-    return (f'{_featured(first, root)}<div class="ts-more"><h3>{T["more"]}</h3></div>'
+    """精選輪播＋「更多範本」一排（精選以外的範本＋「徵集中」空位）。"""
+    rest = [t for t in TEMPLATES if t not in _picks()]
+    row = "".join(_card(t, root) for t in rest) + _slot(root) * OPEN_SLOTS
+    if not row:
+        return _featured_carousel(root)
+    return (f'{_featured_carousel(root)}<div class="ts-more"><h3>{T["more"]}</h3></div>'
             f'<div class="ts-row" tabindex="0" aria-label="{T["more"]}">{row}</div>')
 
 
 def store_wall(root: str) -> str:
     """網頁版範本庫（藝人範本頁最上面）。"""
     return (f'<section class="cr-sec ts-wall" id="wall" data-reveal>'
-            f'<p class="ts-sub">{T["subtitle"]}</p>{_shelf(root)}</section>')
+            f'{_shelf(root)}</section>')  # 頁首已有一樣意思的說明，牆上不再重複（站長 11-12）
 
 
 def store_phone(root: str) -> str:
@@ -147,6 +173,16 @@ STORE_JS_BODY = r"""
     var d = dlg.querySelector('[data-ts-detail="' + id + '"]');
     topTitle.textContent = d.querySelector('h3').textContent; topTitle.classList.remove('on');
   }
+  document.querySelectorAll('[data-ts-carousel]').forEach(function (c) {
+    var slides = c.querySelectorAll('.ts-feat'), dots = c.querySelectorAll('[data-ts-dot]'), at = 0, t = null;
+    function go(i) { at = (i + slides.length) % slides.length;
+      slides.forEach(function (s, k) { s.classList.toggle('on', k === at); });
+      dots.forEach(function (d, k) { if (k === at) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); }); }
+    function auto() { clearInterval(t); if (!matchMedia('(prefers-reduced-motion: reduce)').matches) t = setInterval(function () { go(at + 1); }, 6000); }
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { go(k); auto(); }); });
+    c.addEventListener('mouseenter', function () { clearInterval(t); }); c.addEventListener('mouseleave', auto);
+    auto();
+  });
   document.querySelectorAll('[data-ts-open]').forEach(function (b) { b.addEventListener('click', function () { open(b.dataset.tsOpen); }); });
   dlg.querySelector('[data-ts-close]').addEventListener('click', function () { dlg.close(); });
   dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });

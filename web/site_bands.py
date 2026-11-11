@@ -5,7 +5,7 @@
 import json
 
 from site_app_css import APP_CSS
-from site_audio import audio_urls
+from site_song import audio_urls
 from site_audio_play import AUDIO_PLAY_JS
 from site_app_data import demo_songs
 from site_app_js import APP_BASE_JS

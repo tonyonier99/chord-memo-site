@@ -9,10 +9,13 @@
 範本庫（站長 2026-11-11「App 內假的跟我的都先做進去」）＝site_store.py：照 App 範本支線的範本庫，
 站長的〈there's nothing...〉＋10 組示意範本；示範手機也換成同一份清單。
 """
-from site_store import STORE_CSS, store_dialog, store_phone, store_wall
+from site_store import STORE_CSS, store_dialog, store_wall
 from site_theme import esc
 
 TEMPLATES_CSS = STORE_CSS + """
+.tp-points { list-style:none; display:grid; grid-template-columns:minmax(0,1fr); gap:0.8rem; margin-top:1.2rem; }
+@media (min-width:760px) { .tp-points { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.tp-points li { background:var(--card); border-radius:20px; padding:1.3rem 1.4rem; line-height:1.7; }
 .tp-cta { margin:2.6rem 0 0.5rem; padding:1.6rem 1.3rem; border-radius:20px; background:var(--card); border:1px solid var(--line); text-align:center; }
 .tp-cta h2 { font-size:clamp(1.3rem,3vw,1.6rem); font-weight:800; }
 .tp-cta p { color:var(--sub); margin:0.5rem auto 1.1rem; max-width:32rem; line-height:1.8; }
@@ -28,10 +31,10 @@ POINTS = [
 
 def templates_body(root: str) -> str:
     head = ('<section class="pg-head"><div class="sc-in"><h1>藝人範本</h1>'
-            "<p>合作藝人用和弦備忘錄做的歌，下載下來就是一份完整的範本。範本庫即將推出。</p></div></section>")
-    points = '<ul class="points">' + "".join(f"<li>{esc(p)}</li>" for p in POINTS) + "</ul>"
-    main = (f'<section class="cr-sec" data-reveal><h2>範本裡有什麼</h2>'
-            f'<div class="cr-split"><div>{points}</div>{store_phone(root)}</div></section>')
+            "<p>合作藝人用和弦備忘錄做的歌，下載下來就是一份完整的範本。</p></div></section>")  # 站長 11-12：網站當 App 已上架
+    # 站長 2026-11-12：上面已經是真的範本庫，下面不再放一支一樣內容的示範手機 → 四點改成卡片
+    points = '<ul class="tp-points">' + "".join(f"<li>{esc(p)}</li>" for p in POINTS) + "</ul>"
+    main = f'<section class="cr-sec" data-reveal><h2>範本裡有什麼</h2>{points}</section>'
     cta = ('<section class="tp-cta" data-reveal><h2>你是音樂人？</h2>'
            "<p>用和弦備忘錄做一首完整的歌，放上範本庫，給所有使用者下載當範本。</p>"
            f'<a class="btn" href="{root}creator/">申請成為創作者</a></section>')

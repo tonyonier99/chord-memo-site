@@ -15,6 +15,21 @@ BASE_CSS = """
 .ts-feat .ts-cv { width:100%; aspect-ratio:1; display:block; object-fit:cover; }
 .ts-glass { position:absolute; left:0; right:0; bottom:0; padding:0.9rem 1rem; display:grid; gap:0.15rem; justify-items:start;
   background:rgba(30,30,30,.55); -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); color:#fff; }
+/* 精選輪播：一次只顯示一張（ts-feat.on），底下圓點切換 */
+.ts-carousel .ts-feat { display:none; } .ts-carousel .ts-feat.on { display:block; }
+@media (min-width:640px) { .ts-wall .ts-carousel .ts-feat.on { display:grid; } }
+.ts-dots { display:flex; justify-content:center; gap:8px; margin-top:0.7rem; }
+.ts-dots button { width:8px; height:8px; padding:0; border:0; border-radius:50%; background:var(--fill); cursor:pointer; }
+.ts-dots button[aria-current] { background:var(--ink); }
+/* 站長 2026-11-12：網頁版精選卡比其他範本大太多 → 寬螢幕改成橫的：左邊封面跟一般卡同級、右邊文字 */
+@media (min-width:640px) {
+  .ts-wall .ts-feat { display:grid; grid-template-columns:200px minmax(0,1fr); max-width:none; background:var(--card); border-radius:20px; }
+  .ts-wall .ts-feat .ts-cv { width:200px; height:200px; }
+  .ts-wall .ts-glass { position:static; background:none; color:var(--ink); -webkit-backdrop-filter:none; backdrop-filter:none;
+    padding:1.4rem 1.6rem; align-content:center; }
+  .ts-wall .ts-glass small { color:var(--sub); opacity:1; }
+  .ts-wall .ts-glass .ts-badge { color:var(--accent-ink); background:var(--accent-soft); }
+}
 .ts-glass small { font-size:0.75rem; opacity:.8; } .ts-glass strong { font-size:1.35rem; line-height:1.25; }
 .ts-glass > span:not(.ts-badge) { opacity:.85; font-size:0.9rem; }
 .ts-app .ts-glass { padding:8px 10px; } .ts-app .ts-glass strong { font-size:16px; } .ts-app .ts-glass > span:not(.ts-badge) { font-size:11.5px; }
@@ -30,6 +45,7 @@ BASE_CSS = """
 .ts-card strong { font-size:0.92rem; font-weight:600; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .ts-card > span:not(.ts-badge) { font-size:0.8rem; color:var(--ts-sub); }
 .ts-app .ts-card strong { font-size:12.5px; } .ts-app .ts-card > span:not(.ts-badge) { font-size:11px; }
+.ts-slot { text-decoration:none; } .ts-slot:hover { text-decoration:none; } .ts-slot > span:last-child { color:var(--accent-ink) !important; }
 .ts-ph { display:flex; align-items:center; justify-content:center; background:var(--ts-card); color:var(--ts-sub); font-size:2rem;
   box-shadow:inset 0 0 0 0.5px var(--ts-line); }
 .ts-feat .ts-ph { font-size:3.5rem; } .ts-card > span.ts-ph { font-size:2.6rem; color:var(--ts-sub); }

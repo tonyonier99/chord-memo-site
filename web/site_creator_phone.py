@@ -8,7 +8,7 @@
 """
 import json
 
-from site_audio import audio_urls
+from site_song import audio_urls
 from site_content import CONFIRM
 from site_app_screens import phone, stage
 from site_icons import icon

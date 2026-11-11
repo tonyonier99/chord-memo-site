@@ -45,7 +45,7 @@ FEATURES = [
         "anchor": "inspiration", "eyebrow": "靈感", "demo": "inspiration",
         "title": "加一則靈感",  # HomeCaptureChoice.swift buttonLabel
         "lead": "一句歌詞、一段哼唱、一張照片、一筆塗鴉，先丟進來，不用想怎麼整理。",  # 站長 11-12 改寫
-        "points": ["錄一段聲音", "寫一句話", "加一張照片", "畫一筆"],  # HomeCaptureChoice.swift
+        "points": [],  # 站長 11-12：說明已講四種靈感，不再重複條列（App 選項名稱見 HomeCaptureChoice.swift）
     },
     {
         "anchor": "record", "eyebrow": "錄音", "demo": "record",
@@ -62,9 +62,9 @@ FEATURES = [
     {
         "anchor": "chart", "eyebrow": "和弦", "demo": "chart",
         "title": "和弦譜，照著就彈得出來",  # 站長 11-12 改寫
-        "lead": "點小節填和弦、點歌詞列寫詞，主歌副歌一段一段排好，整份譜一眼看完。",  # 站長 11-12 改寫（ChartTabView.swift 操作）
-        "points": ["彈到喜歡的聲音，按出來存進這首歌",  # ChordsTabView.swift
-                   "猜不出名字也沒關係，一樣存得起來"],  # FretboardEditorView.swift
+        # 站長 11-12 草稿：示範歌是純音樂 → 拿掉「點歌詞列寫詞」；和弦譜元件本身就是展示，不再條列
+        "lead": "點小節填和弦，主歌副歌一段一段排好，整份譜一眼看完。",  # 站長 11-12 改寫（ChartTabView.swift 操作）
+        "points": [],
     },
 ]
 

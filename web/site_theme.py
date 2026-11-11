@@ -15,7 +15,8 @@ from site_favicon import FAVICON_SIZES, favicon_name
 THEME_CSS = """
 :root { color-scheme:light;  /* 站長 2026-11-12：網站一律淺色（像 Apple 官網），示範手機照 App 跟系統 */
   --accent:#007AFF; --accent-ink:#0063D1; --accent-soft:rgba(0,122,255,0.12); --on-accent:#FFFFFF;
-  --record:#FF3B30; --bg:#F2F2F7; --card:#FFFFFF; --fill:rgba(118,118,128,0.12);
+  --record:#FF3B30; --bg:#FFFFFF; --card:#F5F5F7;  /* 站長 11-12：底色要白、不發灰（Apple 官網的白底＋淺灰卡） */
+  --fill:rgba(118,118,128,0.12);
   --ink:#000000; --sub:#5E5E63; --line:rgba(60,60,67,0.18); --shadow:0 12px 30px rgba(0,30,80,0.08);
   --hero:radial-gradient(1100px 520px at 85% 0%, rgba(0,122,255,0.16), rgba(0,122,255,0) 62%); }
 * { box-sizing:border-box; margin:0; padding:0; }

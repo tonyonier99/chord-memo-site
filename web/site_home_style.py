@@ -77,7 +77,8 @@ HOME_JS = """<script>
 (function () {
   var box = document.querySelector('[data-hero-chords]'); if (!box || !window.CMApp) return;
   var A = CMApp, song = JSON.parse(box.dataset.song), chords = [];
-  song.sections.forEach(function (s) { s.romans.forEach(function (r) { var c = A.symbol(r, song); if (chords.indexOf(c) < 0) chords.push(c); }); });
+  if (song.chords && song.chords.length) chords = song.chords.slice();
+  else song.sections.forEach(function (s) { s.romans.forEach(function (r) { var c = A.symbol(r, song); if (chords.indexOf(c) < 0) chords.push(c); }); });
   var row = A.$(box, '.st-chord-row'), grid = A.$(box, '.st-board-grid'), title = A.$(box, '.st-board-title'), guess = A.$(box, '.st-guess');
   var labels = ['E', 'A', 'D', 'G', 'B', 'e'], saved = {}, sym = '', frets = [];
   row.innerHTML = chords.map(function (c) { return '<button type="button" role="tab" data-chord="' + A.esc(c) + '">' + A.esc(c) + '</button>'; }).join('');

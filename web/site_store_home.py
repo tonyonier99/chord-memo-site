@@ -1,7 +1,7 @@
 """首頁的範本入口：照 App 範本支線「空作品庫大卡」（ArtistTemplateHomeViews.swift ArtistTemplateHomeWelcome）。
 
 - 由上到下：疊放封面（120pt、區高 150）、標題 welcomeTitle、內文 welcomeBody、主要按鈕「看看藝人範本」；卡片圓角 18、內距 20。
-- 疊放封面（ArtistTemplateCoverStack）：最多 3 張，第一筆在最上面；角度 −10°、−2°、9°，往右錯開 0、14%、28%；
+- 疊放封面（ArtistTemplateCoverStack）：最多 3 張，第一筆在最上面（網站只疊有封面的範本）；角度 −10°、−2°、9°，往右錯開 0、14%、28%；
   只有最上面那張有陰影（0.18／5／3）。封面圓角 10、沒封面＝灰底 music.note。只排版、不畫圖。
 - App 卡片外那行「或按右下角的按鈕，寫你的第一首歌」是指 App 裡的按鈕，網站沒有 → 不放。
 文案逐字照 ArtistTemplateText.swift；6 首＝FreeTier.demoLimit（跟 site_content.FREE_TIER 同一個數）。
@@ -39,8 +39,10 @@ def _stack_item(t: dict, root: str, index: int) -> str:
 
 def cover_stack(root: str) -> str:
     """最多 3 張；第一筆疊在最上面 → HTML 反過來排（後畫的在上面）。"""
-    items = [_stack_item(t, root, i) for i, t in enumerate(TEMPLATES[:3])]
-    return f'<div class="tw-stack" aria-hidden="true">{"".join(reversed(items))}</div>'
+    picks = [t for t in TEMPLATES if t["cover"]][:3]  # 站長 11-12 草稿：只疊有封面的（＝站長的範本），不疊佔位
+    items = [_stack_item(t, root, i) for i, t in enumerate(picks)]
+    width = ' style="width:var(--side)"' if len(items) == 1 else ""  # 只有一張就置中
+    return f'<div class="tw-stack" aria-hidden="true"{width}>{"".join(reversed(items))}</div>'
 
 
 def welcome_card(root: str) -> str:

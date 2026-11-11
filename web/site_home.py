@@ -1,40 +1,37 @@
-"""首頁（站長 2026-11-11 方向：照寫歌的順序走、外觀像一間深色工作室；不再沿用初級大人手冊的模板）。
+"""首頁（站長 2026-11-12 照 web/drafts/redesign.html 草稿重排；示範歌＝站長的 there's nothing…，夜車不用）。
 
 段落順序：
-1. 首屏：標語＋簡介＋示範歌「夜車」實際用到的和弦（點了出指板按法，按法由 App 和弦引擎 engine.js 算）
-2. 寫歌四步：靈感來了 → 錄一段 → 編曲 → 和弦譜（每步一支只演那一步的示範手機，全部用「夜車」）
-3. 寫歌時順手的工具：調音器、節拍器、分享整份譜
-4. 還有這些（bento）→ 收尾 → 隱私承諾小字
-文字出處見 site_content.py（每段註明 App 原始碼或現有官網）；只有段落標題「寫歌時順手的工具」照站長方向訂（「整個 App 玩一次」導覽手機站長 2026-11-11 拿掉）。
+1. 首屏：小標＋大標＋說明＋按鈕，右邊和弦卡（這首最常出現的四個和弦，點了出指板按法；按法由 App 和弦引擎算）
+2. 寫歌四步：靈感＝四張起點卡、錄一段＝全頁唯一一支手機、編曲＝四軌分軌元件、和弦譜＝可點的 8 小節（site_home_steps.py）
+3. 寫歌時順手的工具：三張資訊卡（site_tool_cards.py）
+4. 藝人範本預告卡 → 5. 免費版與 Pro（長條對比＋對照表＋價格，site_home_pro.py）→ 6. 收尾 → 隱私承諾小字
+文字出處見 site_content.py；「看看怎麼用 ›」是站長 11-12 審過的新寫按鈕。
 """
-from site_app_data import demo_songs
-from site_app_screens import song_json, stage
-from site_bands import demo_phone
+from site_app_screens import pane_phone, song_json, stage
 from site_content import APP_NAME, FEATURES, HERO_EYEBROW, INTRO, PRIVACY_PROMISE, TOOL_BANDS
-from site_showcase import bento, final_cta, store_actions
+from site_home_pro import pro_section
+from site_home_steps import chord_sheet, inspire_cards, multitrack
 from site_icons import icon
+from site_showcase import final_cta
+from site_song import SONG, song_meta
 from site_store_home import welcome_card
+from site_tool_cards import tool_cards
 from site_theme import esc
 
 STEP_TITLES = ["靈感來了", "錄一段", "編曲", "和弦譜"]  # 站長訂的四步名稱
 CHART_CAPTION = "這首歌的獨特和弦 · 照著按就彈得出來"  # ChartExport.swift／ChordPickerSheet.swift
 FRET_HINT = "點格子設定每條弦的按法，✕ = 悶弦、○ = 空弦"  # FretboardEditorView.swift
+HOW_TO = "看看怎麼用"  # 站長 11-12 草稿
 
 
-def song_meta(song: dict) -> str:
-    """「夜車 · C 大調 · 100 BPM · 4/4」：調名格式照 ChartTabView.keyLabel。"""
-    mode = "大調" if song["mode"] == "major" else "小調"
-    meter = song["sections"][0]["meter"] if song["sections"] else "4/4"
-    return f'{song["name"]} · {song["key"]} {mode} · {song["bpm"]} BPM · {meter}'
-
-
-def hero(song: dict) -> str:
+def hero() -> str:
     return (
         '<section class="st-hero"><div class="sc-in st-hero-grid">'
         f'<div class="st-copy"><p class="st-eyebrow">{esc(HERO_EYEBROW)}</p><h1>{esc(APP_NAME)}</h1>'
-        f'<p class="st-lead">{esc(INTRO)}</p>{store_actions("")}</div>'
-        f'<div class="st-chords" data-hero-chords data-song="{song_json(song)}">'
-        f'<p class="st-mono st-meta">{esc(song_meta(song))}</p><p class="st-cap">{esc(CHART_CAPTION)}</p>'
+        f'<p class="st-lead">{esc(INTRO)}</p><div class="sc-actions"><a class="btn" href="download/">下載 App</a>'
+        f'<a class="btn ghost" href="#steps">{HOW_TO}</a></div></div>'
+        f'<div class="st-chords" data-hero-chords data-song="{song_json(SONG)}">'
+        f'<p class="st-meta">{esc(song_meta())}</p><p class="st-cap">{esc(CHART_CAPTION)}</p>'
         '<div class="st-chord-row" role="tablist" aria-label="和弦"></div>'
         '<div class="st-board"><p class="st-board-title"></p><div class="st-board-grid" role="group" aria-label="指板"></div>'
         f'<p class="st-cap">{esc(FRET_HINT)}</p>'
@@ -45,33 +42,36 @@ def hero(song: dict) -> str:
     )
 
 
-def step(index: int, feature: dict, phone_html: str) -> str:
+def _visual(index: int) -> str:
+    if index == 0:
+        return inspire_cards()
+    if index == 1:
+        return stage(pane_phone(SONG, "錄音", "record", ""), note="")  # 標題不寫歌名
+    if index == 2:
+        return multitrack("")
+    return chord_sheet()
+
+
+def step(index: int, feature: dict) -> str:
     pts = "".join(f"<li>{esc(p)}</li>" for p in feature["points"])
     flip = " flip" if index % 2 else ""
+    points = f'<ul class="st-points">{pts}</ul>' if pts else ""
     return (f'<section class="st-step" id="{feature["anchor"]}"><div class="sc-in sc-split{flip}">'
-            f'<div class="st-copy" data-reveal><p class="st-num st-mono">{index + 1:02d}</p>'
-            f'<p class="st-eyebrow">{esc(STEP_TITLES[index])} · {esc(feature["eyebrow"])}</p>'
-            f'<h2>{esc(feature["title"])}</h2><p class="st-lead">{esc(feature["lead"])}</p>'
-            f'<ul class="st-points">{pts}</ul></div><div>{stage(phone_html)}</div></div></section>')
+            f'<div class="st-copy" data-reveal><p class="st-eyebrow"><span class="st-num">{index + 1:02d}</span>'
+            f'{esc(STEP_TITLES[index])}</p><h2>{esc(feature["title"])}</h2><p class="st-lead">{esc(feature["lead"])}</p>'
+            f'{points}</div><div data-reveal>{_visual(index)}</div></div></section>')
 
 
-def steps(songs: dict) -> str:
-    head = ('<div class="sc-in st-head" data-reveal><p class="st-eyebrow st-mono">'
-            f'{esc(song_meta(songs["free"]))}</p><h2>{esc(" → ".join(STEP_TITLES))}</h2></div>')
-    body = "".join(step(i, f, demo_phone(f["demo"], songs)) for i, f in enumerate(FEATURES))
-    return f'<div class="st-steps">{head}{body}</div>'
+def steps() -> str:
+    flow = " → ".join(f'<span>{esc(t)}</span>' for t in STEP_TITLES)  # 每步不拆行（「錄一段」不會斷成兩行）
+    head = f'<div class="sc-in st-head" data-reveal><h2 class="st-flow">{flow}</h2></div>'
+    body = "".join(step(i, f) for i, f in enumerate(FEATURES))
+    return f'<div class="st-steps" id="steps">{head}{body}</div>'
 
 
-def tool_card(item: dict, phone_html: str) -> str:
-    lead = f'<p class="st-cap">{esc(item["lead"])}</p>' if item["lead"] else ""
-    return (f'<div class="st-tool" id="{item["anchor"]}"><h3>{esc(item["title"])}</h3>{lead}'
-            f'<p class="st-mono st-tags">{esc(" · ".join(item["points"]))}</p>{stage(phone_html)}</div>')
-
-
-def tools(songs: dict) -> str:
-    cards = "".join(tool_card(t, demo_phone(t["demo"], songs)) for t in TOOL_BANDS)
+def tools() -> str:
     return (f'<section class="st-band"><div class="sc-in"><div class="st-head" data-reveal><h2>寫歌時順手的工具</h2></div>'
-            f'<div class="st-tools">{cards}</div></div></section>')
+            f'{tool_cards(TOOL_BANDS)}</div></section>')
 
 
 def promise() -> str:
@@ -81,6 +81,5 @@ def promise() -> str:
 
 
 def home_body() -> str:
-    songs = demo_songs()
-    return ('<div class="studio">' + hero(songs["free"]) + steps(songs) + tools(songs)
-            + welcome_card("") + bento("") + final_cta("") + promise() + "</div>")
+    return ('<div class="studio">' + hero() + steps() + tools() + welcome_card("") + pro_section()
+            + final_cta("") + promise() + "</div>")

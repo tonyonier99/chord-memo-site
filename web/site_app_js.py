@@ -71,7 +71,7 @@ CMApp.ctl.record = function (pane, ph, song) {
   var status = A.$(pane, '.rec-status'), clock = A.$(pane, '.rec-time'), cap = A.$(pane, '.rec-cap');
   var list = A.$(pane, '[data-takes]'), head = A.$(pane, '[data-takes-head]'), empty = A.$(pane, '[data-fav-empty]');
   var segs = A.$$(pane, '[data-fav]'), takes, favOnly, start = 0, timer = null, metOn = false, fresh = -1;
-  var S = window.CMAudio, clickT = null, takeSrc = null;
+  var S = window.CMAudio, clickT = null, takeSrc = null, playing = false, playAt = 0, playT = null;
   function stamp(d) { return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
   function render() {
     var favs = takes.filter(function (t) { return t.fav; }).length, shown = takes.filter(function (t) { return !favOnly || t.fav; });
@@ -81,9 +81,11 @@ CMApp.ctl.record = function (pane, ph, song) {
     empty.style.display = shown.length ? 'none' : 'block'; list.style.display = shown.length ? 'block' : 'none';
     list.innerHTML = shown.map(function (t) {
       var i = takes.indexOf(t);
-      return '<div class="take' + (i === fresh ? ' new' : '') + (t.main ? ' main' : '') + '">' + (t.main ? '<button type="button" class="play" aria-label="播放 ' + A.esc(t.name) + '">' : '<span class="play">') +
-        A.ic('play.circle.fill') + (t.main ? '</button>' : '</span>') + '<div><strong>' + A.esc(t.name) +
-        '</strong><small>' + A.time(t.secs) + '</small></div>' + (t.main ? '<span class="arr" aria-label="繼續編曲">' + A.ic('slider.vertical.3') + '</span>' : '') +
+      // 主錄音播放中：圖示換停止、時間顯示「已播／全長」（站長 11-12：原本播放時畫面不會動）
+      var on = t.main && playing, secs = on ? A.time(Math.min(t.secs, (Date.now() - playAt) / 1000)) + ' / ' + A.time(t.secs) : A.time(t.secs);
+      return '<div class="take' + (i === fresh ? ' new' : '') + (t.main ? ' main' : '') + (on ? ' playing' : '') + '">' + (t.main ? '<button type="button" class="play" aria-label="' + (on ? '停止 ' : '播放 ') + A.esc(t.name) + '">' : '<span class="play">') +
+        A.ic(on ? 'stop.circle.fill' : 'play.circle.fill') + (t.main ? '</button>' : '</span>') + '<div><strong>' + A.esc(t.name) +
+        '</strong><small>' + secs + '</small></div>' + (t.main ? '<span class="arr" aria-label="繼續編曲">' + A.ic('slider.vertical.3') + '</span>' : '') +
         '<button type="button" class="star' + (t.fav ? ' on' : '') + '" data-star="' + i + '" aria-label="最愛">' + A.ic(t.fav ? 'star.fill' : 'star') +
         '</button><span class="more">' + A.ic('ellipsis') + '</span></div>';
     }).join('');
@@ -108,14 +110,16 @@ CMApp.ctl.record = function (pane, ph, song) {
     function one() { if (S.live()) S.click(n % 4 === 0 ? 'strong' : 'medium', t0 + n * beat); n++; }
     one(); clickT = setInterval(one, beat * 1000);
   }
-  function stopTake() { if (takeSrc) { try { takeSrc.stop(); } catch (e) { takeSrc = null; } } takeSrc = null; }
+  function stopTake() { if (takeSrc) { try { takeSrc.stop(); } catch (e) { takeSrc = null; } } takeSrc = null; playing = false; clearInterval(playT); playT = null; render(); }
   // 主錄音「主旋律」：播示範歌裡真的錄音（再點一次停）
   function playTake() {
     if (takeSrc) { stopTake(); return; }
     if (!S.allowed()) return;
     S.load(S.url((window.CMAudioFiles || {}).take || '')).then(function (b) {
       if (!S.live()) return;
-      var src = S.play(b, 0); takeSrc = src; src.addEventListener('ended', function () { if (takeSrc === src) takeSrc = null; });
+      var src = S.play(b, 0); takeSrc = src; playing = true; playAt = Date.now(); render();
+      playT = setInterval(render, 250);
+      src.addEventListener('ended', function () { if (takeSrc === src) { takeSrc = null; stopTake(); } });
     }).catch(function () { A.toast(ph, '音檔載入失敗，請重新整理'); });
   }
   btn.addEventListener('click', toggle);

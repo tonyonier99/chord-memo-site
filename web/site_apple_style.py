@@ -12,7 +12,30 @@ _BORDERLESS = (".tile, .st-chords, .st-tool, .card, .sc-final, .ph-card, .cr-for
 
 APPLE_CSS = f"""
 h1, h2, h3 {{ letter-spacing:-0.015em; }}
-.st-copy h1, .sc-copy h1 {{ font-size:clamp(2.6rem,7vw,4.6rem); line-height:1.08; font-weight:700; }}
+.st-copy h1, .sc-copy h1 {{ font-size:clamp(2.4rem,5.2vw,3.6rem); line-height:1.1; font-weight:700; }}
+.st-copy .st-lead {{ font-size:1.12rem; max-width:30rem; }}
+.st-flow {{ font-size:clamp(1.6rem,3.4vw,2.4rem) !important; }}
+.st-flow span {{ white-space:nowrap; }}
+/* 首屏和弦卡：拿掉卡中卡的灰底、縮小，「看起來像／儲存」那排（App 編輯器的存檔控制）不放，整張一屏看得完 */
+.st-chords {{ padding:1.2rem 1.2rem 1rem; box-shadow:0 1px 3px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06); }}
+.st-board {{ background:none; padding:0.4rem 0 0; }}
+.st-chord-row button {{ min-height:46px; font-size:1.15rem; font-weight:600; }}
+/* 站長 11-12「頭重腳輕」：和弦鈕改成小的分段選擇、指板放大、整張置中 */
+.st-chords {{ text-align:center; }}
+.st-chord-row {{ display:inline-grid; grid-template-columns:repeat(4,minmax(56px,72px)); gap:4px; padding:4px; margin:0.9rem auto 0.6rem;
+  background:var(--fill); border-radius:14px; }}
+.st-chord-row button {{ min-height:38px; font-size:1rem; border-radius:10px; background:none; }}
+.st-chord-row button[aria-selected="true"] {{ background:#fff; color:var(--accent-ink); box-shadow:0 1px 3px rgba(0,0,0,.12); }}
+.st-board-title {{ text-align:center; margin:0.4rem 0 0.8rem; }}
+.st-cell {{ width:34px; height:34px; font-size:0.85rem; }}
+.st-row {{ gap:6px; }} .st-board-grid {{ gap:6px; }}
+@media (max-width:420px) {{ .st-cell {{ width:28px; height:28px; }} .st-row {{ gap:4px; }} }}
+.st-guess {{ display:none; }}
+.st-copy .st-eyebrow {{ display:flex; align-items:baseline; gap:0.6rem; font-size:1rem; color:var(--sub); }}
+.st-copy .st-num {{ font-size:1rem; font-weight:600; color:var(--record); font-variant-numeric:tabular-nums; }}
+.st-tool {{ padding:1.8rem 1.2rem 1.2rem; }}
+.st-tool .st-cap {{ font-size:0.95rem; min-height:3.2em; margin:0.4rem auto 0; max-width:22rem; }}
+.st-tools .ph-card {{ padding-top:0.6rem; }}
 .st-copy h2, .st-head h2, .sc-copy h2, .sc-sec-head h2 {{ font-size:clamp(2rem,5vw,3.2rem); line-height:1.15; font-weight:700; }}
 .st-copy h2 {{ font-size:clamp(1.8rem,3.6vw,2.6rem); }}
 h1, h2 {{ text-wrap:balance; }}
