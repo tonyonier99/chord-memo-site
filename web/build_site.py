@@ -110,6 +110,8 @@ def copy_assets() -> list[Path]:
                (WEB / "assets" / "icons" / "LICENSE", OUT / "assets" / "icons" / "LICENSE")]  # Phosphor Icons MIT 授權（圖示已內嵌）
     store = sorted((WEB / "assets" / "templates").glob("*.*"))  # 範本庫：站長範本的封面與試聽（site_store_data.py）
     targets += [(f, OUT / "assets" / "templates" / f.name) for f in store]
+    verify = sorted((WEB / "assets" / "verify").glob("*.html"))  # Google Search Console 驗證檔：放網站根、不可移除
+    targets += [(f, OUT / f.name) for f in verify]
     for src, target in targets:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, target)
