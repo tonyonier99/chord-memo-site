@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tonyonier99.github.io/chord-memo-site/sitemap.xml

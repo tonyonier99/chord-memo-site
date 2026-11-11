@@ -17,6 +17,7 @@
 - site_creator*.py 申請成為創作者頁（概要＋申請表；假範本庫手機元件在 site_creator_phone.py）
 - site_audio*.py   聲音：示範歌錄音取出（audio）、全站 CMAudio＋喇叭開關（audio_js）、和弦譜播放與編曲混音（audio_play）
 - site_legal.py    隱私政策、使用條款、支援（讀 chord-memo-site 現有 .md，內文不改）
+- site_seo.py      搜尋引擎收錄：sitemap.xml、robots.txt（canonical／noindex 在 site_theme.seo_head）
 
 網址沿用現有 Jekyll 站的 /privacy/、/terms/、/support/（App 的 Info.plist 指向這些網址），
 其餘頁同樣用「資料夾/index.html」。404 頁可能出現在任何路徑，所以連結用網站絕對路徑 SITE_BASE。
@@ -38,6 +39,7 @@ from site_motion import MOTION_CSS, MOTION_JS
 from site_pages import PAGES_CSS, download_body, features_body, not_found_body
 from site_home import home_body
 from site_home_style import HOME_CSS, HOME_JS
+from site_seo import write_crawl_files
 from site_showcase import SHOWCASE_CSS
 from site_theme import page
 
@@ -56,31 +58,31 @@ def write(rel: str, html: str) -> Path:
 
 
 def build_home() -> Path:
-    html = page(APP_NAME, INTRO, home_body(), root="", section="home", extra_css=COMMON_CSS + BANDS_CSS + HOME_CSS + WELCOME_CSS,
+    html = page(APP_NAME, INTRO, home_body(), root="", path="", section="home", extra_css=COMMON_CSS + BANDS_CSS + HOME_CSS + WELCOME_CSS,
                 tail=MOTION_JS + app_scripts("") + HOME_JS)
     return write("index.html", html)
 
 
 def build_features() -> Path:
-    html = page("功能", f"{TAGLINE}：靈感、錄音、編曲、和弦與 {PRO_NAME}。", features_body("../"), root="../",
+    html = page("功能", f"{TAGLINE}：靈感、錄音、編曲、和弦與 {PRO_NAME}。", features_body("../"), root="../", path="features/",
                 section="features", extra_css=COMMON_CSS + PAGES_CSS + BANDS_CSS, tail=MOTION_JS + app_scripts("../"))
     return write("features/index.html", html)
 
 
 def build_download() -> Path:
-    html = page("下載", TAGLINE, download_body("../"), root="../", section="download",
+    html = page("下載", TAGLINE, download_body("../"), root="../", path="download/", section="download",
                 extra_css=COMMON_CSS + PAGES_CSS, tail=MOTION_JS)
     return write("download/index.html", html)
 
 
 def build_creator() -> Path:
-    html = page("申請成為創作者", "和弦備忘錄音樂人推薦計畫：專屬折扣碼、分潤與藝人範本。", creator_body("../"), root="../",
+    html = page("申請成為創作者", "和弦備忘錄音樂人推薦計畫：專屬折扣碼、分潤與藝人範本。", creator_body("../"), root="../", path="creator/",
                 section="creator", extra_css=COMMON_CSS + PAGES_CSS + BANDS_CSS + CREATOR_CSS, tail=MOTION_JS + CREATOR_JS("../"))
     return write("creator/index.html", html)
 
 
 def build_templates() -> Path:
-    html = page("藝人範本", "合作藝人用和弦備忘錄做的歌，免費下載當範本。", templates_body("../"), root="../",
+    html = page("藝人範本", "合作藝人用和弦備忘錄做的歌，免費下載當範本。", templates_body("../"), root="../", path="templates/",
                 section="templates", extra_css=COMMON_CSS + PAGES_CSS + BANDS_CSS + CREATOR_CSS + TEMPLATES_CSS,
                 tail=MOTION_JS + store_js())
     return write("templates/index.html", html)
@@ -88,13 +90,13 @@ def build_templates() -> Path:
 
 def build_legal(slug: str, filename: str) -> Path:
     meta, body = read_markdown(REPO / filename)
-    html = page(meta.get("title", slug), TAGLINE, legal_body(meta, body), root="../", section=slug,
+    html = page(meta.get("title", slug), TAGLINE, legal_body(meta, body), root="../", path=f"{slug}/", section=slug,
                 extra_css=COMMON_CSS + LEGAL_CSS)
     return write(f"{slug}/index.html", html)
 
 
 def build_404() -> Path:
-    html = page("找不到這一頁", TAGLINE, not_found_body(SITE_BASE), root=SITE_BASE,
+    html = page("找不到這一頁", TAGLINE, not_found_body(SITE_BASE), root=SITE_BASE, path=None,
                 extra_css=COMMON_CSS + PAGES_CSS)
     return write("404.html", html)
 
@@ -121,12 +123,14 @@ def main() -> int:
     try:
         assets = copy_assets()
         pages = [build_home(), build_features(), build_templates(), build_creator(), build_download(),
-                 *[build_legal(slug, name) for slug, name in LEGAL_PAGES], build_404()]
+                 *[build_legal(slug, name) for slug, name in LEGAL_PAGES]]
+        crawl = write_crawl_files(OUT, pages)  # sitemap 只列正式頁，不含 404
+        pages.append(build_404())
     except (FileNotFoundError, ValueError) as error:
         sys.stderr.write(f"產生失敗：{error}\n")
         return 1
     sys.stdout.write(f"和弦備忘錄官網預覽：{len(pages)} 頁、{len(assets)} 個素材 → {OUT}\n")
-    for path in [*pages, *assets]:
+    for path in [*pages, *crawl, *assets]:
         sys.stdout.write(f"  {path.relative_to(OUT)}\n")
     return 0
 

@@ -26,8 +26,10 @@ CONFIRM = "【待站長確認】"
 
 # support.md、privacy.md、terms.md 的聯絡信箱
 CONTACT_EMAIL = "tonyonier99@gmail.com"
-# GitHub Pages 專案路徑：App Info.plist 的 PrivacyPolicyURL 是 https://tonyonier99.github.io/chord-memo-site/privacy/
-SITE_BASE = "/chord-memo-site/"
+# 網站正式網址的根（sitemap、robots、canonical 都用這個；換網域只改這一行）。
+# App Info.plist 的 PrivacyPolicyURL 是 https://tonyonier99.github.io/chord-memo-site/privacy/
+SITE_URL = "https://tonyonier99.github.io/chord-memo-site/"
+SITE_BASE = "/" + SITE_URL.split("://", 1)[1].split("/", 1)[1]  # 網站絕對路徑（404 頁的連結用）＝ /chord-memo-site/
 
 # 系統需求：native/project.yml（deploymentTarget iOS 18.0、TARGETED_DEVICE_FAMILY "1,2" = iPhone＋iPad）
 REQUIREMENT = "iPhone、iPad（iOS 18.0 以上）"

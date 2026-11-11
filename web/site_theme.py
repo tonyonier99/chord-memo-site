@@ -8,7 +8,7 @@
 from html import escape
 
 from site_audio_js import AUDIO_JS, SOUND_CSS, sound_toggle
-from site_content import APP_NAME, TAGLINE
+from site_content import APP_NAME, SITE_URL, TAGLINE
 
 THEME_CSS = """
 :root { color-scheme:light dark;
@@ -92,15 +92,22 @@ def footer_html(root: str) -> str:
             f'<nav aria-label="頁尾">{links}</nav></div></footer>')
 
 
-def page(title: str, description: str, body: str, *, root: str, section: str = "", extra_css: str = "",
-         tail: str = "") -> str:
-    """root：從這頁回到網站根目錄的前綴（根目錄 ""、子資料夾 "../"、404 用網站絕對路徑）。"""
+def seo_head(path: str | None) -> str:
+    """path：這頁在網站根目錄下的路徑（首頁 ""、其他 "features/"）→ canonical；None＝不收錄（404）。"""
+    if path is None:
+        return '<meta name="robots" content="noindex">'
+    return f'<link rel="canonical" href="{esc(SITE_URL + path)}">'
+
+
+def page(title: str, description: str, body: str, *, root: str, path: str | None, section: str = "",
+         extra_css: str = "", tail: str = "") -> str:
+    """root：從這頁回到網站根目錄的前綴（根目錄 ""、子資料夾 "../"、404 用網站絕對路徑）；path 見 seo_head。"""
     full_title = APP_NAME if title == APP_NAME else f"{title}｜{APP_NAME}"
     return (
         '<!doctype html>\n<html lang="zh-Hant"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f'<title>{esc(full_title)}</title><meta name="description" content="{esc(description or TAGLINE)}">'
-        '<meta name="color-scheme" content="light dark">'
+        f'{seo_head(path)}<meta name="color-scheme" content="light dark">'
         "<script>document.documentElement.classList.add('js')</script>"
         f'<link rel="icon" href="{root}assets/app-icon.png">'
         f'<style>{THEME_CSS}{SOUND_CSS}{extra_css}</style></head>\n<body>\n'
