@@ -9,6 +9,7 @@ from html import escape
 
 from site_audio_js import AUDIO_JS, SOUND_CSS, sound_toggle
 from site_content import APP_NAME, SITE_URL, TAGLINE
+from site_favicon import FAVICON_SIZES, favicon_name
 
 THEME_CSS = """
 :root { color-scheme:light dark;
@@ -92,6 +93,13 @@ def footer_html(root: str) -> str:
             f'<nav aria-label="頁尾">{links}</nav></div></footer>')
 
 
+def icon_links(root: str) -> str:
+    """分頁圖示（圓角，site_favicon.py 產）；加到主畫面用正方形那張。"""
+    sizes = "".join(f'<link rel="icon" type="image/png" sizes="{n}x{n}" href="{root}assets/{favicon_name(n)}">'
+                    for n in FAVICON_SIZES)
+    return sizes + f'<link rel="apple-touch-icon" href="{root}assets/apple-touch-icon.png">'
+
+
 def seo_head(path: str | None) -> str:
     """path：這頁在網站根目錄下的路徑（首頁 ""、其他 "features/"）→ canonical；None＝不收錄（404）。"""
     if path is None:
@@ -109,7 +117,7 @@ def page(title: str, description: str, body: str, *, root: str, path: str | None
         f'<title>{esc(full_title)}</title><meta name="description" content="{esc(description or TAGLINE)}">'
         f'{seo_head(path)}<meta name="color-scheme" content="light dark">'
         "<script>document.documentElement.classList.add('js')</script>"
-        f'<link rel="icon" href="{root}assets/app-icon.png">'
+        f'{icon_links(root)}'
         f'<style>{THEME_CSS}{SOUND_CSS}{extra_css}</style></head>\n<body>\n'
         f'{header_html(root, section)}<main>{body}</main>{footer_html(root)}{AUDIO_JS}{tail}\n</body></html>\n'
     )

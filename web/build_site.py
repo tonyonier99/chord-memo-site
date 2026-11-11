@@ -17,6 +17,7 @@
 - site_creator*.py 申請成為創作者頁（概要＋申請表；假範本庫手機元件在 site_creator_phone.py）
 - site_audio*.py   聲音：示範歌錄音取出（audio）、全站 CMAudio＋喇叭開關（audio_js）、和弦譜播放與編曲混音（audio_play）
 - site_legal.py    隱私政策、使用條款、支援（讀 chord-memo-site 現有 .md，內文不改）
+- site_favicon.py  分頁圖示：App icon 裁圓角（favicon-32/48/180）＋ apple-touch-icon
 - site_seo.py      搜尋引擎收錄：sitemap.xml、robots.txt（canonical／noindex 在 site_theme.seo_head）
 
 網址沿用現有 Jekyll 站的 /privacy/、/terms/、/support/（App 的 Info.plist 指向這些網址），
@@ -39,6 +40,7 @@ from site_motion import MOTION_CSS, MOTION_JS
 from site_pages import PAGES_CSS, download_body, features_body, not_found_body
 from site_home import home_body
 from site_home_style import HOME_CSS, HOME_JS
+from site_favicon import write_favicons
 from site_seo import write_crawl_files
 from site_showcase import SHOWCASE_CSS
 from site_theme import page
@@ -115,7 +117,7 @@ def copy_assets() -> list[Path]:
     for src, target in targets:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, target)
-    return [target for _, target in targets] + export_demo_audio(OUT)
+    return [target for _, target in targets] + write_favicons(icon, OUT / "assets") + export_demo_audio(OUT)
 
 
 def main() -> int:
