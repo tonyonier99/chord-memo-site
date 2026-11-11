@@ -3,15 +3,14 @@
 段落順序：
 1. 首屏：標語＋簡介＋示範歌「夜車」實際用到的和弦（點了出指板按法，按法由 App 和弦引擎 engine.js 算）
 2. 寫歌四步：靈感來了 → 錄一段 → 編曲 → 和弦譜（每步一支只演那一步的示範手機，全部用「夜車」）
-3. 整個 App 玩一次：四個分頁都能操作的導覽手機
-4. 寫歌時順手的工具：調音器、節拍器、分享整份譜
-5. 還有這些（bento）→ 隱私 → 收尾
-文字出處見 site_content.py（每段註明 App 原始碼或現有官網）；只有段落標題「寫歌時順手的工具」「整個 App 玩一次」照站長方向訂。
+3. 寫歌時順手的工具：調音器、節拍器、分享整份譜
+4. 還有這些（bento）→ 收尾 → 隱私承諾小字
+文字出處見 site_content.py（每段註明 App 原始碼或現有官網）；只有段落標題「寫歌時順手的工具」照站長方向訂（「整個 App 玩一次」導覽手機站長 2026-11-11 拿掉）。
 """
 from site_app_data import demo_songs
 from site_app_screens import song_json, stage
-from site_bands import demo_phone, tour_stage
-from site_content import APP_NAME, DEMO_NOTE, FEATURES, INTRO, PRIVACY_PROMISE, TAGLINE, TOOL_BANDS
+from site_bands import demo_phone
+from site_content import APP_NAME, FEATURES, INTRO, PRIVACY_PROMISE, TAGLINE, TOOL_BANDS
 from site_showcase import bento, final_cta, store_actions
 from site_icons import icon
 from site_store_home import welcome_card
@@ -63,12 +62,6 @@ def steps(songs: dict) -> str:
     return f'<div class="st-steps">{head}{body}</div>'
 
 
-def tour() -> str:
-    return ('<section class="st-band" id="tour"><div class="sc-in st-tour">'
-            f'<div class="st-head" data-reveal><h2>整個 App 玩一次</h2><p class="st-lead">{esc(DEMO_NOTE)}</p></div>'
-            f'{tour_stage()}</div></section>')
-
-
 def tool_card(item: dict, phone_html: str) -> str:
     lead = f'<p class="st-cap">{esc(item["lead"])}</p>' if item["lead"] else ""
     return (f'<div class="st-tool" id="{item["anchor"]}"><h3>{esc(item["title"])}</h3>{lead}'
@@ -82,11 +75,12 @@ def tools(songs: dict) -> str:
 
 
 def promise() -> str:
-    return (f'<section class="st-band"><div class="sc-in sc-promise" data-reveal><p>{esc(PRIVACY_PROMISE)}</p>'
-            '<a href="privacy/">讀隱私政策 →</a></div></section>')
+    """站長 2026-11-11：隱私承諾改成頁尾上方的小字。"""
+    return (f'<div class="sc-in sc-promise"><p>{esc(PRIVACY_PROMISE)}'
+            ' <a href="privacy/">讀隱私政策 →</a></p></div>')
 
 
 def home_body() -> str:
     songs = demo_songs()
-    return ('<div class="studio">' + hero(songs["free"]) + steps(songs) + tour() + tools(songs)
-            + welcome_card("") + bento("") + promise() + final_cta("") + "</div>")
+    return ('<div class="studio">' + hero(songs["free"]) + steps(songs) + tools(songs)
+            + welcome_card("") + bento("") + final_cta("") + promise() + "</div>")

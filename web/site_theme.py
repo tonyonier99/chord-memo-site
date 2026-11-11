@@ -71,7 +71,7 @@ def esc(text: str) -> str:
     return escape(text, quote=True)
 
 
-NAV_ITEMS = [("features", "功能", "features/"), ("templates", "範本", "templates/"), ("creator", "創作者", "creator/"), ("download", "下載", "download/"), ("support", "支援", "support/")]
+NAV_ITEMS = [("features", "功能", "features/"), ("templates", "範本", "templates/"), ("creator", "創作者", "creator/"), ("support", "支援", "support/")]
 FOOT_ITEMS = [("隱私政策", "privacy/"), ("使用條款", "terms/"), ("支援", "support/")]
 
 
@@ -79,10 +79,11 @@ def header_html(root: str, section: str) -> str:
     links = "".join(
         f'<a href="{root}{href}" class="{"on" if key == section else ""}">{label}</a>' for key, label, href in NAV_ITEMS
     )
+    cta_on = ' aria-current="page"' if section == "download" else ""  # 選單不再另放「下載」，跟右上按鈕重複
     return (f'<header class="site"><div class="wrap"><a class="logo" href="{root}">'
             f'<img src="{root}assets/app-icon.png" alt="" width="32" height="32">{esc(APP_NAME)}</a>'
             f'<nav class="site-nav" aria-label="主選單">{links}</nav>{sound_toggle()}'
-            f'<a class="nav-cta" href="{root}download/">下載 App</a></div></header>')
+            f'<a class="nav-cta" href="{root}download/"{cta_on}>下載 App</a></div></header>')
 
 
 def footer_html(root: str) -> str:

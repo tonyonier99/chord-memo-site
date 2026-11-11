@@ -31,11 +31,11 @@ section[id] { scroll-margin-top:84px; }
 .price-row div { background:var(--bg); border:1px solid var(--line); border-radius:14px; padding:0.8rem 0.9rem; }
 .price-row b { display:block; font-size:0.9rem; } .price-row strong { display:block; font-size:1.35rem; margin-top:0.2rem; }
 .price-row small { color:var(--sub); font-size:0.82rem; }
-.dl-card { max-width:560px; margin:2rem auto 0; padding:2rem 1.5rem; text-align:center; }
+.dl-card { max-width:680px; margin:2rem auto 0; padding:2rem 1.5rem; text-align:center; }
 .dl-card img { width:112px; height:112px; border-radius:26px; margin:0 auto 1rem; box-shadow:var(--shadow); }
 .dl-card h2 { font-size:1.5rem; }
 .dl-card .sc-actions { justify-content:center; }
-.dl-meta { margin-top:1.4rem; display:grid; gap:0.35rem; color:var(--sub); font-size:0.94rem; }
+.dl-meta { margin-top:1.4rem; display:grid; gap:0.35rem; color:var(--sub); font-size:0.94rem; text-wrap:balance; }
 .nf { text-align:center; padding:5rem 16px 3rem; }
 .nf h1 { font-size:clamp(1.8rem,4vw,2.4rem); }
 .nf p { color:var(--sub); margin-top:0.6rem; }
