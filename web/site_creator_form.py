@@ -1,7 +1,7 @@
 """創作者頁的申請表（站長 2026-11-11：官網填表，寄到 CONTACT_EMAIL）。
 
 不串任何後端：按「送出」只在瀏覽器把填的內容組成一封信，打開訪客自己的郵件 App，信由訪客寄出；網站不儲存、不上傳。
-欄位：藝名或名字、Email（必填，回覆用）、LINE ID（選填；聯絡以 Email 為主）、作品連結（可多條，一行一條）、
+欄位：藝名或名字、Email（必填，回覆用）、LINE ID（選填；聯絡以 Email 為主）、作品連結（純文字，框裡灰字是範例）、
 合作方式（三選一，跟 site_creator.ways 三張卡同名；站長 11-13：要能選加不加入分潤）、想說的話。
 """
 from site_content import CONTACT_EMAIL
@@ -36,6 +36,10 @@ PLAN_CHOICES = [
 ]
 
 
+# 作品連結框裡的灰字範例（站長 11-13：改純文字、底下灰字當範例）
+WORKS_EXAMPLE = "Spotify：https://open.spotify.com/…\nYouTube：https://youtube.com/…\nStreetVoice：https://streetvoice.com/…"
+
+
 def _plans() -> str:
     def opt(i: int, value: str, name: str, note: str) -> str:
         checked = " checked" if i == 0 else ""
@@ -44,12 +48,14 @@ def _plans() -> str:
     return '<fieldset><legend>合作方式</legend>' + "".join(opt(i, *c) for i, c in enumerate(PLAN_CHOICES)) + "</fieldset>"
 
 
-def _field(name: str, label: str, kind: str = "text", hint: str = "", required: bool = False, maxlen: int = 80) -> str:
+def _field(name: str, label: str, kind: str = "text", hint: str = "", required: bool = False, maxlen: int = 80,
+           placeholder: str = "") -> str:
     req = " required" if required else ""
     mark = "（必填）" if required else ""
     small = f"<small>{esc(hint)}</small>" if hint else ""
     if kind == "textarea":
-        control = f'<textarea name="{name}" maxlength="{maxlen}"{req}></textarea>'
+        ph = f' placeholder="{esc(placeholder)}"' if placeholder else ""
+        control = f'<textarea name="{name}" maxlength="{maxlen}"{ph}{req}></textarea>'
     else:
         control = f'<input type="{kind}" name="{name}" maxlength="{maxlen}" autocomplete="off"{req}>'
     return f'<label>{esc(label)}{mark}{small}{control}</label>'
@@ -62,7 +68,7 @@ def application_form() -> str:
             + _field("email", "Email", "email", "開發者會用這個回覆你", required=True, maxlen=120)
             + _field("line", "LINE ID（選填）", maxlen=40)  # 站長 2026-11-12：LINE 只是方便，主要用 Email 聯絡
             # 站長 2026-11-12：作品連結可以多份 → 多行文字，一行一條
-            + _field("works", "作品連結", "textarea", "一行貼一條，前面可以寫平台名稱，例如「Spotify：https://…」", maxlen=1200)
+            + _field("works", "作品連結", "textarea", maxlen=1200, placeholder=WORKS_EXAMPLE)
             + _plans()
             + _field("note", "想說的話", "textarea", maxlen=500)
             + '<p class="cr-err" data-err role="alert"></p>'
@@ -80,10 +86,7 @@ FORM_JS = """<script>
   function check() {
     if (!val('name')) return { field: 'name', text: '請填藝名或名字' };
     if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(val('email'))) return { field: 'email', text: '請填正確的 Email' };
-    // 站長 11-13：一行裡有網址就算數（前面寫「Spotify：」也可以）；https 可省，但要有網域
-    var URL_RE = /(https?:\\/\\/|www\\.)[^\\s/]+\\.[^\\s]+|[a-z0-9-]+(\\.[a-z0-9-]+)+\\/\\S*/i;
-    var bad = links().filter(function (l) { return !URL_RE.test(l); });
-    if (bad.length) return { field: 'works', text: '這一行找不到網址：' + bad[0] + '（一行貼一條連結，前面可以寫平台名稱）' };
+    // 站長 11-13：作品連結改純文字，不檢查網址格式（框裡灰字是範例）
     return null;
   }
   form.addEventListener('submit', function (e) {
