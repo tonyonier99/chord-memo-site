@@ -80,7 +80,7 @@ HOME_JS = """<script>
   if (song.chords && song.chords.length) chords = song.chords.slice();
   else song.sections.forEach(function (s) { s.romans.forEach(function (r) { var c = A.symbol(r, song); if (chords.indexOf(c) < 0) chords.push(c); }); });
   var row = A.$(box, '.st-chord-row'), grid = A.$(box, '.st-board-grid'), title = A.$(box, '.st-board-title'), guess = A.$(box, '.st-guess');
-  var labels = ['E', 'A', 'D', 'G', 'B', 'e'], saved = {}, sym = '', frets = [];
+  var labels = ['E', 'A', 'D', 'G', 'B', 'e'], sym = '', frets = [];
   row.innerHTML = chords.map(function (c) { return '<button type="button" role="tab" data-chord="' + A.esc(c) + '">' + A.esc(c) + '</button>'; }).join('');
   // FretboardEditorView：每條弦一格（✕ 悶弦、○ 空弦、1–5 品），點了即時換；按「儲存」才記住，沒儲存就切走＝放棄（跟 App 按取消一樣）
   function cell(s, f, text) {
@@ -96,20 +96,15 @@ HOME_JS = """<script>
     }
     grid.innerHTML = html; result();
   }
-  // 指板下那列：看起來像（App 和弦引擎 detectChordFromFrets，最多 3 個）＋儲存狀態
-  var saveBtn = A.$(box, '[data-hero-save]');
-  function same(a, b) { return !!a && a.join() === b.join(); }
+  // 指板下那列：看起來像（App 和弦引擎 detectChordFromFrets，最多 3 個）；站長 11-13：網站上儲存沒意義 → 不放儲存
   function result() {
     var names = (A.engine('detectChordFromFrets', [frets, 'standard', 0]) || []).slice(0, 3);
     var main = names.length ? A.esc(names[0]) : '—';
-    var sub = names.length > 1 ? '也像 ' + names.slice(1).map(A.esc).join('、') : (names.length ? '' : '猜不出名字也沒關係，一樣存得起來');
-    guess.innerHTML = '<small>看起來像</small><b>' + main + '</b>' + (sub ? '<span class="st-alt">' + sub + '</span>' : '') +
-      (saved[sym] ? '<button type="button" class="st-reset" data-act="clear">改回預設按法</button>' : '');
-    var done = same(saved[sym], frets);
-    saveBtn.disabled = done || !A.hasSound(frets); saveBtn.textContent = done ? '已儲存' : '儲存';
+    var sub = names.length > 1 ? '也像 ' + names.slice(1).map(A.esc).join('、') : (names.length ? '' : '認不出名字，換個按法試試');
+    guess.innerHTML = '<small>看起來像</small><b>' + main + '</b>' + (sub ? '<span class="st-alt">' + sub + '</span>' : '');
   }
   function show(c) {
-    sym = c; frets = (saved[c] || A.frets(c, song)).slice(); title.textContent = '自訂「' + c + '」的按法';
+    sym = c; frets = A.frets(c, song).slice(); title.textContent = '自訂「' + c + '」的按法';
     A.$$(row, 'button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.chord === c ? 'true' : 'false'); });
     draw();
   }
@@ -127,11 +122,6 @@ HOME_JS = """<script>
   });
   A.$$(box, '[data-hero-play]').forEach(function (b) {
     b.addEventListener('click', function () { if (S.allowed()) S.frets(frets, b.dataset.heroPlay === 'all' ? { stagger: 0 } : {}); });
-  });
-  saveBtn.addEventListener('click', function () { if (!A.hasSound(frets)) return; saved[sym] = frets.slice(); result(); });
-  guess.addEventListener('click', function (e) {
-    if (!e.target.closest('[data-act="clear"]')) return;
-    delete saved[sym]; show(sym);
   });
   if (chords.length) show(chords[0]);
 })();

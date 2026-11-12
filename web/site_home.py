@@ -2,7 +2,7 @@
 
 段落順序：
 1. 首屏：小標＋大標＋說明＋按鈕，右邊和弦卡「試試你的按法」（從這首最常出現的四個和弦開始，點格子改按法，
-   即時跳出「看起來像」的和弦名稱、可儲存；站長 11-13：要讓人知道能記下獨特和弦）
+   即時跳出「看起來像」的和弦名稱；站長 11-13：要讓人知道能記下獨特和弦）
 2. 寫歌四步：靈感＝四張起點卡、錄一段＝全頁唯一一支手機、編曲＝四軌分軌元件、和弦譜＝可點的 8 小節（site_home_steps.py）
 3. 寫歌時順手的工具：三張資訊卡（site_tool_cards.py）
 4. 藝人範本預告卡 → 5. 免費版與 Pro（長條對比＋對照表＋價格，site_home_pro.py）→ 6. 收尾（站長 11-13 拿掉隱私承諾小字）
@@ -35,11 +35,11 @@ def hero() -> str:
         f'<p class="st-try">{esc(TRY_TITLE)}</p><p class="st-cap">{esc(TRY_CAPTION)}</p>'
         '<div class="st-chord-row" role="tablist" aria-label="和弦"></div>'
         '<div class="st-board"><p class="st-board-title"></p><div class="st-board-grid" role="group" aria-label="指板"></div>'
-        # 站長 11-13 嫌排版醜 → 指板下面收成一列：左邊「看起來像」＋和弦名，右邊兩顆試聽（FretboardEditorView：整個和弦／一弦一弦）＋儲存
+        # 站長 11-13 嫌排版醜 → 指板下面收成一列：左邊「看起來像」＋和弦名，右邊兩顆試聽（FretboardEditorView：整個和弦／一弦一弦）；儲存拿掉（站長 11-13：網站上沒意義）
         '<div class="st-result"><div class="st-guess" aria-live="polite"></div><div class="st-acts">'
         f'<button type="button" data-hero-play="all" aria-label="試聽整個和弦" title="試聽整個和弦">{icon("play.fill")}</button>'
         f'<button type="button" data-hero-play="each" aria-label="一弦一弦彈" title="一弦一弦彈">{icon("arrow.down.to.line")}</button>'
-        '<button type="button" class="st-save" data-hero-save>儲存</button></div></div></div>'
+        '</div></div></div>'
         '</div></div></section>'
     )
 
