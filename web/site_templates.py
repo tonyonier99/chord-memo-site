@@ -22,7 +22,7 @@ TEMPLATES_CSS = STORE_CSS + ICON_CSS + """
 .tp-points li > span:last-child { color:var(--sub); font-size:0.94rem; line-height:1.65; }
 .tp-cta { margin:2.6rem 0 0.5rem; padding:1.6rem 1.3rem; border-radius:20px; background:var(--card); border:1px solid var(--line); text-align:center; }
 .tp-cta h2 { font-size:clamp(1.3rem,3vw,1.6rem); font-weight:800; }
-.tp-cta p { color:var(--sub); margin:0.5rem auto 1.1rem; max-width:32rem; line-height:1.8; }
+.tp-cta p { color:var(--sub); margin:0.5rem auto 1.1rem; max-width:44rem; line-height:1.8; text-wrap:balance; }  /* 站長 11-13：電腦版一行放得下就不換行；手機換行時兩行平均 */
 """
 
 # 站長 11-13：「免費下載」單獨一句沒意義 → 拆成「範本裡有什麼」（四個分頁各有什麼）＋「下載前後」。

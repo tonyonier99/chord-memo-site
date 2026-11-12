@@ -17,7 +17,7 @@ from site_theme import esc
 
 T = {  # ArtistTemplateText.swift
     "title": "藝人範本", "subtitle": "合作藝人用和弦備忘錄做的歌，下載來看看怎麼做", "featured": "精選範本",
-    "more": "更多範本", "badge": "合作藝人", "caption": "用和弦備忘錄做的 demo", "play": "試聽正式版",  # 站長 11-13：網站試聽放的是正式發行版片段（App 字串是「試聽 Demo 版」）
+    "more": "更多範本", "badge": "合作藝人", "caption": "用和弦備忘錄做的 demo", "play": "試聽發行版",  # 站長 11-13：試聽放的是發行版片段，跟下面「發行版」區同名（App 字串是「試聽 Demo 版」）
    
     "stop": "停止試聽", "loading": "載入中…", "failed": "試聽載入失敗，再按一次重試。", "features": "這首用到",
     "release": "發行版", "download": "下載範本",
