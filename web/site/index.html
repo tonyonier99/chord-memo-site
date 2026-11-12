@@ -541,6 +541,9 @@ section[id] { scroll-margin-top:84px; }
 .hs-bar { height:28px; border-radius:8px; background:var(--accent-soft); position:relative; overflow:hidden; }
 .hs-bar i { position:absolute; inset:0 auto 0 0; width:0; background:var(--accent); opacity:.35; }
 .hs-lanes li.off .hs-bar { opacity:.35; }
+.hs-mt.loading .hs-mt-play { animation:hs-pulse 1.2s ease-in-out infinite; }
+@keyframes hs-pulse { 50% { opacity:.45; } }
+@media (prefers-reduced-motion:reduce) { .hs-mt.loading .hs-mt-play { animation:none; opacity:.55; } }
 .hs-err { color:var(--record); font-size:0.88rem; margin-top:0.6rem; } .hs-err[hidden] { display:none; }
 .hs-sheet-t { font-size:1.3rem; font-weight:700; } .hs-sheet-m { color:var(--sub); font-size:0.9rem; font-variant-numeric:tabular-nums; }
 .hs-bars { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0.4rem; margin-top:1rem; }
@@ -1523,7 +1526,7 @@ CMApp.ctl.arrange = function (pane, ph, song) {
   if (mt && S) {
     var urls = JSON.parse(mt.dataset.hsMt), rows = Array.prototype.slice.call(mt.querySelectorAll('[data-hs-lane]'));
     var play = mt.querySelector('[data-hs-play]'), time = mt.querySelector('[data-hs-time]'), err = mt.querySelector('[data-hs-err]');
-    var nodes = null, started = 0, dur = 30, raf = 0, token = 0, ICON = play.innerHTML, STOP = '<span aria-hidden="true">&#9632;</span>';
+    var nodes = null, loading = false, started = 0, dur = 30, raf = 0, token = 0, ICON = play.innerHTML, STOP = '<span aria-hidden="true">&#9632;</span>';
     function state() { return rows.map(function (r) { return { mute: r.querySelector('.hs-mute').getAttribute('aria-pressed') === 'true',
       solo: r.querySelector('.hs-solo').getAttribute('aria-pressed') === 'true' }; }); }
     function level(i) { var st = state(), any = st.some(function (s) { return s.solo; }); return (any ? st[i].solo : !st[i].mute) ? 1 : 0; }
@@ -1539,16 +1542,18 @@ CMApp.ctl.arrange = function (pane, ph, song) {
     function stop() {
       token++; cancelAnimationFrame(raf);
       if (nodes) nodes.forEach(function (n) { try { n.src.stop(); } catch (e) { n.src = null; } });
-      nodes = null; play.innerHTML = ICON; play.setAttribute('aria-label', '播放');
+      nodes = null; busy(false); play.innerHTML = ICON; play.setAttribute('aria-label', '播放');
     }
+    function busy(on) { loading = on; mt.classList.toggle('loading', on); if (on) time.textContent = '載入中…';
+      else if (!nodes) time.textContent = '0:00 / 0:30'; }
     play.addEventListener('click', function () {
-      if (nodes) { stop(); return; }
+      if (nodes || loading) { stop(); return; }
       if (!S.allowed()) return;
-      var mine = ++token; err.hidden = true; play.setAttribute('aria-label', '載入中');
+      var mine = ++token; err.hidden = true; busy(true); play.setAttribute('aria-label', '載入中，再按取消');
       Promise.all(urls.map(function (u) { return S.load(u); })).then(function (bufs) {
         if (mine !== token || !S.live()) return;
         dur = Math.min.apply(null, bufs.map(function (b) { return b.duration; }));
-        nodes = bufs.map(function (b, i) { var g = S.gain(level(i)); return { gain: g, src: S.play(b, 0, g) }; });
+        busy(false); nodes = bufs.map(function (b, i) { var g = S.gain(level(i)); return { gain: g, src: S.play(b, 0, g) }; });
         started = S.now(); play.innerHTML = STOP; play.setAttribute('aria-label', '停止'); tick();
       }).catch(function () { if (mine === token) { stop(); err.hidden = false; } });
     });
