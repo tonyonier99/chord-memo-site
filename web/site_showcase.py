@@ -1,5 +1,5 @@
-"""首頁與功能頁共用的區塊：下載按鈕、bento（還有這些＋Pro）、收尾 CTA；首頁本身由 site_home.py 組裝。"""
-from site_content import APP_NAME, EXTRAS, PRO_BENEFITS, PRO_NAME, TAGLINE
+"""首頁與功能頁共用的樣式（SHOWCASE_CSS）與收尾 CTA（final_cta）；首頁本身由 site_home.py 組裝。"""
+from site_content import APP_NAME, TAGLINE
 from site_theme import esc
 
 SHOWCASE_CSS = """
@@ -51,28 +51,7 @@ def store_actions(root: str) -> str:
             f'<a class="btn ghost" href="{root}features/">看功能</a></div>')
 
 
-def extra_tile(title: str, text: str, wide: bool = False) -> str:
-    return (f'<div class="tile{" wide" if wide else ""}" data-reveal><h3>{esc(title)}</h3>'
-            f'<p>{esc(text)}</p></div>')
-
-
-def pro_tile(root: str) -> str:
-    chips = "".join(f"<li>{esc(b)}</li>" for b in PRO_BENEFITS)
-    return (f'<a class="tile wide" href="{root}features/#pro" data-reveal><span class="t-eyebrow">升級</span>'
-            f'<h3>{esc(PRO_NAME)}</h3><ul>{chips}</ul><span class="t-more">看免費版與 Pro →</span></a>')
-
-
-def bento(root: str) -> str:
-    extras = "".join(extra_tile(t, d) for t, d, _ in EXTRAS)
-    return (
-        '<section class="sc-band"><div class="sc-in">'
-        f'<div class="sc-sec-head" data-reveal><h2>還有這些</h2></div>'
-        f'<div class="bento">{extras}{pro_tile(root)}</div></div></section>'
-    )
-
-
 def final_cta(root: str) -> str:
     return (f'<section class="sc-final" data-reveal><img src="{root}assets/app-icon.png" alt="" width="72" height="72">'
             f'<div class="sc-copy"><h2>{esc(APP_NAME)}</h2><p class="sc-lead center">'
             f'{esc(TAGLINE)}</p></div>{store_actions(root)}</section>')
-

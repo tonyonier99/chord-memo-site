@@ -23,7 +23,6 @@ INTRO = "用各種方式保存你的靈感，記下專屬這首歌的獨特和�
 APP_STORE_URL = os.environ.get("CHORD_APP_STORE_URL", "")
 # 站長 2026-11-11：App 還沒上架，下載鈕先寫這句（上架後設環境變數 CHORD_APP_STORE_URL 就會換成下載鈕）
 STORE_PLACEHOLDER = "即將在 App Store 推出"
-CONFIRM = "【待站長確認】"
 
 # support.md、privacy.md、terms.md 的聯絡信箱
 CONTACT_EMAIL = "tonyonier99@gmail.com"
@@ -82,7 +81,7 @@ TOOL_BANDS = [
      "points": ["點拍子抓速度", "錄音前先數一小節"]},  # 站長 11-12 改寫（RhythmView.swift Tap、預備拍）
 ]
 
-# 其他功能卡（首頁 bento、功能頁「還有這些」）：(標題, 說明, 出處)
+# 其他功能卡（功能頁「還有這些」）：(標題, 說明, 出處)
 EXTRAS = [
     ("回來聽聽你的歌", "挑一首暫放的靈感，回來聽 30 秒就好。", "SettingsView.swift 本機提醒文案"),
     ("最近刪除", "不小心刪掉作品怎麼辦？到首頁右上角的「…」選單 >「最近刪除」可以復原。", "support.md 常見問題"),
@@ -90,15 +89,7 @@ EXTRAS = [
     ("靈感匣", "靈感不限數量，想到就存，之後再挑來寫成歌。", "站長 11-12 改寫（PaywallView.swift）"),
 ]
 
-# 跑馬燈：App 內的功能名稱（HomeCaptureChoice、WorkspaceTab、OthersView、ChartTabView 分享選單、PaywallView、SettingsView）
-MARQUEE = ["錄一段聲音", "寫一句話", "加一張照片", "畫一筆", "靈感匣", "錄音", "編曲", "和弦", "調音器", "節拍器",
-           "最近刪除", "分享整份譜（圖片）", "匯出每一軌", "圈出整段重點", "回來聽聽你的歌"]
-
-# 隱私承諾：privacy.md 首段
-PRIVACY_PROMISE = "本 App 沒有帳號系統、沒有廣告、沒有第三方追蹤或分析工具，開發者也沒有自己的伺服器。"
-
-# Pro：PaywallView.swift 好處清單與方案說明；terms.md 付費方案
-PRO_BENEFITS = ["免費能用的，升級前後都一樣", "更多歌曲，每首可保留多份編曲", "分軌匯出，帶到電腦繼續製作", "重點範圍循環與安靜回訪"]
+# Pro：方案說明；terms.md 付費方案
 # 方案名稱與價格：DemoPro.storekit displayName／displayPrice（= docs/33 2026-11-04 改價，站長 2026-11-11 確認）；
 # 第三欄是付費牆方案列下方那行（PlanSavings.swift yearlyNote／lifetimeNote）
 PRO_PRICES = [("和弦備忘錄 Pro 月訂", "NT$90", ""), ("和弦備忘錄 Pro 年訂", "NT$990", "比月訂省 1 個月"),

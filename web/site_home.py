@@ -9,7 +9,7 @@
 文字出處見 site_content.py；「看看怎麼用 ›」是站長 11-12 審過的新寫按鈕。
 """
 from site_app_screens import pane_phone, song_json, stage
-from site_content import APP_NAME, FEATURES, HERO_EYEBROW, INTRO, PRIVACY_PROMISE, TOOL_BANDS
+from site_content import APP_NAME, FEATURES, HERO_EYEBROW, INTRO, TOOL_BANDS
 from site_home_pro import pro_section
 from site_home_steps import chord_sheet, inspire_cards, multitrack
 from site_icons import icon
@@ -74,12 +74,6 @@ def steps() -> str:
 def tools() -> str:
     return (f'<section class="st-band"><div class="sc-in"><div class="st-head" data-reveal><h2>寫歌時順手的工具</h2></div>'
             f'{tool_cards(TOOL_BANDS)}</div></section>')
-
-
-def promise() -> str:
-    """站長 2026-11-11：隱私承諾改成頁尾上方的小字。"""
-    return (f'<div class="sc-in sc-promise"><p>{esc(PRIVACY_PROMISE)}'
-            ' <a href="privacy/">讀隱私政策 →</a></p></div>')
 
 
 def home_body() -> str:

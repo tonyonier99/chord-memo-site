@@ -7,15 +7,15 @@
 拆檔：
 - site_content.py  文案與素材清單（每段註明出處）
 - site_theme.py    色彩 token、頁首頁尾、page()
-- site_motion.py   淡入、跑馬燈
+- site_motion.py   捲動淡入
 - site_home.py     首頁（照寫歌順序、深色工作室；樣式與首屏和弦在 site_home_style.py）
-- site_showcase.py 首頁沿用的區塊（bento、收尾、下載按鈕）
-- site_bands.py    功能區塊＋示範手機（首頁、功能頁共用）
+- site_showcase.py 首頁沿用的樣式與收尾區塊
+- site_bands.py    示範手機共用的樣式與互動程式
 - site_app_*.py    網頁重畫的 App 畫面：資料（data）、樣式（css）、畫面（screens、tools）、互動（js、js_chart、js_tools、js_run）
 - site_pages.py    功能頁、下載頁、404
 - site_templates.py 藝人範本頁（假範本庫示意，導到創作者頁）
-- site_creator*.py 申請成為創作者頁（概要＋申請表；假範本庫手機元件在 site_creator_phone.py）
-- site_audio*.py   聲音：示範歌錄音取出（audio）、全站 CMAudio＋喇叭開關（audio_js）、和弦譜播放與編曲混音（audio_play）
+- site_creator*.py 申請成為創作者頁（概要＋申請表；試聽播放在 site_creator_phone.py）
+- site_audio*.py   聲音：全站 CMAudio＋喇叭開關（audio_js）、和弦譜播放與編曲混音（audio_play）
 - site_legal.py    隱私政策、使用條款、支援（讀 chord-memo-site 現有 .md，內文不改）
 - site_favicon.py  分頁圖示：App icon 裁圓角（favicon-32/48/180）＋ apple-touch-icon
 - site_seo.py      搜尋引擎收錄：sitemap.xml、robots.txt（canonical／noindex 在 site_theme.seo_head）

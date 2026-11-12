@@ -1,13 +1,4 @@
-"""工具示範手機：調音器（TunerView.swift、TunerComponents.swift）、節拍器（RhythmView.swift）。
-
-字串照 App：調音器「吉他・標準 EADGBE」「A4 = 440 Hz」「按「開始調音」」「低／高」、模式「自動／手動／半音」（TunerLogic.swift）、
-「開始調音／停止」「標準 EADGBE（低→高）」；節拍器「速度」「BPM」「Tap」「播放／停止」「拍號」「預備拍」「按播放先數一小節」。
-示範手機沒有收音：調音讀數是示意（標在手機下方）。
-"""
-from site_app_data import STRINGS as S
-from site_app_screens import phone
-from site_icons import icon
-from site_theme import esc
+"""工具示範手機（調音器、節拍器）的樣式；隨 BANDS_CSS 輸出（手機 HTML 已拿掉）。"""
 
 TOOLS_CSS = """
 .tn-head { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
@@ -50,40 +41,3 @@ TOOLS_CSS = """
 .mt-opts div { display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-size:13.5px; }
 .mt-opts div + div { border-top:0.5px solid var(--a-hair); } .mt-opts small { display:block; font-size:11px; color:var(--a-sub); }
 """
-
-# 速度範圍 30–250：TempoRange.swift metronome
-TUNING_NAME = "標準 EADGBE"  # InstrumentDefinition.swift guitarStandardTuning.name
-OPEN_NOTES = "E2 · A2 · D3 · G3 · B3 · E4"  # 由 openMidi [40,45,50,55,59,64] 換算（PitchMath.noteNameWithOctave）
-
-
-def tool_view(title: str, body: str) -> str:
-    return (f'<div class="ph-stack"><div class="ph-view on"><div class="ph-nav"><span class="ph-circle" aria-hidden="true">{icon("chevron.left")}</span>'
-            f'<b>{esc(title)}</b><span style="width:32px"></span></div><div class="ph-scroll">{body}</div></div></div>')
-
-
-def tuner_phone() -> str:
-    strings = "".join(f'<button type="button" data-string="{i}">{esc(label)}</button>'
-                      for i, label in enumerate(S["string_labels"]))
-    modes = "".join(f'<button type="button" class="{"on" if m == "自動" else ""}" data-mode="{m}">{m}</button>'
-                    for m in ("自動", "手動", "半音"))
-    body = (f'<div class="tn-head"><span class="tn-inst">吉他・{TUNING_NAME} {icon("chevron.up.chevron.down")}</span><span class="tn-a4">A4 = 440 Hz</span></div>'
-            '<div class="tn-note" data-note>—</div><div class="tn-meter"><span class="tn-needle"></span></div>'
-            '<div class="tn-cap"><span>低</span><span data-cap>按「開始調音」</span><span>高</span></div>'
-            f'<div class="tn-strings">{strings}</div><div class="a-seg tn-seg">{modes}</div>'
-            f'<button type="button" class="a-btn tn-listen" data-act="listen">{icon("mic.fill")}開始調音</button>'
-            f'<div class="a-card tn-foot"><small>{TUNING_NAME}（低→高）</small><b>{"  ".join(S["string_labels"])}</b>'
-            f'<span>{OPEN_NOTES}</span></div>')
-    return phone(tool_view("調音器", body), attrs=' data-demo="tuner"')
-
-
-def metronome_phone(bpm: int) -> str:
-    beats = "".join(f'<i class="{"accent" if i == 0 else ""}"></i>' for i in range(4))
-    body = (f'<div class="a-card mt-card"><div class="mt-top"><span>{icon("metronome")} 速度</span></div>'
-            f'<div class="mt-bpm"><button type="button" data-step="-1" aria-label="減慢">{icon("minus")}</button>'
-            f'<div><span data-bpm>{bpm}</span><small>BPM</small></div><button type="button" data-step="1" aria-label="加快">{icon("plus")}</button></div>'
-            f'<input class="mt-slider" type="range" min="30" max="250" step="1" value="{bpm}" aria-label="速度">'
-            f'<div class="mt-beats">{beats}</div><button type="button" class="mt-tap" data-act="tap">Tap</button>'
-            f'<button type="button" class="a-btn mt-play" data-act="play">{icon("play.fill")}<span>播放</span></button></div>'
-            '<div class="a-card mt-opts"><div><span>拍號</span><span style="color:var(--a-sub)">4/4</span></div>'
-            '<div><span>預備拍<small>按播放先數一小節</small></span></div></div>')
-    return phone(tool_view("節拍器", body), attrs=f' data-demo="metronome" data-bpm="{bpm}"')

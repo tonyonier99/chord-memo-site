@@ -1,4 +1,4 @@
-"""藝人範本頁的範本庫：照 App 範本支線的範本庫（ArtistTemplates/，Apple Music 版面）做網頁版＋示範手機版。
+"""藝人範本頁的範本庫：照 App 範本支線的範本庫（ArtistTemplates/，Apple Music 版面）做網頁版。
 
 - 清單（ArtistTemplateLibraryView／ShelfView）：大標「藝人範本」、說明一行、精選大卡（封面＋毛玻璃：精選範本、歌名、藝人、
   「合作藝人」徽章）、「更多範本」橫向一排（封面、歌名、藝人、徽章）。網站沒有「查看全部」頁，不放那個連結。
@@ -8,7 +8,6 @@
 """
 import json
 
-from site_app_screens import phone, stage
 from site_icons import icon
 from site_store_data import OPEN_SLOTS, TEMPLATES
 from site_store_motion import MOTION_CSS, MOTION_JS, disc_header
@@ -22,7 +21,6 @@ T = {  # ArtistTemplateText.swift
     "stop": "停止試聽", "loading": "載入中…", "failed": "試聽載入失敗，再按一次重試。", "features": "這首用到",
     "release": "發行版", "download": "下載範本",
 }
-NOTE = "範本庫示意・照 App 範本庫的畫面"
 STORE_CSS = BASE_CSS + MOTION_CSS
 
 
@@ -88,13 +86,6 @@ def store_wall(root: str) -> str:
     """網頁版範本庫（藝人範本頁最上面）。"""
     return (f'<section class="cr-sec ts-wall" id="wall" data-reveal>'
             f'{_shelf(root)}</section>')  # 頁首已有一樣意思的說明，牆上不再重複（站長 11-12）
-
-
-def store_phone(root: str) -> str:
-    """示範手機版：同一份清單，點了一樣開詳情。"""
-    inner = (f'<div class="ph-view on" style="position:relative"><div class="ph-scroll ts-app">'
-             f'<div class="ts-app-title">{T["title"]}</div><p class="ts-sub">{T["subtitle"]}</p>{_shelf(root)}</div></div>')
-    return stage(phone(inner, attrs=" data-store-phone"), note=NOTE)
 
 
 def _release(t: dict) -> str:

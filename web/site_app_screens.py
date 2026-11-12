@@ -1,7 +1,6 @@
 """網頁重畫的 App 畫面（HTML 骨架；會動的部分由 site_app_js*.py 接手）。
 
 對照的 SwiftUI 檔：
-- 所有歌曲（首頁歌曲牆）：SongGalleryView.swift、SongOrganizationViews.swift（歌卡的星）
 - 工作區外框（導覽列、底部四分頁）：WorkspaceChrome.swift、ContentView.swift SongWorkspaceView
 - 靈感：InspirationView.swift（「聲音」選單＝confirmationDialog）
 - 錄音：RecorderView.swift、MeterHaloButton.swift、RecordCountdownViews.swift、RecordClickViews.swift
@@ -40,26 +39,6 @@ def menu_item(label: str, sf: str = "", attrs: str = 'data-close', cls: str = ""
     """iOS 選單列：左字、右圖示。"""
     klass = f' class="{cls}"' if cls else ""
     return f'<button type="button"{klass} {attrs}><span>{esc(label)}</span>{icon(sf)}</button>'
-
-
-def song_card(name: str, status: str, push: bool) -> str:
-    tag, attrs = ("button", ' type="button" data-push="song"') if push else ("div", "")
-    return (f'<{tag} class="a-songcard"{attrs}><div class="cover">{icon("waveform")}'
-            f'<span class="card-star">{icon("star")}</span></div>'
-            f'<strong>{esc(name)}</strong><em class="a-pill">{esc(status)}</em></{tag}>')
-
-
-def gallery_view(song: dict) -> str:
-    cards = (song_card(song["name"], S["status"].get(song["status"], "收集"), True)
-             + song_card(S["sample_name"], S["status"]["collecting"], False))
-    return ('<div class="ph-view on" data-view="gallery"><div class="ph-nav"><b></b>'
-            f'<span class="ph-circle" aria-hidden="true">{icon("ellipsis.circle")}</span></div>'
-            f'<div class="ph-scroll"><div class="ph-large">{esc(S["gallery_title"])}</div>'
-            f'<div class="a-search">{icon("magnifyingglass")}<span>{esc(S["search"])}</span></div>'
-            f'<div class="a-card a-row"><span class="tint">{icon("tray.full")}</span><span>{esc(S["inbox"])}</span>'
-            f'<span class="chev">{icon("chevron.right")}</span></div>'
-            f'<div class="a-grid" style="margin-top:12px">{cards}</div></div>'
-            f'<span class="fab-new" aria-hidden="true">{icon("square.and.pencil")}</span></div>')
 
 
 SEED_ACTS = {"聲音": "voice", "文字": "text", "照片": "photo", "塗鴉": "sketch"}
@@ -168,18 +147,7 @@ def workspace_nav(title: str, back_attrs: str) -> str:
             f'<b>{esc(title)}</b><button type="button" class="ph-circle" data-act="more" aria-label="更多">{icon("ellipsis.circle")}</button></div>')
 
 
-BACK_LIVE = 'data-back aria-label="返回"'
 BACK_STATIC = 'tabindex="-1" aria-hidden="true"'
-
-
-def workspace_view(song: dict) -> str:
-    return (f'<div class="ph-view" data-view="song">{workspace_nav(song["name"], BACK_LIVE)}'
-            f'{inspiration_pane(song)}{record_pane(song)}{arrange_pane()}{chart_pane(song)}{tab_bar("靈感", True)}</div>')
-
-
-def tour_phone(song: dict) -> str:
-    inner = f'<div class="ph-stack">{gallery_view(song)}{workspace_view(song)}</div>'
-    return phone(inner, attrs=f' data-tour data-song="{song_json(song)}"')
 
 
 def pane_phone(song: dict, pane: str, demo: str, title: str, pro: bool = False) -> str:

@@ -1,8 +1,7 @@
-"""動畫：捲動淡入、跑馬燈（App 示範手機的互動在 site_app_js*.py）。
+"""動畫：捲動淡入（App 示範手機的互動在 site_app_js*.py）。
 
-系統開啟「減少動態效果」時：不淡入、跑馬燈停住。
+系統開啟「減少動態效果」時不淡入。MOTION_CSS 裡的跑馬燈樣式仍會輸出（產生跑馬燈 HTML 的函式已拿掉）。
 """
-from site_theme import esc
 
 MOTION_CSS = """
 html.js [data-reveal] { opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
@@ -36,10 +35,3 @@ MOTION_JS = """<script>
   items.forEach(function (el) { io.observe(el); });
 })();
 </script>"""
-
-
-def marquee(words: list[str]) -> str:
-    """同一組字放兩份接起來才能無縫循環；第二份對螢幕閱讀器隱藏。"""
-    first = "".join(f"<span>{esc(w)}</span>" for w in words)
-    second = "".join(f'<span aria-hidden="true">{esc(w)}</span>' for w in words)
-    return f'<div class="marquee" aria-label="功能一覽"><div class="marquee-track">{first}{second}</div></div>'

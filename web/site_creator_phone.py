@@ -1,23 +1,11 @@
-"""創作者頁的示範手機：「假範本庫」（站長 2026-11-11 同意先做示意；App 尚未開發，畫面標明示意）。
+"""試聽播放的樣式與程式（CREATOR_PHONE_CSS、CREATOR_PHONE_JS）：頁面上每個 [data-tp-play] 共用一套、同時只播一個。
 
-- 清單照 docs/52 §7.2：方形封面、歌名、藝人名、小標「合作藝人」。第一首放站長自己的範本「夜車」（站長 2026-11-11：「先放我的範本」；藝人名未給→【待站長確認】）；
-  其餘三格是還沒有的合作藝人範本，歌名、藝人名用括號留空、灰掉。
-- 詳情照 §7.3 由上而下：封面、歌名、試聽 Demo 版（「用和弦備忘錄做的 demo」）、「這首用到」、
-  下載鈕「下載範本（約 13 MB，免費，不算進 6 首）」（示意，不能按）。夜車不是合作藝人的歌，所以不放「○○ 是合作藝人」那行。
-- 試聽播「夜車（完整編曲）」五軌同時。
+示範手機「假範本庫」的 HTML 已拿掉；JS 裡 [data-template] 那段找不到元素就直接結束（為了輸出不變先保留）。
 """
 import json
 
 from site_song import audio_urls
-from site_content import CONFIRM
-from site_app_screens import phone, stage
 from site_icons import icon
-from site_theme import esc
-
-TABS = ["靈感", "錄音", "編曲", "和弦"]  # WorkspaceChrome.swift 四個分頁（docs/52 §5：範本要全功能用上）
-MY_SONG = "夜車"
-MY_ARTIST = CONFIRM  # 站長的藝人名，還沒給
-NOTE = "範本庫示意（App 尚未推出）・「夜車」可以點開試聽"
 
 CREATOR_PHONE_CSS = """
 .tp-body { padding:4px 14px 14px; display:grid; gap:10px; }
@@ -40,30 +28,6 @@ CREATOR_PHONE_CSS = """
 .tp-cell strong { font-size:13px; } .tp-cell span:not(.tp-thumb) { font-size:11px; color:var(--a-sub); } .tp-cell .a-pill { justify-self:start; margin-top:2px; }
 .tp-back { border:0; background:none; color:var(--a-label); cursor:pointer; font:inherit; font-weight:700; font-size:15px; }
 """
-
-
-def _grid_cell(title: str, artist: str, live: bool) -> str:
-    tag, attrs = ("button", ' type="button" data-tp-open') if live else ("div", ' aria-disabled="true"')
-    pill = "" if live else '<em class="a-pill">合作藝人</em>'
-    return (f'<{tag} class="tp-cell{"" if live else " dim"}"{attrs}><span class="tp-thumb">{icon("waveform")}</span>'
-            f'<strong>{esc(title)}</strong><span>{esc(artist)}</span>{pill}</{tag}>')
-
-
-def template_phone() -> str:
-    """範本庫清單（§7.2）→ 點「夜車」進詳情頁（§7.3）。其餘三格是還沒有的合作藝人範本，灰掉不能點。"""
-    tags = "".join(f"<span>{esc(t)}</span>" for t in TABS)
-    cells = _grid_cell(MY_SONG, MY_ARTIST, True) + "".join(_grid_cell("（歌名）", "（藝人名）", False) for _ in range(3))
-    grid = (f'<div data-tp-list><div class="tp-nav">藝人範本</div><div class="tp-body"><div class="tp-grid">{cells}</div></div></div>')
-    detail = ('<div data-tp-detail hidden>'
-              f'<button type="button" class="tp-nav tp-back" data-tp-back>{icon("chevron.left")}藝人範本</button><div class="tp-body">'
-              f'<div class="tp-cover">{icon("waveform")}</div>'
-              f'<div class="tp-title"><strong>{esc(MY_SONG)}</strong><span>{esc(MY_ARTIST)}</span></div>'
-              f'<button type="button" class="tp-play" data-tp-play><span data-tp-ic>{icon("play.circle.fill")}</span>'
-              '<span><b>試聽 Demo 版</b><small>用和弦備忘錄做的 demo</small></span><em data-tp-time>0:00</em></button>'
-              f'<div><div class="a-sec">這首用到</div><div class="tp-tags">{tags}</div></div>'
-              '<button type="button" class="tp-dl" disabled>下載範本（約 13 MB，免費，不算進 6 首）</button></div></div>')
-    inner = f'<div class="ph-view on" style="position:relative"><div class="ph-scroll">{grid}{detail}</div></div>'
-    return stage(phone(inner, attrs=' data-template'), note=NOTE)
 
 
 def creator_phone_js(root: str) -> str:

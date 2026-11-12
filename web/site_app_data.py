@@ -1,87 +1,14 @@
 """網頁重畫 App 畫面用的資料：全部從和弦大師專案（只讀）讀出，不自己編。
 
-- 示範歌：$CHORD_APP_DIR/示範歌曲/ 的「免費版示範：夜車」「付費版示範：夜車（完整編曲）」（.chorddemo＝JSON）。
-  讀歌名、調、速度、拍號、段落（羅馬級數）、歌詞、文字起點、主錄音名稱、錄音長度、編曲軌名。
 - 和弦名稱與按法：網頁執行時呼叫 App 內建的和弦引擎（native/ChordMaster/engine.js，App 用 JavaScriptCore 跑的同一份），
   build 時把它複製成 site/assets/chord-engine.js。
-- 讀不到示範歌就讓 build 失敗（不產生缺資料的頁面）。
+- STRINGS：App 原文字串（每項註明出處）。
 """
-import base64
-import json
-import struct
 from pathlib import Path
 
 from site_content import CHORD_APP_DIR
 
 ENGINE_SRC = "native/ChordMaster/engine.js"
-FREE_DEMO = "示範歌曲/免費版示範：夜車.chorddemo"
-PRO_DEMO = "示範歌曲/付費版示範：夜車（完整編曲）.chorddemo"
-DEMO_PREFIXES = ("免費版示範：", "付費版示範：")
-PRO_SUFFIX = "（完整編曲）"
-
-
-def _load(rel: str) -> dict:
-    path = CHORD_APP_DIR / rel
-    if not path.is_file():
-        raise FileNotFoundError(f"找不到示範歌曲：{path}")
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as error:
-        raise ValueError(f"示範歌曲不是有效的 JSON：{path.name}（{error}）") from error
-
-
-def _m4a_seconds(raw: bytes) -> float:
-    """讀 m4a 的 mvhd box 算出長度（秒）；讀不到回 0。"""
-    i = raw.find(b"mvhd")
-    if i < 0:
-        return 0.0
-    if raw[i + 4] == 1:
-        scale, length = struct.unpack(">IQ", raw[i + 24:i + 36])
-    else:
-        scale, length = struct.unpack(">II", raw[i + 16:i + 24])
-    return length / scale if scale else 0.0
-
-
-def _files(doc: dict) -> dict[str, bytes]:
-    return {f["relativePath"]: base64.b64decode(f["data"]) for f in doc.get("files", [])}
-
-
-def _main_take(doc: dict, files: dict[str, bytes]) -> tuple[str, float]:
-    take = doc["demo"].get("mainTakeId") or ""
-    seconds = _m4a_seconds(files.get(f"hums/{take}.m4a", b""))
-    return take, round(seconds, 2)
-
-
-def _lanes(files: dict[str, bytes]) -> list[str]:
-    stack = next((v for k, v in files.items() if k.endswith(".stack.json")), None)
-    if stack is None:
-        return []
-    return [layer["name"] for layer in json.loads(stack.decode("utf-8")).get("layers", [])]
-
-
-def _short_name(name: str) -> str:
-    """畫面上的歌名去掉檔名裡區分免費／付費版的前綴與「（完整編曲）」。"""
-    for prefix in DEMO_PREFIXES:
-        name = name.removeprefix(prefix)
-    return name.removesuffix(PRO_SUFFIX)
-
-
-def _song(doc: dict) -> dict:
-    demo = doc["demo"]
-    files = _files(doc)
-    take, seconds = _main_take(doc, files)
-    sections = [{"kind": s.get("kind", "verse"), "name": s.get("name", ""), "romans": s.get("progression", []),
-                 "beats": s.get("beats", []), "meter": s.get("meter", "4/4"), "lyrics": s.get("lyricLines", [])}
-                for s in demo.get("sections", [])]
-    return {"name": _short_name(demo.get("name", "")), "fileName": demo.get("name", ""), "key": demo.get("key", "C"),
-            "mode": demo.get("mode", "major"), "bpm": demo.get("bpm", 120), "seed": demo.get("seed", ""),
-            "status": demo.get("libraryStatus", "collecting"), "take": take, "takeSeconds": seconds,
-            "lanes": _lanes(files), "sections": sections}
-
-
-def demo_songs() -> dict:
-    """{"free": 免費版示範, "pro": 付費版示範}。"""
-    return {"free": _song(_load(FREE_DEMO)), "pro": _song(_load(PRO_DEMO))}
 
 
 def engine_path() -> Path:
