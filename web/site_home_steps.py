@@ -64,6 +64,9 @@ STEPS_CSS = """
 .hs-bar { height:28px; border-radius:8px; background:var(--accent-soft); position:relative; overflow:hidden; }
 .hs-bar i { position:absolute; inset:0 auto 0 0; width:0; background:var(--accent); opacity:.35; }
 .hs-lanes li.off .hs-bar { opacity:.35; }
+.hs-mt.loading .hs-mt-play { animation:hs-pulse 1.2s ease-in-out infinite; }
+@keyframes hs-pulse { 50% { opacity:.45; } }
+@media (prefers-reduced-motion:reduce) { .hs-mt.loading .hs-mt-play { animation:none; opacity:.55; } }
 .hs-err { color:var(--record); font-size:0.88rem; margin-top:0.6rem; } .hs-err[hidden] { display:none; }
 .hs-sheet-t { font-size:1.3rem; font-weight:700; } .hs-sheet-m { color:var(--sub); font-size:0.9rem; font-variant-numeric:tabular-nums; }
 .hs-bars { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0.4rem; margin-top:1rem; }
