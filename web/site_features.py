@@ -29,7 +29,7 @@ def _groups() -> list[dict]:
         {"anchor": "inspiration", "name": "靈感", "title": "想到什麼，先記下來", "lead": ins["lead"], "items": seeds + [
             ("tray.full", "靈感匣", _EXTRA["靈感匣"]),
             ("repeat", "回來聽聽你的歌", _EXTRA["回來聽聽你的歌"])]},
-        {"anchor": "chords", "name": "和弦", "title": "彈到怪和弦，也存得起來",
+        {"anchor": "chords", "name": "和弦", "title": "彈出獨特和弦，也存得起來",  # 站長 11-13
          "lead": "按出你自己的按法，它會幫你認出這是什麼和弦。",  # 站長 11-13 定位
          "items": [
             ("hand.point.up.left", "自訂按法", "點格子設定每條弦的按法，✕ = 悶弦、○ = 空弦"),
@@ -37,7 +37,7 @@ def _groups() -> list[dict]:
             ("music.quarternote.3", "存進這首歌", "彈到喜歡的聲音就存起來；猜不出名字也沒關係，一樣存得起來"),
             ("music.note.list", "和弦譜", chart["lead"]),
             ("square.and.arrow.up", tools["export"]["title"], tools["export"]["lead"])]},
-        {"anchor": "demo", "name": "Demo", "title": "錄成一段簡單的 demo",
+        {"anchor": "demo", "name": "Demo", "title": "錄成一段簡單的 Demo",  # 站長 11-13
          "lead": "進錄音室之前，先把歌錄出個樣子。",  # 站長 11-13 定位
          "items": [
             ("mic.fill", rec["title"], rec["lead"]),
@@ -45,7 +45,7 @@ def _groups() -> list[dict]:
             ("slider.vertical.3", arr["title"], arr["lead"]),
             ("speaker.wave.2.fill", "靜音與只聽這軌", "每一軌都能關掉，或只聽這一軌"),
             ("metronome", tools["metronome"]["title"], tools["metronome"]["lead"]),
-            ("tuningfork", tools["tuner"]["title"], tools["tuner"]["lead"])]},
+            ("guitars", tools["tuner"]["title"], tools["tuner"]["lead"])]},
         {"anchor": "more", "name": "其他", "title": "其他", "lead": "", "items": [
             ("lock.fill", "iCloud 同步（可選）", _EXTRA["iCloud 同步（可選）"]),
             ("trash", "最近刪除", _EXTRA["最近刪除"])]},
@@ -72,12 +72,13 @@ def feature_list(pro_html: str, pro_name: str) -> str:
     head = (f'<section class="pg-head"><div class="sc-in"><h1>功能</h1><p>{esc(TAGLINE)}</p>'
             f'<nav class="jump" aria-label="跳到功能">{jump}</nav></div></section>')
     body = "".join(_section(g, i, len(groups)) for i, g in enumerate(groups))
-    return head + body + pro_html
+    return head + f'<div class="ft-wrap">{body}</div>' + pro_html
 
 
 FEATURES_CSS = ICON_CSS + """
 .ft-sec { padding:clamp(2.6rem,6vw,4.2rem) 0 0; }
-.ft-sec:last-of-type { padding-bottom:clamp(3rem,7vw,5rem); }
+/* 最後一段跟 Pro 區之間留白（站長 11-13：其他那段貼著 Pro 區） */
+.ft-wrap { padding-bottom:clamp(3.5rem,8vw,6rem); }
 .ft-head { max-width:40rem; }
 .ft-num { color:var(--sub); font-size:0.95rem; font-weight:600; font-variant-numeric:tabular-nums; }
 .ft-head h2 { font-size:clamp(1.8rem,3.6vw,2.6rem); line-height:1.2; margin-top:0.2rem; }

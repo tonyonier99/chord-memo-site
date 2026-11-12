@@ -99,7 +99,7 @@ STRINGS = {
     "status": {"collecting": "收集", "incubating": "醞釀", "parked": "暫放", "revisit": "回來聽", "completed": "完成"},  # Demo.swift DemoLibraryStatus
     "sample_name": "範例：你的第一首歌",                 # Demo.swift SampleSong.name
     "tabs": ["靈感", "錄音", "編曲", "和弦"],            # WorkspaceChrome.swift WorkspaceTab（顯示順序 all）
-    "seed_rows": [("聲音", "哼一段或加一段聲音"), ("文字", "加一句話"), ("照片", "加一張畫面"), ("塗鴉", "畫一筆")],  # InspirationView.swift
+    "seed_rows": [("聲音", "哼一段或加一段聲音"), ("文字", "寫一句話"), ("照片", "拍一張畫面"), ("塗鴉", "畫一筆")],  # InspirationView.swift；文字、照片說明站長 11-13 改
     "name_placeholder": "+ 歌名",                        # InspirationView.swift nameRow
     "voice_dialog": ["哼一段", "匯入音檔", "取消"],        # InspirationView.swift confirmationDialog
     "rec_idle": "點麥克風開始錄", "rec_on": "錄音中…自彈自唱或哼旋律",  # MeterHaloButton.swift

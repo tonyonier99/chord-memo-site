@@ -17,7 +17,7 @@ TAGLINE = "寫歌用的吉他和弦備忘錄"
 # chord-memo-site/index.md 首段
 # 站長 2026-11-12：App 裡的說明文字不適合當網站文案 → 以下標「站長 11-12 改寫」的句子是改寫版（事實照 App 與隱私政策）
 HERO_EYEBROW = "寫歌的人，口袋裡的錄音室"  # 站長 11-12 改寫（首屏小標；TAGLINE 仍給網頁描述用）
-INTRO = "靈感用什麼形式都能先記下來。彈到奇怪的和弦，它幫你認出名字、存成你的按法，再錄成一段簡單的 demo。"  # 站長 11-13 定位改寫（靈感快記 → 怪和弦 → 簡易 demo）
+INTRO = "用各種方式記錄你的靈感，記下專屬這首歌的獨特和弦。"  # 站長 11-13 給的方向（上一版太長）
 
 # App Store 連結：App 原始碼、文件與官網都找不到 → 留空，頁面顯示占位字
 APP_STORE_URL = os.environ.get("CHORD_APP_STORE_URL", "")
@@ -103,5 +103,5 @@ PRO_BENEFITS = ["免費能用的，升級前後都一樣", "更多歌曲，每�
 # 第三欄是付費牆方案列下方那行（PlanSavings.swift yearlyNote／lifetimeNote）
 PRO_PRICES = [("和弦備忘錄 Pro 月訂", "NT$90", ""), ("和弦備忘錄 Pro 年訂", "NT$990", "比月訂省 1 個月"),
               ("和弦備忘錄 Pro 永久版", "NT$1,990", "不到兩年的月費")]
-PRO_PLANS = "和弦備忘錄 Pro 提供月訂閱、年訂閱與一次買斷三種方案，解鎖的功能相同。"  # terms.md
+PRO_PLANS = "和弦備忘錄 Pro 提供月訂閱、年訂閱與一次買斷三種方案。"  # terms.md；站長 11-13 拿掉「解鎖的功能相同」
 FREE_TIER = "免費版可以完成一張 EP：建立並編輯 6 首作品。"  # terms.md（數字隨 FreeTier.demoLimit，改額度時要跟著改）

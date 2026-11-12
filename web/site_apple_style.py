@@ -30,7 +30,14 @@ h1, h2, h3 {{ letter-spacing:-0.015em; }}
 .st-cell {{ width:34px; height:34px; font-size:0.85rem; }}
 .st-row {{ gap:6px; }} .st-board-grid {{ gap:6px; }}
 @media (max-width:420px) {{ .st-cell {{ width:28px; height:28px; }} .st-row {{ gap:4px; }} }}
-.st-guess {{ display:none; }}
+/* 站長 11-13：「看起來像」＋儲存要露出來（這就是記下獨特和弦的賣點），置中排在指板下面 */
+.st-try {{ font-size:1.25rem; font-weight:700; text-align:center; }}
+.st-chords > .st-cap {{ text-align:center; max-width:24rem; margin:0.3rem auto 0.9rem; }}
+.st-guess {{ text-align:center; margin-top:0.8rem; }}
+.st-guess .fg-head {{ justify-content:center; }}
+.st-guess .fg-chips {{ justify-content:center; }}
+.st-guess .fg-chips span {{ font-size:1.1rem; padding:6px 14px; }}
+.st-guess .fg-actions {{ justify-content:center; }}
 .st-copy .st-eyebrow {{ display:flex; align-items:baseline; gap:0.6rem; font-size:1rem; color:var(--sub); }}
 .st-copy .st-num {{ font-size:1rem; font-weight:600; color:var(--record); font-variant-numeric:tabular-nums; }}
 .st-tool {{ padding:1.8rem 1.2rem 1.2rem; }}
