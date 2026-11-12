@@ -66,7 +66,7 @@ def application_form() -> str:
             '<h3>申請表</h3>'
             + _field("name", "藝名或名字", required=True, maxlen=40)
             + _field("email", "Email", "email", "開發者會用這個回覆你", required=True, maxlen=120)
-            + _field("line", "LINE ID（選填）", maxlen=40)  # 站長 2026-11-12：LINE 只是方便，主要用 Email 聯絡
+            + _field("line", "LINE ID", maxlen=40)  # 站長 2026-11-12：LINE 只是方便，主要用 Email 聯絡；11-13 拿掉「（選填）」（其他非必填欄位也沒寫）
             # 站長 2026-11-12：作品連結可以多份 → 多行文字，一行一條
             + _field("works", "作品連結", "textarea", maxlen=1200, placeholder=WORKS_EXAMPLE)
             + _plans()
