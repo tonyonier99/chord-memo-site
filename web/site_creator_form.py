@@ -62,7 +62,7 @@ def application_form() -> str:
             + _field("email", "Email", "email", "開發者會用這個回覆你", required=True, maxlen=120)
             + _field("line", "LINE ID（選填）", maxlen=40)  # 站長 2026-11-12：LINE 只是方便，主要用 Email 聯絡
             # 站長 2026-11-12：作品連結可以多份 → 多行文字，一行一條
-            + _field("works", "作品連結", "textarea", "一行貼一條，可以貼好幾條：StreetVoice、YouTube、Spotify… 都可以", maxlen=1200)
+            + _field("works", "作品連結", "textarea", "一行貼一條，前面可以寫平台名稱，例如「Spotify：https://…」", maxlen=1200)
             + _plans()
             + _field("note", "想說的話", "textarea", maxlen=500)
             + '<p class="cr-err" data-err role="alert"></p>'
@@ -80,8 +80,10 @@ FORM_JS = """<script>
   function check() {
     if (!val('name')) return { field: 'name', text: '請填藝名或名字' };
     if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(val('email'))) return { field: 'email', text: '請填正確的 Email' };
-    var bad = links().filter(function (l) { return !/^https?:\\/\\/\\S+\\.\\S+$/.test(l); });
-    if (bad.length) return { field: 'works', text: '作品連結請一行一條、貼完整網址（https:// 開頭）：' + bad[0] };
+    // 站長 11-13：一行裡有網址就算數（前面寫「Spotify：」也可以）；https 可省，但要有網域
+    var URL_RE = /(https?:\\/\\/|www\\.)[^\\s/]+\\.[^\\s]+|[a-z0-9-]+(\\.[a-z0-9-]+)+\\/\\S*/i;
+    var bad = links().filter(function (l) { return !URL_RE.test(l); });
+    if (bad.length) return { field: 'works', text: '這一行找不到網址：' + bad[0] + '（一行貼一條連結，前面可以寫平台名稱）' };
     return null;
   }
   form.addEventListener('submit', function (e) {

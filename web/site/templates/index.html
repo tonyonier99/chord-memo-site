@@ -659,7 +659,9 @@ h1, h2, h3 { letter-spacing:-0.015em; }
 .st-chords .st-board { padding:1rem 0.8rem 0.9rem; }
 .st-result { display:flex; align-items:center; justify-content:space-between; gap:0.8rem; margin-top:0.9rem; padding:0.85rem 0.3rem 0;
   border-top:1px solid var(--line); }
-.st-result .st-guess { display:grid; gap:0.05rem; margin:0; min-width:0; text-align:left; }
+.st-result .st-guess { display:grid; gap:0.05rem; margin:0; min-width:0; text-align:left; align-content:start;
+  min-height:6rem; }  /* 站長 11-13：結果列高度固定，換和弦時卡片不變高，左邊主標題才不會跟著飄 */
+@media (max-width:520px) { .st-result .st-guess { min-height:8.2rem; } }
 .st-guess small { color:var(--sub); font-size:0.8rem; }
 .st-guess b { font-size:1.7rem; line-height:1.15; color:var(--accent-ink); font-variant-numeric:tabular-nums; }
 .st-guess .st-alt { color:var(--sub); font-size:0.8rem; line-height:1.4; }
