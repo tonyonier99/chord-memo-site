@@ -10,4 +10,6 @@
 首頁編曲那段的四軌試聽。站長 2026-11-12 先要鼓組明顯的段落（取過 1:22.5 起），同日改成從 1:10 起播 30 秒
 （量過四軌都有聲音；貝斯在最後 5 秒變小）。原本的 0:30 那段鼓中途停、貝斯幾乎無聲，不用。
 頭 0.5 秒淡入、尾 2 秒淡出，build 時複製到 site/assets/audio/tn/：
-`ffmpeg -ss 70 -t 30 -i <軌>.m4a -af "afade=t=in:d=0.5,afade=t=out:st=28:d=2" -c:a aac -b:a 128k clip/<軌>.m4a`
+`ffmpeg -ss 70 -t 30 -i <軌>.m4a -af "volume=8dB,afade=t=in:d=0.5,afade=t=out:st=28:d=2" -c:a aac -b:a 128k clip/<軌>.m4a`
+
+站長 11-13 嫌太小聲 → 四軌一律 +8 dB（軌間比例不變；四軌疊起來約 -17.4 LUFS、峰值 -1.6 dB；原本約 -25.4 LUFS）。

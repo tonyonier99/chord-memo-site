@@ -6,6 +6,7 @@
 - 站長 2026-11-12：App 裡那 10 組虛構範本不上網站；範本庫空位寫「徵集中」（OPEN_SLOTS 格，點了去創作者頁）。
 - 封面：站長的範本用 Apple Music 上那張（Desktop/…/單曲 there's nothing/未命名設計拷貝2.png 縮成 1000px）。
 - 試聽：App 那份 preview.m4a 找不到（scratchpad 已清）→ 取 there's nothing.mp3 第 30–60 秒（站長 2026-11-11 指定從 30 秒開始），頭 0.5 秒淡入、尾 2 秒淡出。
+  站長 11-13 嫌太小聲 → 改從 there's nothing_01.wav 剪同一段、音量 +12 dB（約 -14.6 LUFS、峰值 -1 dB；原檔 -26.7 LUFS）。
 """
 
 MINE = {
