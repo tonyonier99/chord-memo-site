@@ -17,7 +17,7 @@ TAGLINE = "寫歌用的吉他和弦備忘錄"
 # chord-memo-site/index.md 首段
 # 站長 2026-11-12：App 裡的說明文字不適合當網站文案 → 以下標「站長 11-12 改寫」的句子是改寫版（事實照 App 與隱私政策）
 HERO_EYEBROW = "寫歌的人，口袋裡的錄音室"  # 站長 11-12 改寫（首屏小標；TAGLINE 仍給網頁描述用）
-INTRO = "靈感來了，先錄下來。之後再慢慢把它變成一首有歌詞、有和弦、有編曲的 demo。"  # 站長 11-12 改寫
+INTRO = "靈感用什麼形式都能先記下來。彈到奇怪的和弦，它幫你認出名字、存成你的按法，再錄成一段簡單的 demo。"  # 站長 11-13 定位改寫（靈感快記 → 怪和弦 → 簡易 demo）
 
 # App Store 連結：App 原始碼、文件與官網都找不到 → 留空，頁面顯示占位字
 APP_STORE_URL = os.environ.get("CHORD_APP_STORE_URL", "")
@@ -57,7 +57,7 @@ FEATURES = [
         "anchor": "arrange", "eyebrow": "編曲", "demo": "arrange",
         "title": "一軌一軌疊上去",  # 站長 11-12 改寫（WorkspaceTab「編曲」）
         "lead": "主錄音是編曲的第一軌。錄好之後回到這裡，就能一軌一軌疊上去。",  # ArrangeTabView.swift
-        "points": ["也能匯入電腦做好的 m4a、wav、mp3"],  # 站長 11-12 改寫（ArrangeTabView.swift 匯入格式）
+        "points": [],  # 站長 11-13：不寫匯入電腦檔（跟「進錄音室前」的初衷打架）
     },
     {
         "anchor": "chart", "eyebrow": "和弦", "demo": "chart",
@@ -72,8 +72,8 @@ FEATURES = [
 TOOL_BANDS = [
     {"anchor": "export", "eyebrow": "分享", "demo": "export",  # OthersView.swift「分享」子選單
      "title": "分享整份譜",  # OthersView.swift（和弦分頁「⋯」）
-     "lead": "",
-     "points": ["分享整份譜（圖片）", "分享 ChordPro 文字", "複製為 ChordPro"]},  # OthersView.swift 分享子選單
+     "lead": "整份譜存成一張圖片分享。",  # OthersView.swift「分享整份譜（圖片）」
+     "points": ["分享整份譜（圖片）"]},  # 站長 11-13：ChordPro 拿掉（沒意義）
     {"anchor": "tuner", "eyebrow": "工具", "demo": "tuner", "title": "調音器",  # OthersView.swift 工具
      "lead": "彈一下就知道準不準。只聽、不錄、不上傳。",  # 站長 11-12 改寫（SettingsDetailViews.swift：不錄音、不上傳）
      "points": ["自動", "手動", "半音"]},  # TunerLogic.swift TunerMode
@@ -92,7 +92,7 @@ EXTRAS = [
 
 # 跑馬燈：App 內的功能名稱（HomeCaptureChoice、WorkspaceTab、OthersView、ChartTabView 分享選單、PaywallView、SettingsView）
 MARQUEE = ["錄一段聲音", "寫一句話", "加一張照片", "畫一筆", "靈感匣", "錄音", "編曲", "和弦", "調音器", "節拍器",
-           "最近刪除", "複製為 ChordPro", "分享整份譜（圖片）", "匯出每一軌", "圈出整段重點", "回來聽聽你的歌"]
+           "最近刪除", "分享整份譜（圖片）", "匯出每一軌", "圈出整段重點", "回來聽聽你的歌"]
 
 # 隱私承諾：privacy.md 首段
 PRIVACY_PROMISE = "本 App 沒有帳號系統、沒有廣告、沒有第三方追蹤或分析工具，開發者也沒有自己的伺服器。"

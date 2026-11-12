@@ -11,10 +11,10 @@ PAGES_CSS = COMPARE_CSS + FEATURES_CSS + """
 .pg-head { padding:3rem 0 1.4rem; text-align:center; background:var(--hero); }
 .pg-head h1 { font-size:clamp(1.9rem,4.4vw,2.7rem); font-weight:800; line-height:1.3; }
 .pg-head p { color:var(--sub); margin:0.6rem auto 0; max-width:38rem; font-size:1.05rem; }
-.jump { display:flex; flex-wrap:wrap; justify-content:center; gap:0.45rem; margin-top:1.3rem; }
-.jump a { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:0.35rem 1rem; font-weight:700;
-  font-size:0.9rem; color:var(--ink); min-height:40px; display:inline-flex; align-items:center; }
-.jump a:hover { text-decoration:none; border-color:var(--accent); }
+/* 頁內跳轉（站長 11-13 嫌膠囊鈕醜）→ Apple 式的一排藍字連結，不加底色外框 */
+.jump { display:flex; flex-wrap:wrap; justify-content:center; column-gap:1.6rem; row-gap:0.3rem; margin-top:1.1rem; }
+.jump a { color:var(--accent-ink); font-size:1rem; font-weight:400; min-height:40px; display:inline-flex; align-items:center; }
+.jump a:hover { text-decoration:underline; }
 .points { list-style:none; margin-top:1.2rem; display:grid; gap:0.6rem; }
 .points li { padding-left:1.5rem; position:relative; font-size:1.02rem; line-height:1.7; }
 .points li::before { content:""; position:absolute; left:0.1rem; top:0.58em; width:0.62rem; height:0.62rem; border-radius:50%;

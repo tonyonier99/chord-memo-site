@@ -1,7 +1,8 @@
 """創作者頁的申請表（站長 2026-11-11：官網填表，寄到 CONTACT_EMAIL）。
 
 不串任何後端：按「送出」只在瀏覽器把填的內容組成一封信，打開訪客自己的郵件 App，信由訪客寄出；網站不儲存、不上傳。
-欄位：藝名或名字、Email（必填，回覆用）、LINE ID（選填；聯絡以 Email 為主）、作品連結（可多條，一行一條）、想不想做藝人範本、想說的話。
+欄位：藝名或名字、Email（必填，回覆用）、LINE ID（選填；聯絡以 Email 為主）、作品連結（可多條，一行一條）、
+合作方式（三選一，跟 site_creator.ways 三張卡同名；站長 11-13：要能選加不加入分潤）、想說的話。
 """
 from site_content import CONTACT_EMAIL
 from site_theme import esc
@@ -15,11 +16,32 @@ FORM_CSS = """
   width:100%; font:inherit; font-weight:400; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:0.6rem 0.75rem; }
 .cr-form textarea { min-height:6rem; resize:vertical; }
 .cr-form input:focus, .cr-form textarea:focus { outline:2px solid var(--accent); outline-offset:1px; }
-.cr-form .cr-check { display:flex; align-items:center; gap:0.5rem; font-weight:600; }
+.cr-form fieldset { border:0; display:grid; gap:0.45rem; }
+.cr-form legend { font-weight:700; font-size:0.95rem; margin-bottom:0.35rem; }
+.cr-form .cr-check { display:flex; align-items:baseline; gap:0.55rem; font-weight:600; background:var(--bg); border-radius:12px;
+  padding:0.7rem 0.85rem; cursor:pointer; }
+.cr-form .cr-check small { display:block; font-weight:400; color:var(--sub); font-size:0.85rem; }
+.cr-form .cr-check input { accent-color:var(--accent); transform:translateY(1px); }
 .cr-form .cr-err { color:var(--record); font-weight:600; font-size:0.85rem; min-height:1em; }
 .cr-form .cr-note { color:var(--sub); font-size:0.85rem; line-height:1.7; }
 .cr-form button { justify-self:start; }
 """
+
+
+# (值, 名稱, 一句說明)；名稱跟創作者頁「合作方式」三張卡一樣
+PLAN_CHOICES = [
+    ("推薦", "推薦", "有分潤"),
+    ("推薦＋做一份藝人範本", "推薦＋做一份藝人範本", "分潤更高"),
+    ("只投稿範本", "只投稿範本", "不加入分潤計畫"),
+]
+
+
+def _plans() -> str:
+    def opt(i: int, value: str, name: str, note: str) -> str:
+        checked = " checked" if i == 0 else ""
+        return (f'<label class="cr-check"><input type="radio" name="plan" value="{esc(value)}"{checked}>'
+                f'<span>{esc(name)}<small>{esc(note)}</small></span></label>')
+    return '<fieldset><legend>合作方式</legend>' + "".join(opt(i, *c) for i, c in enumerate(PLAN_CHOICES)) + "</fieldset>"
 
 
 def _field(name: str, label: str, kind: str = "text", hint: str = "", required: bool = False, maxlen: int = 80) -> str:
@@ -41,7 +63,7 @@ def application_form() -> str:
             + _field("line", "LINE ID（選填）", maxlen=40)  # 站長 2026-11-12：LINE 只是方便，主要用 Email 聯絡
             # 站長 2026-11-12：作品連結可以多份 → 多行文字，一行一條
             + _field("works", "作品連結", "textarea", "一行貼一條，可以貼好幾條：StreetVoice、YouTube、Spotify… 都可以", maxlen=1200)
-            + '<label class="cr-check"><input type="checkbox" name="template">我想做一份藝人範本</label>'
+            + _plans()
             + _field("note", "想說的話", "textarea", maxlen=500)
             + '<p class="cr-err" data-err role="alert"></p>'
             + '<button type="submit" class="btn">送出申請</button>'
@@ -68,7 +90,7 @@ FORM_JS = """<script>
     if (bad) { err.textContent = bad.text; form.elements[bad.field].focus(); return; }
     err.textContent = '';
     var lines = ['藝名或名字：' + val('name'), 'Email：' + val('email'), 'LINE ID：' + (val('line') || '（沒填）'),
-      '作品連結：' + (links().length ? '\\n' + links().join('\\n') : '（沒填）'), '想做藝人範本：' + (form.elements.template.checked ? '想' : '先不用'), '', '想說的話：', val('note') || '（沒填）'];
+      '作品連結：' + (links().length ? '\\n' + links().join('\\n') : '（沒填）'), '合作方式：' + ((form.querySelector('input[name=plan]:checked') || {}).value || '（沒選）'), '', '想說的話：', val('note') || '（沒填）'];
     var url = 'mailto:' + TO + '?subject=' + encodeURIComponent('申請成為和弦備忘錄創作者：' + val('name')) + '&body=' + encodeURIComponent(lines.join('\\n'));
     window.location.href = url;
   });

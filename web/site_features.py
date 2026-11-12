@@ -1,79 +1,93 @@
-"""功能頁＝完整功能清單（站長 2026-11-12 照草稿：不放手機，每組一張卡、每項一行字；首頁四步負責展示；11-12 加上 iPhone 設定頁那種彩色圖示）。
+"""功能頁（站長 2026-11-13 重做：嫌舊版「設定頁清單」醜，順序改照 App 定位）。
 
-每一行都沿用 site_content.py 已註明出處的 App 文字（FEATURES、TOOL_BANDS、EXTRAS、PRIVACY_PROMISE）與 App 字串
-（InspirationView seed_rows、FretboardEditorView／ChordsTabView 那兩句），不另外寫新功能。Pro 區沿用 site_pages.pro_band。
+定位（站長 11-13）：任何形式的靈感先記下來 → 彈到奇怪的和弦能自訂按法、還會認出名字 → 錄成簡易 demo。
+版面：每組一段＝小標（01 02 03）＋大標＋一句說明，底下一格一格的功能（藍色圖示、粗體名稱、一行說明），不再左右兩欄卡片。
+隱私那句不放（站長 11-13：沒意義）；ChordPro、匯入電腦檔不寫（站長 11-13）。
+
+文字出處：
+- 靈感：site_content.FEATURES[0] 說明、InspirationView.swift seed_rows、EXTRAS（靈感匣、回來聽聽你的歌）
+- 和弦：FretboardEditorView.swift（點格子設定按法、看起來像、猜不出名字也沒關係）、ChordsTabView.swift（存進這首歌）、
+  FEATURES[3] 和弦譜說明、OthersView.swift 分享整份譜（圖片）
+- Demo：FEATURES[1]、[2] 說明與要點、ArrangeTabView 靜音／S、TOOL_BANDS 調音器與節拍器
+- 其他：EXTRAS（iCloud 同步、最近刪除）
+「站長 11-13」標的是依站長定位新寫的組說明。
 """
 from site_app_data import STRINGS
-from site_content import EXTRAS, FEATURES, PRIVACY_PROMISE, TAGLINE, TOOL_BANDS
-from site_icons import icon
+from site_content import EXTRAS, FEATURES, TAGLINE, TOOL_BANDS
+from site_icons import ICON_CSS, icon
 from site_theme import esc
 
 _EXTRA = {title: text for title, text, _ in EXTRAS}
-CHORD_NOTES = ["彈到喜歡的聲音，按出來存進這首歌",  # ChordsTabView.swift
-               "猜不出名字也沒關係，一樣存得起來"]  # FretboardEditorView.swift
+_SEED_ICONS = {"聲音": "mic.fill", "文字": "text.quote", "照片": "photo", "塗鴉": "scribble"}
 
 
-# 每項的圖示（站長 2026-11-12 嫌功能頁只有文字 → 像 iPhone 設定頁，每列前面一個彩色圖示；圖示名稱照 App 用的 SF Symbols）
-ITEM_ICONS = {"聲音": "mic.fill", "文字": "text.quote", "照片": "photo", "塗鴉": "scribble", "靈感匣": "tray.full",
-              "回來聽聽你的歌": "repeat", "調音器": "guitars", "節拍器": "metronome", "分享整份譜": "square.and.arrow.up",
-              "iCloud 同步（可選）": "lock.fill", "最近刪除": "trash"}
-GROUP_ICONS = {"inspiration": ("lightbulb", "#FF9F0A"), "record": ("mic.fill", "#FF3B30"), "arrange": ("slider.vertical.3", "#5856D6"),
-               "chart": ("music.note.list", "#007AFF"), "tools": ("metronome", "#34C759"), "sync": ("lock.fill", "#8E8E93")}
-
-
-def _rows(items: list[tuple[str, str]], color: str, fallback: str) -> str:
-    def row(t: str, d: str) -> str:
-        ic = icon(ITEM_ICONS.get(t, fallback))
-        text = f"<strong>{esc(t)}</strong>" + (f"<span>{esc(d)}</span>" if d else "")
-        return f'<li><i class="fl-ic" style="background:{color}">{ic}</i><div>{text}</div></li>'
-    return "".join(row(t, d) for t, d in items)
-
-
-def _groups() -> list[tuple[str, str, str, list[tuple[str, str]]]]:
-    """(錨點, 組名, 一句說明, [(項目, 說明)])。"""
+def _groups() -> list[dict]:
     ins, rec, arr, chart = FEATURES
     tools = {t["anchor"]: t for t in TOOL_BANDS}
+    seeds = [(_SEED_ICONS[k], k, d) for k, d in STRINGS["seed_rows"]]
     return [
-        ("inspiration", "靈感", ins["lead"],
-         [(k, d) for k, d in STRINGS["seed_rows"]] + [("靈感匣", _EXTRA["靈感匣"]), ("回來聽聽你的歌", _EXTRA["回來聽聽你的歌"])]),
-        ("record", "錄音", rec["lead"], [(p, "") for p in rec["points"]]),
-        ("arrange", "編曲", arr["lead"], [(p, "") for p in arr["points"]]),
-        ("chart", "和弦譜", chart["lead"], [(p, "") for p in CHORD_NOTES]),
-        ("tools", "工具與分享", "",
-         [(tools["tuner"]["title"], tools["tuner"]["lead"]), (tools["metronome"]["title"], tools["metronome"]["lead"]),
-          (tools["export"]["title"], "・".join(tools["export"]["points"]))]),
-        ("sync", "同步與隱私", PRIVACY_PROMISE,
-         [("iCloud 同步（可選）", _EXTRA["iCloud 同步（可選）"]), ("最近刪除", _EXTRA["最近刪除"])]),
+        {"anchor": "inspiration", "name": "靈感", "title": "想到什麼，先記下來", "lead": ins["lead"], "items": seeds + [
+            ("tray.full", "靈感匣", _EXTRA["靈感匣"]),
+            ("repeat", "回來聽聽你的歌", _EXTRA["回來聽聽你的歌"])]},
+        {"anchor": "chords", "name": "和弦", "title": "彈到怪和弦，也存得起來",
+         "lead": "按出你自己的按法，它會幫你認出這是什麼和弦。",  # 站長 11-13 定位
+         "items": [
+            ("hand.point.up.left", "自訂按法", "點格子設定每條弦的按法，✕ = 悶弦、○ = 空弦"),
+            ("waveform.badge.magnifyingglass", "看起來像", "按好之後，馬上告訴你這可能是什麼和弦"),
+            ("music.quarternote.3", "存進這首歌", "彈到喜歡的聲音就存起來；猜不出名字也沒關係，一樣存得起來"),
+            ("music.note.list", "和弦譜", chart["lead"]),
+            ("square.and.arrow.up", tools["export"]["title"], tools["export"]["lead"])]},
+        {"anchor": "demo", "name": "Demo", "title": "錄成一段簡單的 demo",
+         "lead": "進錄音室之前，先把歌錄出個樣子。",  # 站長 11-13 定位
+         "items": [
+            ("mic.fill", rec["title"], rec["lead"]),
+            ("lock.fill", "錄音留在你手上", rec["points"][0]),
+            ("slider.vertical.3", arr["title"], arr["lead"]),
+            ("speaker.wave.2.fill", "靜音與只聽這軌", "每一軌都能關掉，或只聽這一軌"),
+            ("metronome", tools["metronome"]["title"], tools["metronome"]["lead"]),
+            ("tuningfork", tools["tuner"]["title"], tools["tuner"]["lead"])]},
+        {"anchor": "more", "name": "其他", "title": "其他", "lead": "", "items": [
+            ("lock.fill", "iCloud 同步（可選）", _EXTRA["iCloud 同步（可選）"]),
+            ("trash", "最近刪除", _EXTRA["最近刪除"])]},
     ]
+
+
+def _tile(ic: str, name: str, text: str) -> str:
+    return (f'<li><span class="ft-ic">{icon(ic)}</span><strong>{esc(name)}</strong>'
+            f'<span class="ft-tx">{esc(text)}</span></li>')
+
+
+def _section(g: dict, index: int, total: int) -> str:
+    num = f'<p class="ft-num">{index + 1:02d}</p>' if index < total - 1 else ""
+    lead = f'<p class="ft-lead">{esc(g["lead"])}</p>' if g["lead"] else ""
+    tiles = "".join(_tile(*it) for it in g["items"])
+    small = " ft-small" if not g["lead"] else ""
+    return (f'<section class="ft-sec{small}" id="{g["anchor"]}"><div class="sc-in"><div class="ft-head" data-reveal>{num}'
+            f'<h2>{esc(g["title"])}</h2>{lead}</div><ul class="ft-grid" data-reveal>{tiles}</ul></div></section>')
 
 
 def feature_list(pro_html: str, pro_name: str) -> str:
     groups = _groups()
-    jump = "".join(f'<a href="#{a}">{esc(n)}</a>' for a, n, _, _ in groups) + f'<a href="#pro">{esc(pro_name)}</a>'
+    jump = "".join(f'<a href="#{g["anchor"]}">{esc(g["name"])}</a>' for g in groups) + f'<a href="#pro">{esc(pro_name)}</a>'
     head = (f'<section class="pg-head"><div class="sc-in"><h1>功能</h1><p>{esc(TAGLINE)}</p>'
             f'<nav class="jump" aria-label="跳到功能">{jump}</nav></div></section>')
-    def card(a: str, n: str, lead: str, items: list[tuple[str, str]]) -> str:
-        ic, color = GROUP_ICONS[a]
-        return (f'<section class="fl-card" id="{a}" data-reveal><div class="fl-head"><i class="fl-big" style="background:{color}">'
-                f'{icon(ic)}</i><h2>{esc(n)}</h2></div>{f"<p>{esc(lead)}</p>" if lead else ""}'
-                f'<ul>{_rows(items, color, ic)}</ul></section>')
-    cards = "".join(card(*g) for g in groups)
-    return head + f'<div class="sc-in fl-grid">{cards}</div>' + pro_html
+    body = "".join(_section(g, i, len(groups)) for i, g in enumerate(groups))
+    return head + body + pro_html
 
 
-FEATURES_CSS = """
-.fl-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:1rem; margin-top:2rem; margin-bottom:clamp(3rem,7vw,5rem); }
-.fl-head { display:flex; align-items:center; gap:0.8rem; }
-.fl-big, .fl-ic { display:flex; align-items:center; justify-content:center; color:#fff; flex:none; font-style:normal; }
-.fl-big { width:48px; height:48px; border-radius:12px; font-size:1.5rem; }
-.fl-ic { width:30px; height:30px; border-radius:8px; font-size:1rem; margin-top:0.1rem; }
-@media (min-width:820px) { .fl-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-.fl-card { background:var(--card); border-radius:28px; padding:1.8rem 1.6rem; }
-.fl-card h2 { font-size:1.5rem; }
-.fl-card > p { color:var(--sub); margin-top:0.4rem; line-height:1.7; }
-.fl-card ul { list-style:none; display:grid; gap:0.7rem; margin-top:1.1rem; }
-.fl-card li { display:grid; grid-template-columns:30px minmax(0,1fr); gap:0.8rem; padding-top:0.7rem; border-top:1px solid var(--line); }
-.fl-card li > div { display:grid; gap:0.1rem; }
-.fl-card li:first-child { border-top:0; padding-top:0; }
-.fl-card li span { color:var(--sub); font-size:0.94rem; line-height:1.65; }
+FEATURES_CSS = ICON_CSS + """
+.ft-sec { padding:clamp(2.6rem,6vw,4.2rem) 0 0; }
+.ft-sec:last-of-type { padding-bottom:clamp(3rem,7vw,5rem); }
+.ft-head { max-width:40rem; }
+.ft-num { color:var(--sub); font-size:0.95rem; font-weight:600; font-variant-numeric:tabular-nums; }
+.ft-head h2 { font-size:clamp(1.8rem,3.6vw,2.6rem); line-height:1.2; margin-top:0.2rem; }
+.ft-lead { color:var(--sub); font-size:1.1rem; line-height:1.7; margin-top:0.6rem; }
+.ft-small .ft-head h2 { font-size:clamp(1.4rem,2.6vw,1.8rem); }
+.ft-grid { list-style:none; display:grid; grid-template-columns:minmax(0,1fr); gap:0.8rem; margin-top:1.6rem; }
+@media (min-width:600px) { .ft-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:960px) { .ft-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+.ft-grid li { background:var(--card); border-radius:22px; padding:1.4rem 1.3rem; display:flex; flex-direction:column; gap:0.3rem; }
+.ft-ic { color:var(--accent); font-size:1.7rem; line-height:1; margin-bottom:0.5rem; display:flex; }
+.ft-grid strong { font-size:1.08rem; }
+.ft-tx { color:var(--sub); font-size:0.94rem; line-height:1.65; }
 """

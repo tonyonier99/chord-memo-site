@@ -7,7 +7,7 @@
 5. 按鈕字改細、拿掉外框與上浮；次要按鈕改成藍字加「›」。
 """
 
-_BORDERLESS = (".tile, .st-chords, .st-tool, .card, .sc-final, .ph-card, .cr-form, .cr-steps li, .tp-cta, .jump a, "
+_BORDERLESS = (".tile, .st-chords, .st-tool, .card, .sc-final, .ph-card, .cr-form, .cr-steps li, .tp-cta, "
                ".price-row div, .tw-welcome")
 
 APPLE_CSS = f"""

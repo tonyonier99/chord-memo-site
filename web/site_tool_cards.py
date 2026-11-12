@@ -1,36 +1,24 @@
 """首頁「寫歌時順手的工具」改成資訊卡，不再是三支手機（站長 2026-11-12：不一定全都要是手機，參考初級大人手冊官網的卡片）。
 
 - 分享整份譜（寬卡）：把示範歌 there's nothing…（site_song.py）排成一張和弦譜（調、速度、拍號、8 小節和弦；純音樂不放歌詞），
-  旁邊三個分享方式照 App OthersView.swift 分享子選單；「複製為 ChordPro」真的會複製（格式照 site_app_js_chart.py 的 chordPro）。
+  旁邊一句說明（站長 11-13：ChordPro 拿掉）。
 - 調音器：大字音名＋偏差條＋六條弦（標準 EADGBE），點弦播參考音（CMAudio.tone，ReferenceTone.swift）。
 - 節拍器：大字 BPM（示範歌速度）＋四拍燈，按「播放」照速度閃燈並響 click（CMAudio.click，RecordClickTrack.swift）。
 文字照 site_content.TOOL_BANDS 與 App 字串；只排版、不畫圖。
 """
-import json
 
 from site_icons import icon
 from site_song import SONG, song_meta
 from site_theme import esc
 
 STRINGS = ["E", "A", "D", "G", "B", "e"]  # 標準 EADGBE（低→高）
-SHARE = ["分享整份譜（圖片）", "分享 ChordPro 文字", "複製為 ChordPro"]  # OthersView.swift 分享子選單
-
-
-def _chord_pro() -> str:
-    key = SONG["key"] + ("m" if SONG["mode"] == "minor" else "")
-    head = [f"{{key: {key}}}", f"{{time: {SONG['meter']}}}", f"{{tempo: {SONG['bpm']}}}"]
-    bars = SONG["bars"]
-    rows = [" ".join(f"[{c}]" for c in bars[i:i + 4]) for i in range(0, len(bars), 4)]
-    return "\n".join(head + [""] + rows) + "\n"
 
 
 def _chart_card(item: dict) -> str:
+    """站長 11-13：ChordPro 拿掉，只留「分享整份譜（圖片）」。"""
     bars = "".join(f"<span>{esc(c)}</span>" for c in SONG["bars"])
-    rows = "".join(f'<li{" data-tc-copy" if i == 2 else ""}>{esc(s)}</li>' for i, s in enumerate(SHARE))
-    pro = esc(json.dumps(_chord_pro(), ensure_ascii=False))
     return (f'<article class="tc tc-wide" id="{item["anchor"]}" data-reveal><div class="tc-copy">'
-            f'<h3>{esc(item["title"])}</h3><ul class="tc-share" data-tc-pro="{pro}">{rows}</ul>'
-            f'<p class="tc-done" data-tc-done hidden>已複製</p></div>'
+            f'<h3>{esc(item["title"])}</h3><p class="tc-lead">{esc(item["lead"])}</p></div>'
             f'<div class="tc-sheet"><p class="tc-sheet-m">{esc(song_meta())}</p><div class="tc-bars">{bars}</div></div></article>')
 
 
@@ -66,12 +54,6 @@ TOOL_CARDS_CSS = """
 .tc-fine { color:var(--sub); font-size:0.82rem; margin-top:0.8rem; text-align:center; }
 .tc-wide { display:grid; gap:1.6rem; align-items:center; }
 @media (min-width:860px) { .tc-wide { grid-template-columns:minmax(0,0.8fr) minmax(0,1.2fr); gap:2.4rem; } }
-.tc-share { list-style:none; display:grid; gap:0.5rem; margin-top:1.2rem; }
-.tc-share li { background:var(--bg); border-radius:14px; padding:0.8rem 1rem; font-weight:500; }
-.tc-share li[data-tc-copy] { color:var(--accent-ink); cursor:pointer; }
-.tc-share li[data-tc-copy]:hover { background:var(--accent-soft); }
-.tc-done { color:var(--accent-ink); font-size:0.85rem; margin-top:0.5rem; }
-.tc-done[hidden] { display:none; }
 .tc-sheet { background:var(--bg); border-radius:20px; padding:1.6rem 1.5rem; box-shadow:0 10px 30px rgba(0,0,0,.06); }
 .tc-sheet-t { font-size:1.4rem; font-weight:700; }
 .tc-sheet-m { color:var(--sub); font-size:0.9rem; font-variant-numeric:tabular-nums; }
@@ -114,8 +96,4 @@ TOOL_CARDS_JS = r"""<script>(function () {
     btn.addEventListener('click', function () { if (timer) { halt(); return; } beat = 0; tick(); timer = setInterval(tick, 60000 / bpm); label.textContent = '停止'; });
     document.addEventListener('cmsound', function (e) { if (!e.detail.on) halt(); });
   }
-  var list = document.querySelector('[data-tc-pro]'), copy = document.querySelector('[data-tc-copy]'), done = document.querySelector('[data-tc-done]');
-  if (copy && navigator.clipboard) copy.addEventListener('click', function () {
-    navigator.clipboard.writeText(JSON.parse(list.dataset.tcPro)).then(function () { done.hidden = false; setTimeout(function () { done.hidden = true; }, 2000); }, function () { done.hidden = true; });
-  });
 })();</script>"""

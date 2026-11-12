@@ -4,7 +4,7 @@
 1. 首屏：小標＋大標＋說明＋按鈕，右邊和弦卡（這首最常出現的四個和弦，點了出指板按法；按法由 App 和弦引擎算）
 2. 寫歌四步：靈感＝四張起點卡、錄一段＝全頁唯一一支手機、編曲＝四軌分軌元件、和弦譜＝可點的 8 小節（site_home_steps.py）
 3. 寫歌時順手的工具：三張資訊卡（site_tool_cards.py）
-4. 藝人範本預告卡 → 5. 免費版與 Pro（長條對比＋對照表＋價格，site_home_pro.py）→ 6. 收尾 → 隱私承諾小字
+4. 藝人範本預告卡 → 5. 免費版與 Pro（長條對比＋對照表＋價格，site_home_pro.py）→ 6. 收尾（站長 11-13 拿掉隱私承諾小字）
 文字出處見 site_content.py；「看看怎麼用 ›」是站長 11-12 審過的新寫按鈕。
 """
 from site_app_screens import pane_phone, song_json, stage
@@ -82,4 +82,4 @@ def promise() -> str:
 
 def home_body() -> str:
     return ('<div class="studio">' + hero() + steps() + tools() + welcome_card("") + pro_section()
-            + final_cta("") + promise() + "</div>")
+            + final_cta("") + "</div>")

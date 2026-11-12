@@ -11,7 +11,7 @@ from site_store_data import TEMPLATES
 from site_theme import esc
 
 WELCOME_TITLE = "沒想法？先看看合作藝人怎麼寫歌"
-WELCOME_BODY = "下載藝人用和弦備忘錄做的歌，從靈感、錄音到編曲一步步拆開看。範本不算進 6 首。"
+WELCOME_BODY = "下載藝人用和弦備忘錄做的歌，從靈感、錄音到編曲一步步拆開看。"  # 站長 11-13：「不算進 6 首」不用寫
 WELCOME_BUTTON = "看看藝人範本"
 # 站長 11-12：直接放好幾張專輯 → 改成扇形 5 張：中間最上面、左右各兩張往後排，露出佔位的音符。
 # 順序＝疊放順序（第一張在最上面）；(往右錯開 × 邊長, 角度, 縮放)
