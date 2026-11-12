@@ -192,11 +192,20 @@ h1, h2, h3 { letter-spacing:-0.015em; }
 /* 站長 11-13：「看起來像」＋儲存要露出來（這就是記下獨特和弦的賣點），置中排在指板下面 */
 .st-try { font-size:1.25rem; font-weight:700; text-align:center; }
 .st-chords > .st-cap { text-align:center; max-width:24rem; margin:0.3rem auto 0.9rem; }
-.st-guess { text-align:center; margin-top:0.8rem; }
-.st-guess .fg-head { justify-content:center; }
-.st-guess .fg-chips { justify-content:center; }
-.st-guess .fg-chips span { font-size:1.1rem; padding:6px 14px; }
-.st-guess .fg-actions { justify-content:center; }
+.st-chords .st-board-title { display:none; }
+.st-chords .st-board { padding:1rem 0.8rem 0.9rem; }
+.st-result { display:flex; align-items:center; justify-content:space-between; gap:0.8rem; margin-top:0.9rem; padding:0.85rem 0.3rem 0;
+  border-top:1px solid var(--line); }
+.st-result .st-guess { display:grid; gap:0.05rem; margin:0; min-width:0; text-align:left; }
+.st-guess small { color:var(--sub); font-size:0.8rem; }
+.st-guess b { font-size:1.7rem; line-height:1.15; color:var(--accent-ink); font-variant-numeric:tabular-nums; }
+.st-guess .st-alt { color:var(--sub); font-size:0.8rem; line-height:1.4; }
+.st-guess .st-reset { justify-self:start; border:0; background:none; padding:0; margin-top:0.15rem; color:var(--accent-ink); font-size:0.8rem; cursor:pointer; }
+.st-acts { display:flex; align-items:center; gap:8px; flex:none; }
+.st-acts button[data-hero-play] { width:40px; height:40px; border-radius:50%; border:0; background:var(--accent-soft); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; font-size:1.05rem; cursor:pointer; }
+.st-save { height:40px; padding:0 18px; border:0; border-radius:999px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer; }
+.st-save:disabled { background:var(--fill); color:var(--sub); cursor:default; }
 .st-copy .st-eyebrow { display:flex; align-items:baseline; gap:0.6rem; font-size:1rem; color:var(--sub); }
 .st-copy .st-num { font-size:1rem; font-weight:600; color:var(--record); font-variant-numeric:tabular-nums; }
 .st-tool { padding:1.8rem 1.2rem 1.2rem; }
@@ -213,7 +222,7 @@ h1, h2 { text-wrap:balance; }
 .st-step { border-top:0; padding:clamp(2.6rem,6vw,4.5rem) 0; }
 .tile, .st-chords, .st-tool, .card, .sc-final, .ph-card, .cr-form, .cr-steps li, .tp-cta, .price-row div, .tw-welcome { border-color:transparent; }
 a.tile:hover { transform:none; box-shadow:none; border-color:transparent; }
-.st-mono, .st-points li, .st-tags, .st-chord-row button, .st-guess .fg-chips span { font-family:inherit; font-variant-numeric:tabular-nums; }
+.st-mono, .st-points li, .st-tags, .st-chord-row button { font-family:inherit; font-variant-numeric:tabular-nums; }
 .st-eyebrow, .sc-eyebrow, .tile .t-eyebrow { font-weight:600; letter-spacing:0; }
 .site-nav a { font-weight:400; font-size:0.88rem; }
 .logo { font-weight:600; }

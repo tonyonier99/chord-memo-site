@@ -35,7 +35,7 @@ INSIDE = [
     ("music.note.list", "和弦", "整首歌的和弦和歌詞，拿起吉他就能跟著彈。"),
 ]
 DOWNLOAD = [
-    ("play.circle.fill", "先聽正式作品", "下載前先聽正式發行的版本；下載後，再回頭看它一開始的 Demo 長什麼樣子。"),
+    ("play.circle.fill", "先聽正式作品", "下載前先聽正式發行的版本；下載後，看這首歌的靈感、錄音、編曲和和弦。"),
     ("arrow.down.to.line", "免費下載", "不用升級 Pro，整首歌的過程從頭看到尾。"),
     ("lock.fill", "藝人的原版", "範本是藝人的作品，可以看、可以聽，但不能修改。"),
     ("trash", "隨時刪掉", "不想留了就刪掉，想看的時候再下載回來。"),
@@ -54,6 +54,6 @@ def templates_body(root: str) -> str:
     main = (f'<section class="cr-sec" data-reveal><h2>範本裡有什麼</h2>{_cards(INSIDE)}</section>'
             f'<section class="cr-sec" data-reveal><h2>下載前後</h2>{_cards(DOWNLOAD)}</section>')
     cta = ('<section class="tp-cta" data-reveal><h2>你是音樂人？</h2>'
-           "<p>挑一首你已經發行的歌，用和弦備忘錄做成範本，讓大家看見這首歌是怎麼寫出來的。</p>"
+           "<p>把你的歌做成範本，放上範本庫，讓大家看見一首歌從靈感到編曲的樣子。</p>"  # 站長 11-13：不寫「挑已發行的歌來做」（像反著做）
            f'<a class="btn" href="{root}creator/">申請成為創作者</a></section>')
     return head + f'<div class="cr-wrap">{store_wall(root)}{main}{cta}</div>' + store_dialog(root)

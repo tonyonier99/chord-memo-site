@@ -21,8 +21,7 @@ from site_theme import esc
 
 STEP_TITLES = ["靈感來了", "錄一段", "編曲", "和弦譜"]  # 站長訂的四步名稱
 TRY_TITLE = "試試你的按法"  # 站長 11-13：首屏要叫人試按法、看它跳出和弦名稱
-TRY_CAPTION = "點格子換成你想要的按法，它會告訴你看起來像什麼和弦，喜歡就存起來。"  # 站長 11-13（FretboardEditorView「看起來像」＋儲存）
-FRET_HINT = "點格子設定每條弦的按法，✕ = 悶弦、○ = 空弦"  # FretboardEditorView.swift
+TRY_CAPTION = "點格子換按法，它會認出這是什麼和弦。"  # 站長 11-13（FretboardEditorView「看起來像」＋儲存）
 HOW_TO = "看看怎麼用"  # 站長 11-12 草稿
 
 
@@ -36,10 +35,11 @@ def hero() -> str:
         f'<p class="st-try">{esc(TRY_TITLE)}</p><p class="st-cap">{esc(TRY_CAPTION)}</p>'
         '<div class="st-chord-row" role="tablist" aria-label="和弦"></div>'
         '<div class="st-board"><p class="st-board-title"></p><div class="st-board-grid" role="group" aria-label="指板"></div>'
-        f'<p class="st-cap">{esc(FRET_HINT)}</p><div class="st-guess" aria-live="polite"></div>'
-        # FretboardEditorView.swift 兩顆試聽：整個和弦一次響／一弦一弦往下彈
-        f'<div class="st-play"><button type="button" data-hero-play="all">{icon("play.circle.fill")}試聽整個和弦</button>'
-        f'<button type="button" data-hero-play="each">{icon("arrow.down.to.line")}一弦一弦彈</button></div></div>'
+        # 站長 11-13 嫌排版醜 → 指板下面收成一列：左邊「看起來像」＋和弦名，右邊兩顆試聽（FretboardEditorView：整個和弦／一弦一弦）＋儲存
+        '<div class="st-result"><div class="st-guess" aria-live="polite"></div><div class="st-acts">'
+        f'<button type="button" data-hero-play="all" aria-label="試聽整個和弦" title="試聽整個和弦">{icon("play.fill")}</button>'
+        f'<button type="button" data-hero-play="each" aria-label="一弦一弦彈" title="一弦一弦彈">{icon("arrow.down.to.line")}</button>'
+        '<button type="button" class="st-save" data-hero-save>儲存</button></div></div></div>'
         '</div></div></section>'
     )
 

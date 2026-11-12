@@ -37,7 +37,7 @@ def _groups() -> list[dict]:
             ("music.quarternote.3", "存進這首歌", "彈到喜歡的聲音就存起來；猜不出名字也沒關係，一樣存得起來"),
             ("music.note.list", "和弦譜", chart["lead"]),
             ("square.and.arrow.up", tools["export"]["title"], tools["export"]["lead"])]},
-        {"anchor": "demo", "name": "Demo", "title": "錄成一段簡單的 Demo",  # 站長 11-13
+        {"anchor": "demo", "name": "Demo", "title": "錄成一段完整的 Demo",  # 站長 11-13
          "lead": "進錄音室之前，先把歌錄出個樣子。",  # 站長 11-13 定位
          "items": [
             ("mic.fill", rec["title"], rec["lead"]),

@@ -94,7 +94,19 @@ HOME_JS = """<script>
       for (var n = 1; n <= 5; n++) html += cell(s, n, n);
       html += '</div>';
     }
-    grid.innerHTML = html; guess.innerHTML = A.guessHTML(frets, !!saved[sym]);
+    grid.innerHTML = html; result();
+  }
+  // 指板下那列：看起來像（App 和弦引擎 detectChordFromFrets，最多 3 個）＋儲存狀態
+  var saveBtn = A.$(box, '[data-hero-save]');
+  function same(a, b) { return !!a && a.join() === b.join(); }
+  function result() {
+    var names = (A.engine('detectChordFromFrets', [frets, 'standard', 0]) || []).slice(0, 3);
+    var main = names.length ? A.esc(names[0]) : '—';
+    var sub = names.length > 1 ? '也像 ' + names.slice(1).map(A.esc).join('、') : (names.length ? '' : '猜不出名字也沒關係，一樣存得起來');
+    guess.innerHTML = '<small>看起來像</small><b>' + main + '</b>' + (sub ? '<span class="st-alt">' + sub + '</span>' : '') +
+      (saved[sym] ? '<button type="button" class="st-reset" data-act="clear">改回預設按法</button>' : '');
+    var done = same(saved[sym], frets);
+    saveBtn.disabled = done || !A.hasSound(frets); saveBtn.textContent = done ? '已儲存' : '儲存';
   }
   function show(c) {
     sym = c; frets = (saved[c] || A.frets(c, song)).slice(); title.textContent = '自訂「' + c + '」的按法';
@@ -116,11 +128,10 @@ HOME_JS = """<script>
   A.$$(box, '[data-hero-play]').forEach(function (b) {
     b.addEventListener('click', function () { if (S.allowed()) S.frets(frets, b.dataset.heroPlay === 'all' ? { stagger: 0 } : {}); });
   });
+  saveBtn.addEventListener('click', function () { if (!A.hasSound(frets)) return; saved[sym] = frets.slice(); result(); });
   guess.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
-    if (b.dataset.act === 'save') saved[sym] = frets.slice();
-    if (b.dataset.act === 'clear') delete saved[sym];
-    show(sym);
+    if (!e.target.closest('[data-act="clear"]')) return;
+    delete saved[sym]; show(sym);
   });
   if (chords.length) show(chords[0]);
 })();
